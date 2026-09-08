@@ -1,3 +1,75 @@
+mi
+
+Burdayım kanzi, noldu?
+
+milestone devam
+
+Tamam kanzi, Milestone’dan devam.
+
+Aklımda kalan son hali:
+
+Fotoğrafsız, minimal kategori kartları: Want / Go / Do / Watch
+Yazılar ortada, kartlar çerçeveli
+Light Mode: beyaz ağırlıklı
+Dark Mode: siyah ağırlıklı
+Light/Dark arasında geçiş olacak
+PWA olarak iPhone ana ekranında çalışıyor
+GitHub Pages üzerinden kullanıyorsun
+Otomatik görsel tarafını da konuşmuştuk.
+
+En son “kodu yaz” aşamasındaydık. İstersen mevcut kodu buraya at, kaldığımız yerden direkt düzenleyeyim; sıfırdan başlamayalım.
+
+Yapıştırılan metin(1).txt
+Belge
+
+Kanzi kodu aldım. Bu Milestone’un mevcut tam sürümü; Light/Dark mode, Want/Go/Do/Watch kategorileri, progress, recent activity, profil, milestone ekleme ve otomatik Wikipedia görsel bulma sistemi dahil.
+
+Buradan devam edebiliriz. Mevcut kodu artık baz alıyorum; yeniden sıfırdan kurmayacağız.
+
+Sıradaki değiştirmek istediğin şeyi söyle, direkt bu kodun üstünden yapalım.
+
+kanka görseller yanlış geliyp prada paradigme parfüö d
+yorum
+alakasıza geliyo 
+
+Aynen kanka, sorun belli. Şu anki sistem Wikipedia aramasının ilk görselli sonucunu alıyor. Kodda gsrsearch=title ile aratıp, çıkan ilk original.source bulunan sayfayı seçiyorsun.
+
+O yüzden mesela “Prada Paradigme” yazınca Wikipedia parfümün ürün fotoğrafını bulamayınca Prada'yla veya kelimelerle ilişkili alakasız bir görsel döndürebiliyor.
+
+Bence Wikipedia sistemini tamamen kaldırmamız lazım. İstediğin şey şu olmalı:
+
+Prada Paradigme → gerçek Prada Paradigme şişesi
+Lake Como → Lake Como fotoğrafı
+Interstellar → Interstellar görseli/posteri
+New Balance 9060 → gerçek ayakkabı
+
+Yani Milestone başlığa göre web'den gerçek ve alakalı görsel bulmalı; sadece Wikipedia'ya bağlı kalmamalı.
+
+Bir de bunu daha sağlam yapabiliriz: kategoriye göre arama terimi ekleriz. Want için "Prada Paradigme product", Go için "Lake Como Italy", Watch için "Interstellar movie poster" gibi. Böylece yanlış eşleşme ciddi azalır.
+
+Tek sıkıntı: bunu sadece GitHub Pages üzerinde çalışan frontend koduyla güvenilir biçimde yapmak için bir image-search API gerekiyor. İstersen ücretsiz/ücretsiz kotası olan en uygun seçeneği seçip mevcut koduna entegre edelim; sana direkt değiştirip yapıştıracağın kodu vereyim.
+
+bide nasıl silicem milestone  o yok 
+
+Aynen kanzi, şu an silme özelliği hiç yok. Kodda sadece toggleItem(id) var; milestone’u tamamlandı/tamamlanmadı yapıyor ama deleteItem() diye bir fonksiyon yok.
+
+Bence her milestone’un satırına küçük bir “⋯” ya da çöp kutusu koyup, basınca Delete milestone çıkartalım. Yanlışlıkla silmemen için de “Are you sure?” onayı verelim. Ayrıca silince hem localStorage güncellenir hem kategori ve Recent Activity anında yenilenir.
+
+İstersen sana şimdi direkt mevcut koda eklenecek silme kodunu vereyim; sonra görsel sistemini de beraber düzeltelim.
+
+tamamdır 
+Analiz duraklatıldı
+bir de want yerine items go yerine places watch yerine movies do yerine activites yazsak ve atıyorum buna dah iyi bir arayüz yapsak 
+Analiz duraklatıldı
+
+Tamam kanzi, yaptım. Kategoriler artık ekranda Items / Places / Activities / Movies olarak görünüyor; ama eski kayıtların bozulmaması için arka planda Want / Go / Do / Watch değerlerini korudum.
+
+Arayüzü de biraz daha premium yaptım: kartlar daha yumuşak ve modern, tipografi/boşluklar düzeltildi, kategori ikonları sadeleşti, Recent Activity kartları ve bottom nav daha temiz görünüyor. Önceki eklediğimiz silme özelliği + daha iyi görsel arama + manuel image URL de bunun içinde duruyor. Mevcut yapının tema ve kategori altyapısı korunarak düzenlendi.
+
+Milestone_redesign.html dosyasını indir
+
+Bence bir sonraki seviyede ana ekranı daha da Pinterest / Letterboxd / Things tarzı, görsel ağırlıklı bir hale getirebiliriz; özellikle Items ve Movies tarafında çok daha güzel durur. 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,6 +100,9 @@
   --card: #FBFAF7;
   --inverse: #111111;
   --inverseText: #FFFFFF;
+  --shadow: 0 10px 30px rgba(16,16,16,.06);
+  --radius-lg: 24px;
+  --radius-md: 16px;
 }
 
 html[data-theme="dark"] {
@@ -39,6 +114,7 @@ html[data-theme="dark"] {
   --card: #090909;
   --inverse: #F6F3EE;
   --inverseText: #111111;
+  --shadow: 0 12px 32px rgba(0,0,0,.34);
 }
 
 html,
@@ -64,7 +140,7 @@ button {
 }
 
 .app {
-  max-width: 520px;
+  max-width: 540px;
   margin: auto;
   min-height: 100vh;
   padding:
@@ -103,27 +179,29 @@ button {
 }
 
 .greeting {
-  font: 400 24px/1.2 Georgia, "Times New Roman", serif;
+  font: 400 22px/1.2 Georgia, "Times New Roman", serif;
 }
 
 .name {
   margin-top: 3px;
-  font: 400 48px/1 Georgia, "Times New Roman", serif;
+  font: 400 52px/.96 Georgia, "Times New Roman", serif;
+  letter-spacing: -1.8px;
 }
 
 .tagline {
-  margin-top: 15px;
-  font: 400 14px Georgia, "Times New Roman", serif;
-  letter-spacing: 3px;
+  margin-top: 14px;
+  font: 500 12px -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  letter-spacing: 2.4px;
+  text-transform: uppercase;
   color: var(--muted);
 }
 
 /* LIGHT / DARK */
 
 .theme-switch {
-  width: 280px;
+  width: 250px;
   max-width: 100%;
-  margin: 30px auto 24px;
+  margin: 28px 0 24px;
   padding: 4px;
   background: var(--soft);
   border: 1px solid var(--line);
@@ -159,17 +237,18 @@ button {
 .grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap: 12px;
 }
 
 .category-card {
-  height: 175px;
+  height: 168px;
 
   border: 1px solid var(--line);
-  border-radius: 18px;
+  border-radius: var(--radius-lg);
 
   background: var(--card);
   color: var(--text);
+  box-shadow: var(--shadow);
 
   display: flex;
   flex-direction: column;
@@ -178,7 +257,8 @@ button {
 
   text-align: center;
 
-  transition: transform .14s ease;
+  transition: transform .14s ease, box-shadow .14s ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .category-card:active {
@@ -186,20 +266,23 @@ button {
 }
 
 .category-icon {
-  font-size: 32px;
-  margin-bottom: 12px;
+  font-size: 27px;
+  margin-bottom: 14px;
+  opacity: .9;
 }
 
 .category-title {
-  font: 400 30px Georgia, "Times New Roman", serif;
+  font: 400 28px Georgia, "Times New Roman", serif;
+  letter-spacing: -.5px;
 }
 
 .category-count {
   margin-top: 9px;
 
-  font: 400 13px Georgia, "Times New Roman", serif;
+  font: 500 10px -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
 
-  letter-spacing: 2px;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
 
   color: var(--muted);
 }
@@ -211,9 +294,10 @@ button {
   min-height: 104px;
 
   border: 1px solid var(--line);
-  border-radius: 18px;
+  border-radius: var(--radius-lg);
 
   background: var(--card);
+  box-shadow: var(--shadow);
 
   display: flex;
   align-items: center;
@@ -291,24 +375,25 @@ button {
   min-height: 72px;
 
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: var(--radius-md);
 
   background: var(--card);
+  box-shadow: var(--shadow);
 
   display: flex;
   align-items: center;
 
   gap: 12px;
 
-  padding: 8px;
+  padding: 9px;
 }
 
 .recent-thumb,
 .item-thumb {
-  width: 54px;
-  height: 54px;
+  width: 58px;
+  height: 58px;
 
-  border-radius: 10px;
+  border-radius: 12px;
 
   object-fit: cover;
 
@@ -318,8 +403,8 @@ button {
 }
 
 .placeholder {
-  width: 54px;
-  height: 54px;
+  width: 58px;
+  height: 58px;
 
   border: 1px solid var(--line);
   border-radius: 10px;
@@ -375,6 +460,23 @@ button {
   color: var(--inverseText);
 
   border-color: var(--inverse);
+}
+
+.delete-btn {
+  width: 30px;
+  height: 30px;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  border-radius: 50%;
+  font-size: 20px;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+}
+
+.delete-btn:active {
+  background: var(--soft);
 }
 
 .empty {
@@ -560,16 +662,18 @@ button {
 
   transform: translateX(-50%);
 
-  width: min(520px, 100%);
+  width: min(540px, 100%);
 
-  min-height: 88px;
+  min-height: 84px;
 
   padding:
     10px
     34px
     calc(14px + env(safe-area-inset-bottom));
 
-  background: var(--bg);
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
 
   border-top: 1px solid var(--line);
 
@@ -848,11 +952,11 @@ textarea {
     >
 
       <div class="category-icon">
-        ♧
+        ◇
       </div>
 
       <div class="category-title">
-        Want
+        Items
       </div>
 
       <div class="category-count">
@@ -874,11 +978,11 @@ textarea {
     >
 
       <div class="category-icon">
-        ✈
+        ⌖
       </div>
 
       <div class="category-title">
-        Go
+        Places
       </div>
 
       <div class="category-count">
@@ -900,11 +1004,11 @@ textarea {
     >
 
       <div class="category-icon">
-        ✓
+        ✦
       </div>
 
       <div class="category-title">
-        Do
+        Activities
       </div>
 
       <div class="category-count">
@@ -926,11 +1030,11 @@ textarea {
     >
 
       <div class="category-icon">
-        ▣
+        ◫
       </div>
 
       <div class="category-title">
-        Watch
+        Movies
       </div>
 
       <div class="category-count">
@@ -1268,7 +1372,7 @@ textarea {
         Category
       </div>
 
-      <select id="itemCategory">
+      <select id="itemCategory" onchange="schedulePreview()">
 
         <option value="Want">
           Want
@@ -1314,6 +1418,22 @@ textarea {
       <input
         id="itemDate"
         type="date"
+      >
+
+    </div>
+
+
+    <div class="field">
+
+      <div class="label">
+        Image URL (optional)
+      </div>
+
+      <input
+        id="itemImageUrl"
+        type="url"
+        placeholder="Paste an exact image URL if needed"
+        oninput="manualImagePreview()"
       >
 
     </div>
@@ -1435,6 +1555,14 @@ const labels = {
     done:"Watched"
   }
 
+};
+
+
+const categoryNames = {
+  Want:"Items",
+  Go:"Places",
+  Do:"Activities",
+  Watch:"Movies"
 };
 
 
@@ -1566,7 +1694,7 @@ function setTheme(
    AUTOMATIC IMAGE
 ========================= */
 
-async function findImage(title){
+async function findImage(title, category="Want"){
 
   if(
     !title ||
@@ -1575,72 +1703,172 @@ async function findImage(title){
     return "";
   }
 
+  const cleanTitle =
+    title.trim();
+
+  const suffix = {
+    Want:"product",
+    Go:"travel destination",
+    Do:"activity",
+    Watch:"movie poster"
+  }[category] || "";
+
+  const searchQuery =
+    `${cleanTitle} ${suffix}`.trim();
+
+  const tokens =
+    cleanTitle
+    .toLowerCase()
+    .split(/\s+/)
+    .filter(t=>t.length > 2);
 
   try{
 
+    /* OPENVERSE FIRST:
+       usually better for concrete objects / places / posters */
+    const ovUrl =
+      "https://api.openverse.org/v1/images/?" +
+      "page_size=20" +
+      "&q=" +
+      encodeURIComponent(searchQuery);
+
+    const ovResponse =
+      await fetch(ovUrl);
+
+    if(ovResponse.ok){
+
+      const ovData =
+        await ovResponse.json();
+
+      const results =
+        Array.isArray(ovData.results)
+        ? ovData.results
+        : [];
+
+      const scored =
+        results
+        .map(r=>{
+
+          const haystack =
+            [
+              r.title,
+              r.tags?.map?.(t=>t.name).join(" "),
+              r.creator,
+              r.source
+            ]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase();
+
+          const score =
+            tokens.reduce(
+              (sum,t)=>
+                sum +
+                (haystack.includes(t) ? 3 : 0),
+              0
+            ) +
+            (r.thumbnail ? 1 : 0);
+
+          return {
+            url:
+              r.url ||
+              r.thumbnail ||
+              "",
+            score
+          };
+
+        })
+        .filter(r=>r.url)
+        .sort((a,b)=>b.score-a.score);
+
+      if(
+        scored.length &&
+        scored[0].score >=
+        Math.max(2, tokens.length * 2)
+      ){
+        return scored[0].url;
+      }
+
+    }
+
+  }
+  catch(error){
+    /* continue to fallback */
+  }
+
+  try{
+
+    /* WIKIMEDIA FALLBACK */
+    const wikiQuery =
+      category === "Go"
+      ? cleanTitle
+      : searchQuery;
+
     const url =
-
       "https://en.wikipedia.org/w/api.php" +
-
       "?action=query" +
-
       "&generator=search" +
-
       "&gsrsearch=" +
-      encodeURIComponent(
-        title.trim()
-      ) +
-
-      "&gsrlimit=3" +
-
+      encodeURIComponent(wikiQuery) +
+      "&gsrlimit=8" +
       "&prop=pageimages" +
-
       "&piprop=original" +
-
       "&format=json" +
-
       "&origin=*";
 
-
     const response =
-    await fetch(url);
-
+      await fetch(url);
 
     const data =
-    await response.json();
-
+      await response.json();
 
     if(
       !data.query ||
       !data.query.pages
     ){
-
       return "";
-
     }
 
-
     const pages =
-    Object.values(
-      data.query.pages
-    );
+      Object.values(
+        data.query.pages
+      );
 
+    const ranked =
+      pages
+      .filter(
+        p=>
+          p.original &&
+          p.original.source
+      )
+      .map(p=>{
 
-    const page =
-    pages.find(
-      p=>
-      p.original &&
-      p.original.source
-    );
+        const pageTitle =
+          String(p.title || "")
+          .toLowerCase();
 
+        const score =
+          tokens.reduce(
+            (sum,t)=>
+              sum +
+              (pageTitle.includes(t) ? 3 : 0),
+            0
+          );
+
+        return {
+          url:p.original.source,
+          score
+        };
+
+      })
+      .sort((a,b)=>b.score-a.score);
 
     return (
-      page?.original?.source ||
+      ranked[0]?.url ||
       ""
     );
 
   }
-
   catch(error){
 
     return "";
@@ -1661,7 +1889,8 @@ async function ensureImage(item){
 
   const found =
   await findImage(
-    item.title
+    item.title,
+    item.type
   );
 
 
@@ -1748,9 +1977,17 @@ function schedulePreview(){
       "Finding a matching image...";
 
 
+      const category =
+      document
+      .getElementById(
+        "itemCategory"
+      )
+      .value;
+
       const found =
       await findImage(
-        title
+        title,
+        category
       );
 
 
@@ -1815,6 +2052,36 @@ function showPreview(url){
 
     copy.textContent =
     "Add a title and Milestone will try to find a matching image automatically.";
+
+  }
+
+}
+
+
+function manualImagePreview(){
+
+  const value =
+  document
+  .getElementById(
+    "itemImageUrl"
+  )
+  .value
+  .trim();
+
+  if(value){
+
+    previewImage =
+    value;
+
+    showPreview(
+      value
+    );
+
+  }
+
+  else{
+
+    schedulePreview();
 
   }
 
@@ -2002,9 +2269,9 @@ function renderRecent(){
 
       <div class="empty">
 
-        No recent activity yet.
+        Nothing saved yet.
         <br>
-        Add a milestone to get started.
+        Add something you want to remember.
 
       </div>
 
@@ -2057,7 +2324,7 @@ function renderRecent(){
 
             <div class="recent-meta">
 
-              ${escapeHtml(item.type)}
+              ${escapeHtml(categoryNames[item.type] || item.type)}
 
               ${
                 item.date
@@ -2086,6 +2353,24 @@ function renderRecent(){
               : ""
             }
 
+          </button>
+
+          <button
+            class="delete-btn"
+            aria-label="Delete milestone"
+            title="Delete milestone"
+            onclick="deleteItem(${item.id})"
+          >
+            ⋯
+          </button>
+
+          <button
+            class="delete-btn"
+            aria-label="Delete milestone"
+            title="Delete milestone"
+            onclick="deleteItem(${item.id})"
+          >
+            ⋯
           </button>
 
         </div>
@@ -2164,7 +2449,7 @@ function openCategory(
     "categoryTitle"
   )
   .textContent =
-  category;
+  categoryNames[category] || category;
 
 
   renderFilters();
@@ -2462,6 +2747,51 @@ function toggleItem(id){
 }
 
 
+function deleteItem(id){
+
+  const item =
+  items.find(
+    i=>i.id===id
+  );
+
+  if(!item){
+    return;
+  }
+
+  const confirmed =
+  window.confirm(
+    `Delete "${item.title}"?`
+  );
+
+  if(!confirmed){
+    return;
+  }
+
+  items =
+  items.filter(
+    i=>i.id!==id
+  );
+
+  saveItems();
+
+  updateCounts();
+
+  if(
+    document
+    .getElementById(
+      "categoryScreen"
+    )
+    .classList
+    .contains(
+      "active"
+    )
+  ){
+    renderItems();
+  }
+
+}
+
+
 /* =========================
    MODAL
 ========================= */
@@ -2491,6 +2821,14 @@ function openModal(){
   document
   .getElementById(
     "itemDate"
+  )
+  .value =
+  "";
+
+
+  document
+  .getElementById(
+    "itemImageUrl"
   )
   .value =
   "";
@@ -2586,6 +2924,15 @@ async function addItem(){
   .value;
 
 
+  const manualImage =
+  document
+  .getElementById(
+    "itemImageUrl"
+  )
+  .value
+  .trim();
+
+
   const link =
   document
   .getElementById(
@@ -2614,7 +2961,9 @@ async function addItem(){
     link,
 
     image:
-    previewImage || ""
+    manualImage ||
+    previewImage ||
+    ""
 
   };
 
@@ -2671,3 +3020,5 @@ updateCounts();
 
 </body>
 </html>
+Milestone_redesign.html
+HTML
