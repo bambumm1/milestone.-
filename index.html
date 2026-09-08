@@ -2,747 +2,1830 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#F4F1EB">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1, viewport-fit=cover"
+>
+
+<meta name="theme-color" content="#B5A38F">
+
 <title>Milestone</title>
 
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Milestone">
-<link rel="apple-touch-icon" href="icon.png">
-<link rel="manifest" href="manifest.json">
+<meta
+  name="apple-mobile-web-app-capable"
+  content="yes"
+>
+
+<meta
+  name="apple-mobile-web-app-status-bar-style"
+  content="default"
+>
+
+<meta
+  name="apple-mobile-web-app-title"
+  content="Milestone"
+>
+
+<link
+  rel="apple-touch-icon"
+  href="icon.png"
+>
+
+<link
+  rel="manifest"
+  href="manifest.json"
+>
 
 <style>
+
 *{
   box-sizing:border-box;
 }
 
 :root{
-  --bg:#F4F1EB;
-  --ink:#111;
-  --muted:#77736d;
-  --soft:#EAE6DF;
-  --line:#DED9D1;
+
+  --bg:#B5A38F;
+
+  --white:#FFFDF8;
+
+  --white-soft:rgba(255,253,248,.72);
+
+  --line:rgba(255,255,255,.82);
+
+  --panel:rgba(255,255,255,.035);
+
+  --panel-strong:rgba(255,255,255,.07);
+
 }
 
 html,
 body{
+
   margin:0;
+
+  min-height:100%;
+
   background:var(--bg);
-  color:var(--ink);
-  font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+
+  color:var(--white);
+
+  font-family:
+  -apple-system,
+  BlinkMacSystemFont,
+  "Helvetica Neue",
+  Arial,
+  sans-serif;
+
+}
+
+button,
+input,
+select,
+textarea{
+
+  font:inherit;
+
 }
 
 button{
-  font:inherit;
-  color:inherit;
+
   cursor:pointer;
+
 }
 
 .app{
+
+  width:100%;
+
   max-width:520px;
-  margin:auto;
+
   min-height:100vh;
-  padding:calc(env(safe-area-inset-top) + 26px) 20px 112px;
+
+  margin:auto;
+
+  padding:
+  calc(env(safe-area-inset-top) + 30px)
+  22px
+  120px;
+
 }
 
 .screen{
+
   display:none;
+
 }
 
 .screen.active{
+
   display:block;
+
 }
 
-.top{
+
+/* TOP */
+
+.topbar{
+
   display:flex;
-  justify-content:space-between;
+
+  justify-content:flex-end;
+
   align-items:center;
+
+  min-height:30px;
+
 }
 
-.icon{
+.icon-button{
+
   border:0;
+
+  padding:4px;
+
   background:none;
-  padding:3px;
-  font-size:23px;
-  line-height:1;
+
+  color:var(--white);
+
+}
+
+
+/* HEADER */
+
+.header{
+
+  text-align:center;
+
+  padding-top:18px;
+
+  margin-bottom:42px;
+
 }
 
 .greeting{
-  font:400 20px Georgia,serif;
-  margin-top:16px;
+
+  font-family:
+  Georgia,
+  "Times New Roman",
+  serif;
+
+  font-size:26px;
+
+  font-weight:400;
+
+  opacity:.92;
+
 }
 
 .name{
-  font:400 37px/1 Georgia,serif;
-  margin:5px 0 12px;
+
+  margin-top:3px;
+
+  font-family:
+  Georgia,
+  "Times New Roman",
+  serif;
+
+  font-size:52px;
+
+  font-weight:400;
+
+  line-height:1;
+
 }
 
-.tag{
-  font-size:14px;
-  color:#6f6b66;
-  margin-bottom:24px;
+.tagline{
+
+  margin-top:18px;
+
+  font-family:
+  Georgia,
+  "Times New Roman",
+  serif;
+
+  font-size:15px;
+
+  letter-spacing:3px;
+
+  color:var(--white-soft);
+
 }
+
+
+/* CATEGORY GRID */
 
 .grid{
+
   display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:9px;
-}
 
-.card{
-  height:177px;
-  border:0;
-  border-radius:12px;
-  overflow:hidden;
-  position:relative;
-  padding:0;
-  background:#111;
-  color:#fff;
-  text-align:left;
-}
+  grid-template-columns:
+  repeat(2,1fr);
 
-.card img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.card:after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:linear-gradient(
-    to top,
-    rgba(0,0,0,.76),
-    rgba(0,0,0,.05) 72%
-  );
-}
-
-.cardcopy{
-  position:absolute;
-  z-index:2;
-  left:14px;
-  bottom:13px;
-}
-
-.cardname{
-  font:400 27px Georgia,serif;
-}
-
-.count{
-  font-size:12px;
-  margin-top:3px;
-}
-
-.progress{
-  margin-top:18px;
-  border-radius:13px;
-  background:#E9E5DE;
-  padding:17px 18px;
-  display:flex;
-  align-items:center;
-  gap:17px;
-}
-
-.bars{
-  font-size:29px;
-  letter-spacing:-4px;
-}
-
-.progresscopy{
-  flex:1;
-  font-size:12px;
-  line-height:1.35;
-}
-
-.progresscopy b{
-  font-size:14px;
-}
-
-.arrow{
-  font-size:22px;
-}
-
-.section{
-  display:flex;
-  justify-content:space-between;
-  align-items:end;
-  margin:26px 0 10px;
-}
-
-.section h2{
-  font:400 21px Georgia,serif;
-  margin:0;
-}
-
-.section button{
-  border:0;
-  background:none;
-  color:var(--muted);
-}
-
-.activity{
-  display:flex;
-  flex-direction:column;
-  gap:6px;
-}
-
-.activityrow{
-  background:#E9E5DE;
-  border-radius:10px;
-  padding:7px;
-  display:flex;
-  align-items:center;
   gap:10px;
+
 }
 
-.activityrow img{
-  width:48px;
-  height:48px;
-  border-radius:8px;
-  object-fit:cover;
+.category-card{
+
+  position:relative;
+
+  height:170px;
+
+  border:
+
+  1.3px
+  solid
+  var(--line);
+
+  border-radius:21px;
+
+  background:var(--panel);
+
+  color:var(--white);
+
+  display:flex;
+
+  flex-direction:column;
+
+  align-items:center;
+
+  justify-content:center;
+
+  text-align:center;
+
+  transition:
+  transform .15s ease,
+  background .15s ease;
+
 }
 
-.activitytext{
+.category-card:active{
+
+  transform:scale(.98);
+
+  background:var(--panel-strong);
+
+}
+
+.category-icon{
+
+  height:40px;
+
+  margin-bottom:15px;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+}
+
+.category-title{
+
+  font-family:
+  Georgia,
+  "Times New Roman",
+  serif;
+
+  font-size:31px;
+
+  font-weight:400;
+
+}
+
+.category-count{
+
+  margin-top:11px;
+
+  font-family:
+  Georgia,
+  "Times New Roman",
+  serif;
+
+  font-size:14px;
+
+  letter-spacing:1px;
+
+  color:var(--white-soft);
+
+}
+
+
+/* PROGRESS */
+
+.progress-card{
+
+  margin-top:18px;
+
+  min-height:105px;
+
+  border:
+
+  1.3px
+  solid
+  var(--line);
+
+  border-radius:21px;
+
+  background:var(--panel);
+
+  display:flex;
+
+  align-items:center;
+
+  padding:19px 21px;
+
+}
+
+.progress-icon{
+
+  width:82px;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  border-right:
+
+  1px
+  solid
+  rgba(255,255,255,.6);
+
+  margin-right:22px;
+
+  padding-right:22px;
+
+}
+
+.progress-copy{
+
   flex:1;
-  min-width:0;
+
+  font-family:
+  Georgia,
+  "Times New Roman",
+  serif;
+
 }
 
-.activitytitle{
-  font:400 15px Georgia,serif;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
+.progress-small{
+
+  font-size:14px;
+
+  color:var(--white-soft);
+
 }
 
-.meta{
-  font-size:11px;
-  color:var(--muted);
-  margin-top:3px;
-}
+.progress-number{
 
-.circle{
-  width:22px;
-  height:22px;
-  border-radius:50%;
-  border:1px solid #9d9993;
-  display:grid;
-  place-items:center;
-  flex:none;
-}
-
-.circle.done{
-  background:#0c0c0c;
-  color:#fff;
-  border-color:#0c0c0c;
-  font-size:12px;
-}
-
-.catbar{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin:10px 0 22px;
-}
-
-.catleft{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
-.back{
-  border:0;
-  background:none;
   font-size:25px;
-  padding:0;
+
+  margin:3px 0;
+
 }
 
-.caticon{
-  font-size:27px;
+.progress-arrow{
+
+  font-size:29px;
+
+  opacity:.9;
+
 }
 
-.cattitle{
-  font:400 29px Georgia,serif;
-}
 
-.actions{
+/* ACTIVITY */
+
+.section-header{
+
+  margin-top:31px;
+
+  margin-bottom:14px;
+
   display:flex;
-  gap:13px;
+
+  justify-content:space-between;
+
+  align-items:center;
+
 }
+
+.section-title{
+
+  font-family:
+  Georgia,
+  "Times New Roman",
+  serif;
+
+  font-size:25px;
+
+  font-weight:400;
+
+}
+
+.see-all{
+
+  border:0;
+
+  background:none;
+
+  color:var(--white-soft);
+
+  font-family:
+  Georgia,
+  "Times New Roman",
+  serif;
+
+  font-size:14px;
+
+}
+
+.empty-activity{
+
+  min-height:105px;
+
+  border:
+
+  1.3px
+  solid
+  var(--line);
+
+  border-radius:21px;
+
+  background:var(--panel);
+
+  display:flex;
+
+  flex-direction:column;
+
+  justify-content:center;
+
+  align-items:center;
+
+  text-align:center;
+
+  color:var(--white-soft);
+
+  font-family:
+  Georgia,
+  "Times New Roman",
+  serif;
+
+}
+
+.empty-main{
+
+  font-size:16px;
+
+}
+
+.empty-sub{
+
+  margin-top:6px;
+
+  font-size:13px;
+
+}
+
+
+/* ACTIVITY ITEMS */
+
+.activity-item{
+
+  min-height:67px;
+
+  border:
+
+  1px
+  solid
+  rgba(255,255,255,.55);
+
+  border-radius:17px;
+
+  margin-bottom:8px;
+
+  padding:12px 14px;
+
+  display:flex;
+
+  align-items:center;
+
+  background:rgba(255,255,255,.025);
+
+}
+
+.activity-text{
+
+  flex:1;
+
+}
+
+.activity-title{
+
+  font-family:
+  Georgia,
+  "Times New Roman",
+  serif;
+
+  font-size:17px;
+
+}
+
+.activity-meta{
+
+  color:var(--white-soft);
+
+  font-size:11px;
+
+  margin-top:4px;
+
+}
+
+
+/* CATEGORY SCREEN */
+
+.category-top{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  margin-bottom:32px;
+
+}
+
+.category-top-left{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:14px;
+
+}
+
+.back-button{
+
+  border:0;
+
+  background:none;
+
+  color:white;
+
+  font-size:28px;
+
+  padding:0;
+
+}
+
+.category-screen-title{
+
+  font-family:
+  Georgia,
+  "Times New Roman",
+  serif;
+
+  font-size:35px;
+
+}
+
+.top-actions{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:12px;
+
+}
+
+
+/* FILTERS */
 
 .filters{
+
   display:grid;
-  grid-template-columns:repeat(3,1fr);
+
+  grid-template-columns:
+  repeat(3,1fr);
+
   gap:8px;
-  margin-bottom:17px;
+
+  margin-bottom:24px;
+
 }
 
 .filter{
-  border:0;
+
+  border:
+
+  1px
+  solid
+  rgba(255,255,255,.55);
+
+  background:transparent;
+
+  color:var(--white);
+
   border-radius:999px;
-  background:#E7E3DC;
-  padding:10px 8px;
+
+  padding:10px 5px;
+
   font-size:12px;
+
 }
 
 .filter.active{
-  background:#0c0c0c;
-  color:#fff;
+
+  background:var(--white);
+
+  color:#7B6B5D;
+
+  border-color:var(--white);
+
 }
+
+
+/* ITEM LIST */
 
 .item{
+
   display:flex;
+
   align-items:center;
-  gap:12px;
-  min-height:62px;
+
+  min-height:68px;
+
+  border-bottom:
+
+  1px
+  solid
+  rgba(255,255,255,.26);
+
 }
 
-.thumb{
-  width:52px;
-  height:52px;
-  border-radius:8px;
-  object-fit:cover;
-  background:#ddd;
-}
+.item-main{
 
-.itemtitle{
-  font-size:13px;
   flex:1;
+
 }
 
-.itemtap{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  flex:1;
-  min-width:0;
+.item-title{
+
+  font-family:
+  Georgia,
+  "Times New Roman",
+  serif;
+
+  font-size:18px;
+
 }
 
-.bottom{
-  position:fixed;
-  left:50%;
-  bottom:0;
-  transform:translateX(-50%);
-  width:min(520px,100%);
-  height:88px;
-  padding:10px 32px calc(14px + env(safe-area-inset-bottom));
-  background:rgba(244,241,235,.96);
-  backdrop-filter:blur(18px);
-  border-top:1px solid var(--line);
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  z-index:20;
-}
+.item-note{
 
-.nav{
-  border:0;
-  background:none;
+  margin-top:4px;
+
   font-size:11px;
-  min-width:52px;
+
+  color:var(--white-soft);
+
 }
 
-.navsym{
-  font-size:21px;
-  display:block;
-  margin-bottom:3px;
-}
+.check{
 
-.plus{
-  width:55px;
-  height:55px;
+  width:25px;
+
+  height:25px;
+
   border-radius:50%;
-  border:0;
-  background:#050505;
-  color:#fff;
-  font-size:31px;
+
+  border:
+
+  1.3px
+  solid
+  rgba(255,255,255,.75);
+
+  background:transparent;
+
+  color:var(--bg);
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
 }
+
+.check.done{
+
+  background:var(--white);
+
+  border-color:var(--white);
+
+}
+
+
+/* BOTTOM NAV */
+
+.bottom-nav{
+
+  position:fixed;
+
+  left:50%;
+
+  bottom:0;
+
+  transform:translateX(-50%);
+
+  width:min(520px,100%);
+
+  height:91px;
+
+  padding:
+
+  10px
+  34px
+  calc(14px + env(safe-area-inset-bottom));
+
+  background:rgba(181,163,143,.94);
+
+  backdrop-filter:blur(18px);
+
+  border-top:
+
+  1px
+  solid
+  rgba(255,255,255,.35);
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  z-index:20;
+
+}
+
+.nav-button{
+
+  width:65px;
+
+  border:0;
+
+  background:none;
+
+  color:var(--white);
+
+  font-family:
+  Georgia,
+  "Times New Roman",
+  serif;
+
+  font-size:12px;
+
+}
+
+.nav-icon{
+
+  display:block;
+
+  margin:auto;
+
+  margin-bottom:5px;
+
+}
+
+.add-main{
+
+  width:59px;
+
+  height:59px;
+
+  border-radius:50%;
+
+  border:
+
+  1.3px
+  solid
+  var(--white);
+
+  background:transparent;
+
+  color:var(--white);
+
+  font-size:35px;
+
+  font-weight:200;
+
+}
+
+
+/* MODAL */
 
 .modal{
+
   display:none;
+
   position:fixed;
+
   inset:0;
-  background:rgba(0,0,0,.35);
-  z-index:30;
+
+  z-index:40;
+
+  background:
+  rgba(70,55,45,.45);
+
   align-items:flex-end;
+
 }
 
 .modal.active{
+
   display:flex;
+
 }
 
 .sheet{
+
   width:min(520px,100%);
+
   margin:auto;
-  background:var(--bg);
-  border-radius:22px 22px 0 0;
-  padding:22px 20px calc(26px + env(safe-area-inset-bottom));
+
+  background:#B5A38F;
+
+  border-radius:
+  28px
+  28px
+  0
+  0;
+
+  border-top:
+
+  1px
+  solid
+  rgba(255,255,255,.55);
+
+  padding:
+  25px
+  22px
+  calc(30px + env(safe-area-inset-bottom));
+
 }
 
-.sheethead{
+.sheet-header{
+
   display:flex;
+
   justify-content:space-between;
+
   align-items:center;
-  margin-bottom:18px;
+
+  margin-bottom:25px;
+
 }
 
-.sheethead b{
-  font-family:Georgia,serif;
-  font-size:21px;
-  font-weight:400;
+.sheet-title{
+
+  font-family:
+  Georgia,
+  "Times New Roman",
+  serif;
+
+  font-size:25px;
+
 }
 
-.textbtn{
+.text-button{
+
   border:0;
+
   background:none;
+
+  color:white;
+
 }
 
-label{
-  display:block;
+.field{
+
+  margin-bottom:16px;
+
+}
+
+.label{
+
+  margin-bottom:7px;
+
   font-size:11px;
-  margin:10px 0 5px;
-  color:var(--muted);
+
+  color:var(--white-soft);
+
 }
 
 input,
-select{
+select,
+textarea{
+
   width:100%;
-  border:1px solid var(--line);
-  background:#FAF8F4;
-  border-radius:9px;
-  padding:12px;
-  font:inherit;
+
+  border:
+
+  1px
+  solid
+  rgba(255,255,255,.55);
+
+  border-radius:13px;
+
+  background:
+  rgba(255,255,255,.06);
+
+  color:white;
+
+  padding:14px;
+
+  outline:none;
+
 }
 
-.save{
-  width:100%;
-  border:0;
-  border-radius:10px;
-  background:#111;
-  color:white;
-  padding:14px;
-  margin-top:17px;
+input::placeholder,
+textarea::placeholder{
+
+  color:
+  rgba(255,255,255,.55);
+
 }
+
+select option{
+
+  color:#111;
+
+}
+
+textarea{
+
+  resize:none;
+
+  min-height:90px;
+
+}
+
+.save-button{
+
+  width:100%;
+
+  margin-top:5px;
+
+  border:0;
+
+  border-radius:13px;
+
+  background:var(--white);
+
+  color:#756353;
+
+  padding:15px;
+
+  font-weight:600;
+
+}
+
+
+/* EMPTY */
 
 .empty{
-  font-size:12px;
-  color:#999;
-  padding:18px 4px;
+
+  padding:40px 0;
+
+  text-align:center;
+
+  color:var(--white-soft);
+
+  font-family:
+  Georgia,
+  "Times New Roman",
+  serif;
+
 }
+
 </style>
 </head>
 
 <body>
 
+
 <div class="app">
 
-<section id="home" class="screen active">
 
-  <div class="top">
-    <span></span>
-    <button
-      class="icon"
-      onclick="alert('Profile comes after Home + Want approval')"
-    >
-      ⚙︎
-    </button>
-  </div>
+<section
+  id="homeScreen"
+  class="screen active"
+>
 
-  <div id="greeting" class="greeting">
-    Good morning,
-  </div>
 
-  <div class="name">
-    Batu.
-  </div>
+<div class="topbar">
 
-  <div class="tag">
-    “A more intentional you.”
-  </div>
+<button
+  class="icon-button"
+  onclick="openProfile()"
+>
 
-  <div id="grid" class="grid"></div>
+<svg
+  width="25"
+  height="25"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.3"
+>
 
-  <div class="progress">
+<circle
+  cx="12"
+  cy="12"
+  r="3"
+/>
 
-    <div class="bars">
-      ▂▅▇
-    </div>
+<path
+  d="
+  M19.4 15
+  a1.7 1.7 0 0 0 .3 1.9
+  l.1.1-2 3.5-.2-.1
+  a1.7 1.7 0 0 0-2 .1
+  1.7 1.7 0 0 0-.8 1.5
+  V22h-4v-.2
+  a1.7 1.7 0 0 0-.8-1.5
+  1.7 1.7 0 0 0-2-.1
+  l-.2.1-2-3.5.1-.1
+  A1.7 1.7 0 0 0 5 15
+  a1.7 1.7 0 0 0-1.4-1
+  H3v-4h.6
+  A1.7 1.7 0 0 0 5 9
+  a1.7 1.7 0 0 0-.3-1.9
+  l-.1-.1 2-3.5.2.1
+  a1.7 1.7 0 0 0 2-.1
+  A1.7 1.7 0 0 0 9.6 2
+  V2h4v.2
+  a1.7 1.7 0 0 0 .8 1.5
+  1.7 1.7 0 0 0 2 .1
+  l.2-.1 2 3.5-.1.1
+  A1.7 1.7 0 0 0 19 9
+  a1.7 1.7 0 0 0 1.4 1
+  H21v4h-.6
+  A1.7 1.7 0 0 0 19.4 15z
+  "
+/>
 
-    <div class="progresscopy">
-      You've completed
-      <br>
+</svg>
 
-      <b>
-        <span id="doneCount">0</span>
-        milestones
-      </b>
-
-      <br>
-
-      <span style="color:var(--muted)">
-        Keep going.
-      </span>
-    </div>
-
-    <div class="arrow">
-      ›
-    </div>
-
-  </div>
-
-  <div class="section">
-
-    <h2>
-      Recent Activity
-    </h2>
-
-    <button>
-      See All
-    </button>
-
-  </div>
-
-  <div
-    id="activity"
-    class="activity"
-  ></div>
-
-</section>
-
-<section id="want" class="screen">
-
-  <div class="catbar">
-
-    <div class="catleft">
-
-      <button
-        class="back"
-        onclick="home()"
-      >
-        ←
-      </button>
-
-      <span class="caticon">
-        ♧
-      </span>
-
-      <span class="cattitle">
-        Want
-      </span>
-
-    </div>
-
-    <div class="actions">
-
-      <button
-        class="icon"
-        onclick="openAdd()"
-      >
-        ＋
-      </button>
-
-      <button class="icon">
-        ···
-      </button>
-
-    </div>
-
-  </div>
-
-  <div class="filters">
-
-    <button
-      class="filter active"
-      onclick="filterWant('all',this)"
-    >
-      All
-    </button>
-
-    <button
-      class="filter"
-      onclick="filterWant('open',this)"
-    >
-      To Buy
-    </button>
-
-    <button
-      class="filter"
-      onclick="filterWant('done',this)"
-    >
-      Bought
-    </button>
-
-  </div>
-
-  <div id="wantList"></div>
-
-</section>
+</button>
 
 </div>
 
-<nav class="bottom">
 
-  <button
-    class="nav"
-    onclick="home()"
-  >
-    <span class="navsym">
-      ⌂
-    </span>
-    Home
-  </button>
+<div class="header">
 
-  <button
-    class="plus"
-    onclick="openAdd()"
-  >
-    +
-  </button>
+<div
+  id="greeting"
+  class="greeting"
+>
+Good morning,
+</div>
 
-  <button
-    class="nav"
-    onclick="alert('Profile comes next')"
-  >
-    <span class="navsym">
-      ♙
-    </span>
-    Profile
-  </button>
+<div class="name">
+Batu.
+</div>
+
+<div class="tagline">
+“A more intentional you.”
+</div>
+
+</div>
+
+
+<div class="grid">
+
+
+<button
+  class="category-card"
+  onclick="openCategory('Want')"
+>
+
+<div class="category-icon">
+
+<svg
+  width="38"
+  height="38"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.2"
+>
+
+<path
+  d="M6 8h12l1 13H5L6 8z"
+/>
+
+<path
+  d="M9 9V6a3 3 0 0 1 6 0v3"
+/>
+
+</svg>
+
+</div>
+
+<div class="category-title">
+Want
+</div>
+
+<div class="category-count">
+
+<span id="WantCount">
+0
+</span>
+
+items
+
+</div>
+
+</button>
+
+
+<button
+  class="category-card"
+  onclick="openCategory('Go')"
+>
+
+<div class="category-icon">
+
+<svg
+  width="42"
+  height="42"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.2"
+>
+
+<path
+  d="
+  M22 2
+  15 9
+  12 7
+  9 10
+  11 13
+  4 20
+  3 15
+  7 11
+  2 8
+  3 6
+  10 9
+  18 1
+  z
+  "
+/>
+
+</svg>
+
+</div>
+
+<div class="category-title">
+Go
+</div>
+
+<div class="category-count">
+
+<span id="GoCount">
+0
+</span>
+
+items
+
+</div>
+
+</button>
+
+
+<button
+  class="category-card"
+  onclick="openCategory('Do')"
+>
+
+<div class="category-icon">
+
+<svg
+  width="38"
+  height="38"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.2"
+>
+
+<rect
+  x="4"
+  y="4"
+  width="16"
+  height="16"
+  rx="2"
+/>
+
+<path
+  d="m8 12 3 3 6-7"
+/>
+
+</svg>
+
+</div>
+
+<div class="category-title">
+Do
+</div>
+
+<div class="category-count">
+
+<span id="DoCount">
+0
+</span>
+
+items
+
+</div>
+
+</button>
+
+
+<button
+  class="category-card"
+  onclick="openCategory('Watch')"
+>
+
+<div class="category-icon">
+
+<svg
+  width="40"
+  height="40"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.2"
+>
+
+<rect
+  x="4"
+  y="8"
+  width="16"
+  height="12"
+  rx="2"
+/>
+
+<path
+  d="M4 8l2-4h14l-2 4"
+/>
+
+<path
+  d="M8 4l2 4M14 4l2 4"
+/>
+
+</svg>
+
+</div>
+
+<div class="category-title">
+Watch
+</div>
+
+<div class="category-count">
+
+<span id="WatchCount">
+0
+</span>
+
+items
+
+</div>
+
+</button>
+
+
+</div>
+
+
+<div class="progress-card">
+
+<div class="progress-icon">
+
+<svg
+  width="44"
+  height="44"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.2"
+>
+
+<rect
+  x="3"
+  y="14"
+  width="4"
+  height="7"
+/>
+
+<rect
+  x="10"
+  y="10"
+  width="4"
+  height="11"
+/>
+
+<rect
+  x="17"
+  y="5"
+  width="4"
+  height="16"
+/>
+
+</svg>
+
+</div>
+
+
+<div class="progress-copy">
+
+<div class="progress-small">
+You've completed
+</div>
+
+<div class="progress-number">
+
+<span id="completedCount">
+0
+</span>
+
+milestones
+
+</div>
+
+<div class="progress-small">
+Keep going.
+</div>
+
+</div>
+
+
+<div class="progress-arrow">
+›
+</div>
+
+</div>
+
+
+<div class="section-header">
+
+<div class="section-title">
+Recent Activity
+</div>
+
+<button class="see-all">
+See All
+</button>
+
+</div>
+
+
+<div id="recentList"></div>
+
+
+</section>
+
+
+
+<section
+  id="categoryScreen"
+  class="screen"
+>
+
+
+<div class="category-top">
+
+
+<div class="category-top-left">
+
+<button
+  class="back-button"
+  onclick="goHome()"
+>
+←
+</button>
+
+<div
+  id="categoryTitle"
+  class="category-screen-title"
+>
+Want
+</div>
+
+</div>
+
+
+<div class="top-actions">
+
+<button
+  class="icon-button"
+  onclick="openModal()"
+>
+＋
+</button>
+
+<button class="icon-button">
+···
+</button>
+
+</div>
+
+
+</div>
+
+
+<div
+  id="filters"
+  class="filters"
+></div>
+
+
+<div id="itemsList"></div>
+
+
+</section>
+
+
+
+<section
+  id="profileScreen"
+  class="screen"
+>
+
+
+<div class="category-top">
+
+<div class="category-top-left">
+
+<button
+  class="back-button"
+  onclick="goHome()"
+>
+←
+</button>
+
+<div class="category-screen-title">
+Batu
+</div>
+
+</div>
+
+</div>
+
+
+<div class="progress-card">
+
+<div class="progress-copy">
+
+<div class="progress-small">
+Total milestones
+</div>
+
+<div
+  id="totalStat"
+  class="progress-number"
+>
+0
+</div>
+
+</div>
+
+</div>
+
+
+<div class="progress-card">
+
+<div class="progress-copy">
+
+<div class="progress-small">
+Completed
+</div>
+
+<div
+  id="doneStat"
+  class="progress-number"
+>
+0
+</div>
+
+</div>
+
+</div>
+
+
+<div class="progress-card">
+
+<div class="progress-copy">
+
+<div class="progress-small">
+In progress
+</div>
+
+<div
+  id="openStat"
+  class="progress-number"
+>
+0
+</div>
+
+</div>
+
+</div>
+
+
+</section>
+
+
+</div>
+
+
+
+<nav class="bottom-nav">
+
+
+<button
+  class="nav-button"
+  onclick="goHome()"
+>
+
+<svg
+  class="nav-icon"
+  width="23"
+  height="23"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.2"
+>
+
+<path
+  d="M3 11 12 3l9 8"
+/>
+
+<path
+  d="M5 10v11h14V10"
+/>
+
+</svg>
+
+Home
+
+</button>
+
+
+<button
+  class="add-main"
+  onclick="openModal()"
+>
++
+</button>
+
+
+<button
+  class="nav-button"
+  onclick="openProfile()"
+>
+
+<svg
+  class="nav-icon"
+  width="23"
+  height="23"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.2"
+>
+
+<circle
+  cx="12"
+  cy="8"
+  r="4"
+/>
+
+<path
+  d="M4 21c0-4 3.5-7 8-7s8 3 8 7"
+/>
+
+</svg>
+
+Profile
+
+</button>
+
 
 </nav>
 
+
+
 <div
-  class="modal"
   id="modal"
+  class="modal"
 >
 
-  <div class="sheet">
 
-    <div class="sheethead">
+<div class="sheet">
 
-      <button
-        class="textbtn"
-        onclick="closeAdd()"
-      >
-        Cancel
-      </button>
 
-      <b>
-        Add milestone
-      </b>
+<div class="sheet-header">
 
-      <span></span>
+<button
+  class="text-button"
+  onclick="closeModal()"
+>
+Cancel
+</button>
 
-    </div>
+<div class="sheet-title">
+Add milestone
+</div>
 
-    <label>
-      Title
-    </label>
-
-    <input
-      id="title"
-      placeholder="e.g. New Balance 9060"
-    >
-
-    <label>
-      Category
-    </label>
-
-    <select id="type">
-
-      <option>
-        Want
-      </option>
-
-      <option>
-        Go
-      </option>
-
-      <option>
-        Do
-      </option>
-
-      <option>
-        Watch
-      </option>
-
-    </select>
-
-    <button
-      class="save"
-      onclick="add()"
-    >
-      Add
-    </button>
-
-  </div>
+<div></div>
 
 </div>
 
+
+<div class="field">
+
+<div class="label">
+Title
+</div>
+
+<input
+  id="itemTitle"
+  placeholder="e.g. Lake Como"
+>
+
+</div>
+
+
+<div class="field">
+
+<div class="label">
+Category
+</div>
+
+<select id="itemCategory">
+
+<option value="Want">
+Want
+</option>
+
+<option value="Go">
+Go
+</option>
+
+<option value="Do">
+Do
+</option>
+
+<option value="Watch">
+Watch
+</option>
+
+</select>
+
+</div>
+
+
+<div class="field">
+
+<div class="label">
+Notes
+</div>
+
+<textarea
+  id="itemNotes"
+  placeholder="Add details..."
+></textarea>
+
+</div>
+
+
+<div class="field">
+
+<div class="label">
+Date
+</div>
+
+<input
+  id="itemDate"
+  type="date"
+>
+
+</div>
+
+
+<button
+  class="save-button"
+  onclick="addItem()"
+>
+Add milestone
+</button>
+
+
+</div>
+
+
+</div>
+
+
+
 <script>
 
-const cats = {
+
+let items =
+JSON.parse(
+  localStorage.getItem("milestones")
+) || [];
+
+
+items =
+items.map(
+  (i,n)=>({
+
+    id:
+    i.id ||
+    Date.now()+n,
+
+    title:
+    i.title ||
+    "Untitled",
+
+    type:
+    i.type ||
+    i.category ||
+    "Want",
+
+    done:
+    Boolean(
+      i.done ||
+      i.completed
+    ),
+
+    notes:
+    i.notes || "",
+
+    date:
+    i.date || "",
+
+    link:
+    i.link || ""
+
+  })
+);
+
+
+let currentCategory =
+"Want";
+
+
+let currentFilter =
+"all";
+
+
+const categoryLabels = {
 
   Want:{
-    fallback:
-    "https://images.unsplash.com/photo-1523779917675-b6ed3a42a561?auto=format&fit=crop&w=900&q=80"
+    open:"To Buy",
+    done:"Bought"
   },
 
   Go:{
-    fallback:
-    "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80"
+    open:"To Go",
+    done:"Visited"
   },
 
   Do:{
-    fallback:
-    "https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=900&q=80"
+    open:"To Do",
+    done:"Done"
   },
 
   Watch:{
-    fallback:
-    "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=900&q=80"
+    open:"To Watch",
+    done:"Watched"
   }
 
 };
 
-let items =
-JSON.parse(
-  localStorage.getItem("milestones") || "[]"
-).map((i,n)=>({
 
-  id:
-  i.id || Date.now()+n,
-
-  title:
-  i.title || "Untitled",
-
-  type:
-  i.type || i.category || "Want",
-
-  done:
-  Boolean(i.done || i.completed),
-
-  notes:
-  i.notes || "",
-
-  date:
-  i.date || "",
-
-  link:
-  i.link || "",
-
-  image:
-  i.image || ""
-
-}));
-
-let wf = "all";
-
-save();
-
-function save(){
+function saveItems(){
 
   localStorage.setItem(
     "milestones",
@@ -751,457 +1834,670 @@ function save(){
 
 }
 
-function esc(s=""){
 
-  return String(s).replace(
+function escapeHtml(text){
+
+  return String(text)
+  .replace(
     /[&<>"']/g,
     m=>({
+
       "&":"&amp;",
+
       "<":"&lt;",
+
       ">":"&gt;",
+
       '"':"&quot;",
+
       "'":"&#039;"
+
     }[m])
   );
 
 }
 
-function img(i){
 
-  return (
-    i.image ||
-    cats[i.type]?.fallback ||
-    cats.Want.fallback
-  );
+function updateGreeting(){
 
-}
+  const hour =
+  new Date().getHours();
 
-async function fetchImage(i){
 
-  if(i.image){
-    return;
+  let text =
+  "Good evening,";
+
+
+  if(hour < 12){
+
+    text =
+    "Good morning,";
+
   }
 
-  try{
+  else if(hour < 18){
 
-    let r =
-    await fetch(
-      "https://en.wikipedia.org/w/api.php?action=query&generator=search&gsrsearch="
-      + encodeURIComponent(i.title)
-      + "&gsrlimit=1&prop=pageimages&piprop=original&format=json&origin=*"
-    );
+    text =
+    "Good afternoon,";
 
-    let d =
-    await r.json();
+  }
 
-    let p =
-    d.query?.pages
-    ? Object.values(d.query.pages)[0]
-    : null;
 
-    if(p?.original?.source){
-
-      i.image =
-      p.original.source;
-
-      save();
-
-      render();
-
-    }
-
-  }catch(e){}
+  document
+  .getElementById("greeting")
+  .textContent =
+  text;
 
 }
 
-function render(){
 
-  let names =
+function updateCounts(){
+
   [
     "Want",
     "Go",
     "Do",
     "Watch"
-  ];
+  ].forEach(
+    category=>{
+
+      const count =
+      items.filter(
+        item=>
+        item.type === category
+      ).length;
+
+
+      document
+      .getElementById(
+        category+"Count"
+      )
+      .textContent =
+      count;
+
+    }
+  );
+
+
+  const completed =
+  items.filter(
+    i=>i.done
+  ).length;
+
 
   document
-  .getElementById("grid")
-  .innerHTML =
-  names.map(t=>{
+  .getElementById(
+    "completedCount"
+  )
+  .textContent =
+  completed;
 
-    let a =
-    items.filter(
-      i=>i.type===t
-    );
 
-    let cover =
-    a.find(
-      i=>i.image
-    )?.image ||
-    cats[t].fallback;
+  document
+  .getElementById(
+    "totalStat"
+  )
+  .textContent =
+  items.length;
 
-    return `
-      <button
-        class="card"
-        onclick="${
-          t==="Want"
-          ? "openWant()"
-          : "alert('"+t+" comes after Home + Want approval')"
-        }"
-      >
 
-        <img
-          src="${esc(cover)}"
-        >
+  document
+  .getElementById(
+    "doneStat"
+  )
+  .textContent =
+  completed;
 
-        <div class="cardcopy">
 
-          <div class="cardname">
-            ${t}
-          </div>
+  document
+  .getElementById(
+    "openStat"
+  )
+  .textContent =
+  items.length - completed;
 
-          <div class="count">
-            ${a.length} items
-          </div>
+
+  renderRecent();
+
+}
+
+
+function renderRecent(){
+
+  const box =
+  document.getElementById(
+    "recentList"
+  );
+
+
+  const recent =
+  items.slice(0,4);
+
+
+  if(!recent.length){
+
+    box.innerHTML = `
+
+      <div class="empty-activity">
+
+        <div class="empty-main">
+
+          No recent activity yet.
 
         </div>
 
-      </button>
+        <div class="empty-sub">
+
+          Add a milestone to get started.
+
+        </div>
+
+      </div>
+
     `;
 
-  }).join("");
+    return;
 
-  let done =
-  items.filter(
-    i=>i.done
-  );
+  }
 
-  document
-  .getElementById("doneCount")
-  .textContent =
-  done.length;
 
-  let recent =
-  items.slice(0,4);
+  box.innerHTML =
+  recent.map(
+    item=>`
 
-  document
-  .getElementById("activity")
-  .innerHTML =
-  recent.length
+      <div class="activity-item">
 
-  ? recent.map(i=>`
+        <div class="activity-text">
 
-      <div class="activityrow">
+          <div class="activity-title">
 
-        <img
-          src="${esc(img(i))}"
-        >
+            ${escapeHtml(item.title)}
 
-        <div class="activitytext">
-
-          <div class="activitytitle">
-            ${esc(i.title)}
           </div>
 
-          <div class="meta">
+          <div class="activity-meta">
+
             ${
-              i.done
+              item.done
               ? "Completed"
               : "Added"
             }
 
             ${
-              i.date
-              ? " · "+i.date
+              item.date
+              ? " · "+item.date
               : ""
             }
-          </div>
 
-        </div>
-
-        <div
-          class="circle ${
-            i.done
-            ? "done"
-            : ""
-          }"
-        >
-          ${
-            i.done
-            ? "✓"
-            : ""
-          }
-        </div>
-
-      </div>
-
-    `).join("")
-
-  : `
-    <div class="empty">
-      Your latest milestones will appear here.
-    </div>
-  `;
-
-  renderWant();
-
-  items
-  .filter(i=>!i.image)
-  .slice(0,4)
-  .forEach(fetchImage);
-
-}
-
-function renderWant(){
-
-  let a =
-  items.filter(
-    i=>i.type==="Want"
-  );
-
-  if(wf==="open"){
-
-    a =
-    a.filter(
-      i=>!i.done
-    );
-
-  }
-
-  if(wf==="done"){
-
-    a =
-    a.filter(
-      i=>i.done
-    );
-
-  }
-
-  document
-  .getElementById("wantList")
-  .innerHTML =
-
-  a.length
-
-  ? a.map(i=>`
-
-      <div class="item">
-
-        <div class="itemtap">
-
-          <img
-            class="thumb"
-            src="${esc(img(i))}"
-          >
-
-          <div class="itemtitle">
-            ${esc(i.title)}
           </div>
 
         </div>
 
         <button
-          class="circle ${
-            i.done
+          class="check ${
+            item.done
             ? "done"
             : ""
           }"
-          onclick="toggle(${i.id})"
+          onclick="toggleItem(${item.id})"
         >
+
           ${
-            i.done
+            item.done
             ? "✓"
             : ""
           }
+
         </button>
 
       </div>
 
-    `).join("")
+    `
+  ).join("");
 
-  : `
-    <div class="empty">
-      Nothing here yet.
-    </div>
+}
+
+
+function switchScreen(id){
+
+  document
+  .querySelectorAll(".screen")
+  .forEach(
+    screen=>
+    screen.classList.remove(
+      "active"
+    )
+  );
+
+
+  document
+  .getElementById(id)
+  .classList.add(
+    "active"
+  );
+
+
+  window.scrollTo(
+    0,
+    0
+  );
+
+}
+
+
+function goHome(){
+
+  switchScreen(
+    "homeScreen"
+  );
+
+
+  updateCounts();
+
+}
+
+
+function openProfile(){
+
+  updateCounts();
+
+
+  switchScreen(
+    "profileScreen"
+  );
+
+}
+
+
+function openCategory(category){
+
+  currentCategory =
+  category;
+
+
+  currentFilter =
+  "all";
+
+
+  document
+  .getElementById(
+    "categoryTitle"
+  )
+  .textContent =
+  category;
+
+
+  renderFilters();
+
+
+  renderItems();
+
+
+  switchScreen(
+    "categoryScreen"
+  );
+
+}
+
+
+function renderFilters(){
+
+  const labels =
+  categoryLabels[
+    currentCategory
+  ];
+
+
+  document
+  .getElementById(
+    "filters"
+  )
+  .innerHTML = `
+
+    <button
+      class="filter ${
+        currentFilter==="all"
+        ? "active"
+        : ""
+      }"
+      onclick="setFilter('all')"
+    >
+      All
+    </button>
+
+
+    <button
+      class="filter ${
+        currentFilter==="open"
+        ? "active"
+        : ""
+      }"
+      onclick="setFilter('open')"
+    >
+      ${labels.open}
+    </button>
+
+
+    <button
+      class="filter ${
+        currentFilter==="done"
+        ? "active"
+        : ""
+      }"
+      onclick="setFilter('done')"
+    >
+      ${labels.done}
+    </button>
+
   `;
 
-  a
-  .filter(i=>!i.image)
-  .slice(0,5)
-  .forEach(fetchImage);
+}
+
+
+function setFilter(filter){
+
+  currentFilter =
+  filter;
+
+
+  renderFilters();
+
+
+  renderItems();
 
 }
 
-function openWant(){
 
-  document
-  .querySelectorAll(".screen")
-  .forEach(
-    s=>s.classList.remove("active")
+function renderItems(){
+
+  let filtered =
+  items.filter(
+    item=>
+    item.type === currentCategory
   );
 
-  document
-  .getElementById("want")
-  .classList.add("active");
 
-  renderWant();
+  if(
+    currentFilter === "open"
+  ){
 
-  scrollTo(0,0);
-
-}
-
-function home(){
-
-  document
-  .querySelectorAll(".screen")
-  .forEach(
-    s=>s.classList.remove("active")
-  );
-
-  document
-  .getElementById("home")
-  .classList.add("active");
-
-  render();
-
-  scrollTo(0,0);
-
-}
-
-function filterWant(f,b){
-
-  wf=f;
-
-  document
-  .querySelectorAll(".filter")
-  .forEach(
-    x=>x.classList.remove("active")
-  );
-
-  b.classList.add("active");
-
-  renderWant();
-
-}
-
-function toggle(id){
-
-  let i =
-  items.find(
-    x=>x.id===id
-  );
-
-  if(i){
-
-    i.done =
-    !i.done;
-
-    save();
-
-    render();
+    filtered =
+    filtered.filter(
+      i=>!i.done
+    );
 
   }
 
+
+  if(
+    currentFilter === "done"
+  ){
+
+    filtered =
+    filtered.filter(
+      i=>i.done
+    );
+
+  }
+
+
+  const list =
+  document.getElementById(
+    "itemsList"
+  );
+
+
+  if(!filtered.length){
+
+    list.innerHTML = `
+
+      <div class="empty">
+
+        Nothing here yet.
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  list.innerHTML =
+  filtered.map(
+    item=>`
+
+      <div class="item">
+
+        <div class="item-main">
+
+          <div class="item-title">
+
+            ${escapeHtml(item.title)}
+
+          </div>
+
+          ${
+            item.notes
+            ? `
+
+            <div class="item-note">
+
+              ${escapeHtml(item.notes)}
+
+            </div>
+
+            `
+            : ""
+          }
+
+        </div>
+
+
+        <button
+          class="check ${
+            item.done
+            ? "done"
+            : ""
+          }"
+          onclick="toggleItem(${item.id})"
+        >
+
+          ${
+            item.done
+            ? "✓"
+            : ""
+          }
+
+        </button>
+
+
+      </div>
+
+    `
+  ).join("");
+
 }
 
-function openAdd(){
 
-  document
-  .getElementById("modal")
-  .classList
-  .add("active");
+function toggleItem(id){
 
-}
+  const item =
+  items.find(
+    i=>i.id===id
+  );
 
-function closeAdd(){
 
-  document
-  .getElementById("modal")
-  .classList
-  .remove("active");
-
-}
-
-function add(){
-
-  let t =
-  document
-  .getElementById("title")
-  .value
-  .trim();
-
-  let type =
-  document
-  .getElementById("type")
-  .value;
-
-  if(!t){
+  if(!item){
     return;
   }
 
-  let i = {
+
+  item.done =
+  !item.done;
+
+
+  saveItems();
+
+
+  updateCounts();
+
+
+  renderItems();
+
+}
+
+
+function openModal(){
+
+  document
+  .getElementById(
+    "modal"
+  )
+  .classList.add(
+    "active"
+  );
+
+
+  document
+  .getElementById(
+    "itemCategory"
+  )
+  .value =
+  currentCategory;
+
+}
+
+
+function closeModal(){
+
+  document
+  .getElementById(
+    "modal"
+  )
+  .classList.remove(
+    "active"
+  );
+
+}
+
+
+function addItem(){
+
+  const title =
+  document
+  .getElementById(
+    "itemTitle"
+  )
+  .value
+  .trim();
+
+
+  const type =
+  document
+  .getElementById(
+    "itemCategory"
+  )
+  .value;
+
+
+  const notes =
+  document
+  .getElementById(
+    "itemNotes"
+  )
+  .value
+  .trim();
+
+
+  const date =
+  document
+  .getElementById(
+    "itemDate"
+  )
+  .value;
+
+
+  if(!title){
+    return;
+  }
+
+
+  items.unshift({
 
     id:
     Date.now(),
 
-    title:
-    t,
+    title,
 
-    type:
     type,
 
     done:
     false,
 
-    notes:
-    "",
+    notes,
 
-    date:
-    "",
+    date,
 
-    link:
-    "",
+    link:""
 
-    image:
-    ""
+  });
 
-  };
 
-  items.unshift(i);
+  saveItems();
 
-  save();
 
   document
-  .getElementById("title")
-  .value="";
+  .getElementById(
+    "itemTitle"
+  )
+  .value =
+  "";
 
-  closeAdd();
 
-  render();
+  document
+  .getElementById(
+    "itemNotes"
+  )
+  .value =
+  "";
 
-  fetchImage(i);
 
-  if(type==="Want"){
-    openWant();
-  }
+  document
+  .getElementById(
+    "itemDate"
+  )
+  .value =
+  "";
+
+
+  closeModal();
+
+
+  currentCategory =
+  type;
+
+
+  updateCounts();
+
+
+  openCategory(
+    type
+  );
 
 }
 
-let h =
-new Date().getHours();
 
-document
-.getElementById("greeting")
-.textContent =
-h<12
-? "Good morning,"
-: h<18
-? "Good afternoon,"
-: "Good evening,";
+saveItems();
 
-render();
+updateGreeting();
+
+updateCounts();
+
 
 </script>
+
 
 </body>
 </html>
