@@ -2,200 +2,410 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#F4F1EB">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#F5F1E9">
 <title>Milestone</title>
 
 <style>
 *{box-sizing:border-box}
+:root{
+  --bg:#F5F1E9;
+  --text:#171717;
+  --muted:#77736D;
+  --line:#DCD6CC;
+  --soft:#EAE5DC;
+}
 body{
   margin:0;
-  background:#F4F1EB;
-  color:#161616;
-  font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
 }
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+
 .app{
-  max-width:500px;
+  max-width:520px;
   margin:auto;
-  padding:60px 20px 120px;
+  min-height:100vh;
+  padding:calc(env(safe-area-inset-top) + 30px) 18px 115px;
 }
-.small{
-  color:#777;
+
+.screen{display:none}
+.screen.active{display:block}
+
+.eyebrow{
   font-size:14px;
+  color:var(--muted);
 }
 h1{
   font-family:Georgia,serif;
-  font-size:42px;
+  font-size:44px;
   font-weight:400;
-  margin:4px 0 8px;
+  line-height:1;
+  margin:5px 0 10px;
 }
 .tagline{
-  color:#777;
-  margin-bottom:30px;
+  color:var(--muted);
+  font-size:14px;
+  margin-bottom:24px;
 }
+
 .grid{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:12px;
+  gap:10px;
 }
 .card{
+  position:relative;
   height:170px;
-  background:#171717;
+  border:0;
+  border-radius:18px;
+  overflow:hidden;
+  padding:0;
   color:white;
-  border-radius:20px;
-  padding:18px;
-  display:flex;
-  flex-direction:column;
-  justify-content:flex-end;
-  cursor:pointer;
+  text-align:left;
+  background:#111;
 }
-.card:nth-child(2){background:#2c2c29}
-.card:nth-child(3){background:#24231f}
-.card:nth-child(4){background:#111}
+.card::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,.72),rgba(0,0,0,.08) 65%);
+}
+.card-bg{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.card-content{
+  position:absolute;
+  z-index:2;
+  left:15px;
+  bottom:14px;
+}
 .card-title{
   font-family:Georgia,serif;
-  font-size:28px;
+  font-size:27px;
 }
 .card-count{
-  opacity:.65;
-  font-size:13px;
-  margin-top:5px;
+  font-size:12px;
+  opacity:.82;
+  margin-top:3px;
 }
-.section{
-  margin-top:32px;
+.card-icon{
+  position:absolute;
+  z-index:2;
+  right:14px;
+  top:13px;
+  font-size:18px;
+}
+
+.section-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:28px;
+  margin-bottom:11px;
+}
+.section-title{
   font-family:Georgia,serif;
   font-size:20px;
 }
-.progress{
-  margin-top:12px;
-  padding:20px;
-  border-radius:18px;
-  background:#E9E5DD;
+.see-all{
+  border:0;
+  background:none;
+  color:var(--muted);
+  font-size:12px;
 }
-.number{
+
+.progress-card{
+  background:var(--soft);
+  border-radius:17px;
+  padding:18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.progress-number{
   font-family:Georgia,serif;
   font-size:30px;
 }
-.bottom{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  margin:auto;
-  max-width:500px;
-  height:90px;
-  background:rgba(244,241,235,.96);
-  border-top:1px solid #ddd8cf;
-  display:flex;
-  justify-content:space-around;
-  align-items:center;
-  padding-bottom:15px;
+.progress-label{
+  font-size:12px;
+  color:var(--muted);
 }
-.bottom button{
+
+.recent{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.recent-item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  background:#EEE9E1;
+  border-radius:15px;
+  padding:10px;
+}
+.recent-thumb{
+  width:52px;
+  height:52px;
+  border-radius:10px;
+  object-fit:cover;
+  background:#222;
+}
+.recent-text{flex:1}
+.recent-title{
+  font-family:Georgia,serif;
+  font-size:16px;
+}
+.recent-meta{
+  font-size:11px;
+  color:var(--muted);
+  margin-top:3px;
+}
+.check-badge{
+  width:23px;
+  height:23px;
+  border-radius:50%;
+  background:#111;
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:12px;
+}
+
+.bottom-nav{
+  position:fixed;
+  left:50%;
+  bottom:0;
+  transform:translateX(-50%);
+  width:min(520px,100%);
+  min-height:86px;
+  padding:10px 28px calc(16px + env(safe-area-inset-bottom));
+  background:rgba(245,241,233,.94);
+  backdrop-filter:blur(16px);
+  border-top:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  z-index:20;
+}
+.nav-btn{
   border:0;
   background:none;
-  font-size:13px;
+  font-size:12px;
+  color:#222;
 }
-.plus{
+.add-main{
   width:58px;
   height:58px;
+  border:0;
   border-radius:50%;
-  background:#111!important;
+  background:#111;
   color:white;
-  font-size:30px!important;
+  font-size:30px;
 }
-.screen{display:none}
-.screen.active{display:block}
+
 .back{
   border:0;
   background:none;
-  font-size:26px;
+  font-size:25px;
   padding:0;
-  margin-bottom:25px;
+  margin-bottom:20px;
 }
-.category-title{
-  font-family:Georgia,serif;
-  font-size:40px;
-}
-.description{
-  color:#777;
-  margin:8px 0 25px;
-}
-.item{
-  padding:18px 0;
-  border-bottom:1px solid #ddd8cf;
+.cat-header{
   display:flex;
   align-items:center;
-  gap:15px;
+  gap:10px;
+  margin-bottom:5px;
+}
+.cat-icon{font-size:24px}
+.cat-title{
+  font-family:Georgia,serif;
+  font-size:39px;
+}
+.cat-desc{
+  color:var(--muted);
+  font-size:14px;
+  margin-bottom:16px;
+}
+.filters{
+  display:flex;
+  gap:8px;
+  margin-bottom:12px;
+}
+.filter{
+  border:0;
+  padding:9px 16px;
+  border-radius:999px;
+  background:#EAE5DC;
+  font-size:12px;
+}
+.filter.active{
+  background:#111;
+  color:white;
+}
+
+.item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  min-height:68px;
+  border-bottom:1px solid var(--line);
+}
+.item-thumb{
+  width:52px;
+  height:52px;
+  border-radius:9px;
+  object-fit:cover;
+  background:#252525;
+}
+.item-main{flex:1}
+.item-title{
+  font-size:14px;
+}
+.item-title.done{
+  color:#999;
+  text-decoration:line-through;
+}
+.item-note{
+  margin-top:3px;
+  font-size:11px;
+  color:var(--muted);
 }
 .circle{
-  width:25px;
-  height:25px;
-  border:1px solid #999;
+  width:24px;
+  height:24px;
+  border:1px solid #98938C;
   border-radius:50%;
   display:flex;
-  justify-content:center;
   align-items:center;
+  justify-content:center;
+  flex-shrink:0;
 }
 .circle.done{
   background:#111;
   color:white;
-}
-.doneText{
-  text-decoration:line-through;
-  color:#999;
+  border-color:#111;
 }
 .empty{
   color:#999;
-  margin-top:30px;
+  padding:28px 0;
+  font-size:13px;
 }
+
 .modal{
   display:none;
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.4);
+  z-index:30;
+  background:rgba(0,0,0,.42);
   align-items:flex-end;
-  z-index:10;
 }
 .modal.active{display:flex}
 .sheet{
-  width:100%;
-  max-width:500px;
+  width:min(520px,100%);
   margin:auto;
-  background:#F4F1EB;
-  padding:28px 20px 40px;
-  border-radius:28px 28px 0 0;
+  background:var(--bg);
+  border-radius:26px 26px 0 0;
+  padding:24px 18px calc(28px + env(safe-area-inset-bottom));
 }
 .sheet h2{
   font-family:Georgia,serif;
+  font-size:29px;
   font-weight:400;
-  font-size:30px;
+  margin:0 0 18px;
 }
-input,select{
-  width:100%;
-  padding:16px;
-  margin:6px 0;
-  border-radius:13px;
-  border:1px solid #D6D1C8;
-  background:#FAF8F4;
-  font-size:16px;
+.field{
+  margin-bottom:10px;
 }
-.save{
+.label{
+  font-size:11px;
+  color:var(--muted);
+  margin-bottom:5px;
+}
+input,select,textarea{
   width:100%;
-  padding:17px;
-  margin-top:10px;
+  border:1px solid var(--line);
+  background:#FBF9F5;
+  border-radius:12px;
+  padding:14px;
+  outline:none;
+}
+textarea{
+  resize:none;
+  min-height:82px;
+}
+.save-btn{
+  width:100%;
   border:0;
   border-radius:13px;
+  padding:15px;
   background:#111;
   color:white;
-  font-size:16px;
+  margin-top:6px;
 }
-.cancel{
+.cancel-btn{
   width:100%;
   border:0;
   background:none;
-  padding:16px;
-  color:#777;
+  padding:14px;
+  color:var(--muted);
+}
+
+.profile-head{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin-bottom:24px;
+}
+.avatar{
+  width:72px;
+  height:72px;
+  border-radius:50%;
+  background:#181818;
+}
+.profile-name{
+  font-family:Georgia,serif;
+  font-size:30px;
+}
+.profile-sub{
+  color:var(--muted);
+  font-size:12px;
+  margin-top:4px;
+}
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  margin-bottom:24px;
+}
+.stat{
+  text-align:center;
+}
+.stat-num{
+  font-family:Georgia,serif;
+  font-size:24px;
+}
+.stat-label{
+  font-size:10px;
+  color:var(--muted);
+}
+.menu-card{
+  border-top:1px solid var(--line);
+}
+.menu-row{
+  display:flex;
+  justify-content:space-between;
+  padding:17px 2px;
+  border-bottom:1px solid var(--line);
+  font-size:14px;
 }
 </style>
 </head>
@@ -204,223 +414,389 @@ input,select{
 
 <div class="app">
 
-<div id="home" class="screen active">
+  <section id="homeScreen" class="screen active">
+    <div class="eyebrow" id="greeting">Good morning,</div>
+    <h1>Batu.</h1>
+    <div class="tagline">A more intentional you.</div>
 
-<div class="small">Good morning,</div>
-<h1>Batu.</h1>
-<div class="tagline">A more intentional you.</div>
+    <div class="grid">
+      <button class="card" onclick="openCategory('Want')">
+        <img class="card-bg" src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=700&q=80">
+        <div class="card-icon">◻︎</div>
+        <div class="card-content">
+          <div class="card-title">Want</div>
+          <div class="card-count"><span id="WantCount">0</span> items</div>
+        </div>
+      </button>
 
-<div class="grid">
+      <button class="card" onclick="openCategory('Go')">
+        <img class="card-bg" src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=700&q=80">
+        <div class="card-icon">⌖</div>
+        <div class="card-content">
+          <div class="card-title">Go</div>
+          <div class="card-count"><span id="GoCount">0</span> items</div>
+        </div>
+      </button>
 
-<div class="card" onclick="openCategory('Want')">
-<div class="card-title">Want</div>
-<div class="card-count"><span id="WantCount">0</span> items</div>
+      <button class="card" onclick="openCategory('Do')">
+        <img class="card-bg" src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=700&q=80">
+        <div class="card-icon">✓</div>
+        <div class="card-content">
+          <div class="card-title">Do</div>
+          <div class="card-count"><span id="DoCount">0</span> items</div>
+        </div>
+      </button>
+
+      <button class="card" onclick="openCategory('Watch')">
+        <img class="card-bg" src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=700&q=80">
+        <div class="card-icon">▦</div>
+        <div class="card-content">
+          <div class="card-title">Watch</div>
+          <div class="card-count"><span id="WatchCount">0</span> items</div>
+        </div>
+      </button>
+    </div>
+
+    <div class="section-head">
+      <div class="section-title">Recent Milestones</div>
+      <button class="see-all" onclick="showCompleted()">See all</button>
+    </div>
+
+    <div class="recent" id="recentList"></div>
+
+    <div class="section-head">
+      <div class="section-title">Your progress</div>
+    </div>
+
+    <div class="progress-card">
+      <div>
+        <div class="progress-number" id="completedCount">0</div>
+        <div class="progress-label">milestones completed</div>
+      </div>
+      <div>↗</div>
+    </div>
+  </section>
+
+  <section id="categoryScreen" class="screen">
+    <button class="back" onclick="goHome()">←</button>
+
+    <div class="cat-header">
+      <div class="cat-icon" id="categoryIcon"></div>
+      <div class="cat-title" id="categoryTitle"></div>
+    </div>
+
+    <div class="cat-desc" id="categoryDescription"></div>
+
+    <div class="filters">
+      <button class="filter active" onclick="setFilter('all',this)">All</button>
+      <button class="filter" onclick="setFilter('open',this)">To do</button>
+      <button class="filter" onclick="setFilter('done',this)">Done</button>
+    </div>
+
+    <div id="itemsList"></div>
+  </section>
+
+  <section id="profileScreen" class="screen">
+    <div class="profile-head">
+      <div class="avatar"></div>
+      <div>
+        <div class="profile-name">Batu</div>
+        <div class="profile-sub">Ideas today. Experiences tomorrow.</div>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-num" id="totalStat">0</div>
+        <div class="stat-label">Total</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" id="doneStat">0</div>
+        <div class="stat-label">Completed</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" id="openStat">0</div>
+        <div class="stat-label">In Progress</div>
+      </div>
+    </div>
+
+    <div class="menu-card">
+      <div class="menu-row"><span>My Milestones</span><span>›</span></div>
+      <div class="menu-row"><span>Statistics</span><span>›</span></div>
+      <div class="menu-row"><span>Settings</span><span>›</span></div>
+      <div class="menu-row"><span>About</span><span>›</span></div>
+    </div>
+  </section>
+
 </div>
 
-<div class="card" onclick="openCategory('Go')">
-<div class="card-title">Go</div>
-<div class="card-count"><span id="GoCount">0</span> items</div>
-</div>
+<nav class="bottom-nav">
+  <button class="nav-btn" onclick="goHome()">Home</button>
+  <button class="add-main" onclick="openModal()">+</button>
+  <button class="nav-btn" onclick="openProfile()">Profile</button>
+</nav>
 
-<div class="card" onclick="openCategory('Do')">
-<div class="card-title">Do</div>
-<div class="card-count"><span id="DoCount">0</span> items</div>
-</div>
+<div class="modal" id="modal">
+  <div class="sheet">
+    <h2>Add milestone</h2>
 
-<div class="card" onclick="openCategory('Watch')">
-<div class="card-title">Watch</div>
-<div class="card-count"><span id="WatchCount">0</span> items</div>
-</div>
+    <div class="field">
+      <div class="label">Title</div>
+      <input id="itemTitle" placeholder="e.g. Lake Como">
+    </div>
 
-</div>
+    <div class="field">
+      <div class="label">Category</div>
+      <select id="itemCategory">
+        <option value="Want">Want</option>
+        <option value="Go">Go</option>
+        <option value="Do">Do</option>
+        <option value="Watch">Watch</option>
+      </select>
+    </div>
 
-<div class="section">Your progress</div>
+    <div class="field">
+      <div class="label">Notes</div>
+      <textarea id="itemNotes" placeholder="Add details..."></textarea>
+    </div>
 
-<div class="progress">
-<div class="number" id="completed">0</div>
-<div class="small">milestones completed</div>
-</div>
+    <div class="field">
+      <div class="label">Date</div>
+      <input id="itemDate" type="date">
+    </div>
 
-</div>
+    <div class="field">
+      <div class="label">Link</div>
+      <input id="itemLink" type="url" placeholder="https://">
+    </div>
 
-<div id="category" class="screen">
-
-<button class="back" onclick="home()">←</button>
-
-<div id="categoryTitle" class="category-title"></div>
-<div id="description" class="description"></div>
-
-<div id="list"></div>
-
-</div>
-
-</div>
-
-<div class="bottom">
-
-<button onclick="home()">Home</button>
-
-<button class="plus" onclick="openAdd()">+</button>
-
-<button>Profile</button>
-
-</div>
-
-<div id="modal" class="modal">
-
-<div class="sheet">
-
-<h2>Add milestone</h2>
-
-<input id="title" placeholder="What do you want to do?">
-
-<select id="type">
-<option>Want</option>
-<option>Go</option>
-<option>Do</option>
-<option>Watch</option>
-</select>
-
-<button class="save" onclick="add()">Add milestone</button>
-
-<button class="cancel" onclick="closeAdd()">Cancel</button>
-
-</div>
-
+    <button class="save-btn" onclick="addItem()">Add milestone</button>
+    <button class="cancel-btn" onclick="closeModal()">Cancel</button>
+  </div>
 </div>
 
 <script>
+let items = JSON.parse(localStorage.getItem("milestones")) || [];
+let currentCategory = "Want";
+let currentFilter = "all";
 
-let data=JSON.parse(localStorage.getItem("milestones"))||[];
-let current="Want";
-
-const descriptions={
-Want:"Things I want to own someday.",
-Go:"Places I want to experience.",
-Do:"Things I want to do.",
-Watch:"Movies and stories I want to see."
+const descriptions = {
+  Want:"Things I want to own someday.",
+  Go:"Places I want to experience.",
+  Do:"Things I want to do.",
+  Watch:"Movies, series and stories I want to see."
 };
 
-function save(){
-localStorage.setItem("milestones",JSON.stringify(data));
-update();
+const icons = {
+  Want:"◻︎",
+  Go:"⌖",
+  Do:"✓",
+  Watch:"▦"
+};
+
+const thumbs = {
+  Want:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=300&q=75",
+  Go:"https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=300&q=75",
+  Do:"https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=300&q=75",
+  Watch:"https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=300&q=75"
+};
+
+function saveItems(){
+  localStorage.setItem("milestones",JSON.stringify(items));
 }
 
-function update(){
-
-["Want","Go","Do","Watch"].forEach(c=>{
-document.getElementById(c+"Count").innerText=
-data.filter(x=>x.type===c).length;
-});
-
-document.getElementById("completed").innerText=
-data.filter(x=>x.done).length;
-
+function updateGreeting(){
+  const h = new Date().getHours();
+  let text = "Good evening,";
+  if(h < 12) text = "Good morning,";
+  else if(h < 18) text = "Good afternoon,";
+  document.getElementById("greeting").innerText = text;
 }
 
-function home(){
+function updateCounts(){
+  ["Want","Go","Do","Watch"].forEach(category=>{
+    document.getElementById(category+"Count").innerText =
+      items.filter(i=>i.type===category || i.category===category).length;
+  });
 
-document.getElementById("category").classList.remove("active");
-document.getElementById("home").classList.add("active");
+  const completed = items.filter(i=>i.done || i.completed).length;
 
-update();
+  document.getElementById("completedCount").innerText = completed;
+  document.getElementById("totalStat").innerText = items.length;
+  document.getElementById("doneStat").innerText = completed;
+  document.getElementById("openStat").innerText = items.length-completed;
 
+  renderRecent();
 }
 
-function openCategory(type){
-
-current=type;
-
-document.getElementById("home").classList.remove("active");
-document.getElementById("category").classList.add("active");
-
-document.getElementById("categoryTitle").innerText=type;
-document.getElementById("description").innerText=descriptions[type];
-
-render();
-
+function normalize(){
+  items = items.map(i=>({
+    id:i.id || Date.now()+Math.random(),
+    title:i.title || "Untitled",
+    type:i.type || i.category || "Want",
+    done:Boolean(i.done || i.completed),
+    notes:i.notes || "",
+    date:i.date || "",
+    link:i.link || ""
+  }));
+  saveItems();
 }
 
-function render(){
-
-const items=data.filter(x=>x.type===current);
-const list=document.getElementById("list");
-
-if(!items.length){
-list.innerHTML='<div class="empty">Nothing here yet.</div>';
-return;
+function switchScreen(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  window.scrollTo(0,0);
 }
 
-list.innerHTML=items.map(x=>`
-
-<div class="item">
-
-<div
-class="circle ${x.done?'done':''}"
-onclick="toggle(${x.id})">
-${x.done?'✓':''}
-</div>
-
-<div class="${x.done?'doneText':''}">
-${x.title}
-</div>
-
-</div>
-
-`).join("");
-
+function goHome(){
+  switchScreen("homeScreen");
+  updateCounts();
 }
 
-function toggle(id){
-
-const item=data.find(x=>x.id===id);
-
-item.done=!item.done;
-
-save();
-render();
-
+function openProfile(){
+  updateCounts();
+  switchScreen("profileScreen");
 }
 
-function openAdd(){
+function openCategory(category){
+  currentCategory = category;
+  currentFilter = "all";
 
-document.getElementById("modal").classList.add("active");
-document.getElementById("type").value=current;
+  document.querySelectorAll(".filter").forEach((b,i)=>{
+    b.classList.toggle("active",i===0);
+  });
 
+  document.getElementById("categoryTitle").innerText = category;
+  document.getElementById("categoryDescription").innerText = descriptions[category];
+  document.getElementById("categoryIcon").innerText = icons[category];
+
+  switchScreen("categoryScreen");
+  renderItems();
 }
 
-function closeAdd(){
-
-document.getElementById("modal").classList.remove("active");
-
+function setFilter(filter,el){
+  currentFilter = filter;
+  document.querySelectorAll(".filter").forEach(b=>b.classList.remove("active"));
+  el.classList.add("active");
+  renderItems();
 }
 
-function add(){
+function renderItems(){
+  let filtered = items.filter(i=>i.type===currentCategory);
 
-const title=document.getElementById("title").value.trim();
-const type=document.getElementById("type").value;
+  if(currentFilter==="open") filtered = filtered.filter(i=>!i.done);
+  if(currentFilter==="done") filtered = filtered.filter(i=>i.done);
 
-if(!title)return;
+  const list = document.getElementById("itemsList");
 
-data.unshift({
-id:Date.now(),
-title:title,
-type:type,
-done:false
-});
+  if(!filtered.length){
+    list.innerHTML = '<div class="empty">Nothing here yet.</div>';
+    return;
+  }
 
-document.getElementById("title").value="";
-
-save();
-closeAdd();
-
-current=type;
-openCategory(type);
-
+  list.innerHTML = filtered.map(i=>`
+    <div class="item">
+      <img class="item-thumb" src="${thumbs[i.type]}" alt="">
+      <div class="item-main">
+        <div class="item-title ${i.done?'done':''}">${escapeHtml(i.title)}</div>
+        ${i.notes ? `<div class="item-note">${escapeHtml(i.notes)}</div>` : ""}
+      </div>
+      <div class="circle ${i.done?'done':''}" onclick="toggleItem(${i.id})">
+        ${i.done?'✓':''}
+      </div>
+    </div>
+  `).join("");
 }
 
-update();
+function renderRecent(){
+  const recent = items.filter(i=>i.done).slice(0,3);
+  const box = document.getElementById("recentList");
 
+  if(!recent.length){
+    box.innerHTML = '<div class="empty">Complete something and it will appear here.</div>';
+    return;
+  }
+
+  box.innerHTML = recent.map(i=>`
+    <div class="recent-item">
+      <img class="recent-thumb" src="${thumbs[i.type]}" alt="">
+      <div class="recent-text">
+        <div class="recent-title">${escapeHtml(i.title)}</div>
+        <div class="recent-meta">${i.type} · completed</div>
+      </div>
+      <div class="check-badge">✓</div>
+    </div>
+  `).join("");
+}
+
+function showCompleted(){
+  const first = items.find(i=>i.done);
+  if(first) openCategory(first.type);
+}
+
+function toggleItem(id){
+  const item = items.find(i=>i.id===id);
+  if(!item) return;
+  item.done = !item.done;
+  saveItems();
+  renderItems();
+  updateCounts();
+}
+
+function openModal(){
+  document.getElementById("modal").classList.add("active");
+  document.getElementById("itemCategory").value = currentCategory;
+}
+
+function closeModal(){
+  document.getElementById("modal").classList.remove("active");
+}
+
+function addItem(){
+  const title = document.getElementById("itemTitle").value.trim();
+  const type = document.getElementById("itemCategory").value;
+  const notes = document.getElementById("itemNotes").value.trim();
+  const date = document.getElementById("itemDate").value;
+  const link = document.getElementById("itemLink").value.trim();
+
+  if(!title) return;
+
+  items.unshift({
+    id:Date.now(),
+    title,
+    type,
+    done:false,
+    notes,
+    date,
+    link
+  });
+
+  saveItems();
+
+  document.getElementById("itemTitle").value="";
+  document.getElementById("itemNotes").value="";
+  document.getElementById("itemDate").value="";
+  document.getElementById("itemLink").value="";
+
+  closeModal();
+  currentCategory = type;
+  updateCounts();
+  openCategory(type);
+}
+
+function escapeHtml(text){
+  return text.replace(/[&<>"']/g,m=>({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#039;"
+  }[m]));
+}
+
+normalize();
+updateGreeting();
+updateCounts();
 </script>
 
 </body>
