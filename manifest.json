@@ -1,0 +1,15 @@
+{
+  "name": "Milestone",
+  "short_name": "Milestone",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#F5F1E9",
+  "theme_color": "#F5F1E9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
