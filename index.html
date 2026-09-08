@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#F4F1EB">
+<title>Milestone</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:#F4F1EB;
+  color:#161616;
+  font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;
+}
+.app{
+  max-width:500px;
+  margin:auto;
+  padding:60px 20px 120px;
+}
+.small{
+  color:#777;
+  font-size:14px;
+}
+h1{
+  font-family:Georgia,serif;
+  font-size:42px;
+  font-weight:400;
+  margin:4px 0 8px;
+}
+.tagline{
+  color:#777;
+  margin-bottom:30px;
+}
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.card{
+  height:170px;
+  background:#171717;
+  color:white;
+  border-radius:20px;
+  padding:18px;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  cursor:pointer;
+}
+.card:nth-child(2){background:#2c2c29}
+.card:nth-child(3){background:#24231f}
+.card:nth-child(4){background:#111}
+.card-title{
+  font-family:Georgia,serif;
+  font-size:28px;
+}
+.card-count{
+  opacity:.65;
+  font-size:13px;
+  margin-top:5px;
+}
+.section{
+  margin-top:32px;
+  font-family:Georgia,serif;
+  font-size:20px;
+}
+.progress{
+  margin-top:12px;
+  padding:20px;
+  border-radius:18px;
+  background:#E9E5DD;
+}
+.number{
+  font-family:Georgia,serif;
+  font-size:30px;
+}
+.bottom{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  margin:auto;
+  max-width:500px;
+  height:90px;
+  background:rgba(244,241,235,.96);
+  border-top:1px solid #ddd8cf;
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  padding-bottom:15px;
+}
+.bottom button{
+  border:0;
+  background:none;
+  font-size:13px;
+}
+.plus{
+  width:58px;
+  height:58px;
+  border-radius:50%;
+  background:#111!important;
+  color:white;
+  font-size:30px!important;
+}
+.screen{display:none}
+.screen.active{display:block}
+.back{
+  border:0;
+  background:none;
+  font-size:26px;
+  padding:0;
+  margin-bottom:25px;
+}
+.category-title{
+  font-family:Georgia,serif;
+  font-size:40px;
+}
+.description{
+  color:#777;
+  margin:8px 0 25px;
+}
+.item{
+  padding:18px 0;
+  border-bottom:1px solid #ddd8cf;
+  display:flex;
+  align-items:center;
+  gap:15px;
+}
+.circle{
+  width:25px;
+  height:25px;
+  border:1px solid #999;
+  border-radius:50%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+.circle.done{
+  background:#111;
+  color:white;
+}
+.doneText{
+  text-decoration:line-through;
+  color:#999;
+}
+.empty{
+  color:#999;
+  margin-top:30px;
+}
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.4);
+  align-items:flex-end;
+  z-index:10;
+}
+.modal.active{display:flex}
+.sheet{
+  width:100%;
+  max-width:500px;
+  margin:auto;
+  background:#F4F1EB;
+  padding:28px 20px 40px;
+  border-radius:28px 28px 0 0;
+}
+.sheet h2{
+  font-family:Georgia,serif;
+  font-weight:400;
+  font-size:30px;
+}
+input,select{
+  width:100%;
+  padding:16px;
+  margin:6px 0;
+  border-radius:13px;
+  border:1px solid #D6D1C8;
+  background:#FAF8F4;
+  font-size:16px;
+}
+.save{
+  width:100%;
+  padding:17px;
+  margin-top:10px;
+  border:0;
+  border-radius:13px;
+  background:#111;
+  color:white;
+  font-size:16px;
+}
+.cancel{
+  width:100%;
+  border:0;
+  background:none;
+  padding:16px;
+  color:#777;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<div id="home" class="screen active">
+
+<div class="small">Good morning,</div>
+<h1>Batu.</h1>
+<div class="tagline">A more intentional you.</div>
+
+<div class="grid">
+
+<div class="card" onclick="openCategory('Want')">
+<div class="card-title">Want</div>
+<div class="card-count"><span id="WantCount">0</span> items</div>
+</div>
+
+<div class="card" onclick="openCategory('Go')">
+<div class="card-title">Go</div>
+<div class="card-count"><span id="GoCount">0</span> items</div>
+</div>
+
+<div class="card" onclick="openCategory('Do')">
+<div class="card-title">Do</div>
+<div class="card-count"><span id="DoCount">0</span> items</div>
+</div>
+
+<div class="card" onclick="openCategory('Watch')">
+<div class="card-title">Watch</div>
+<div class="card-count"><span id="WatchCount">0</span> items</div>
+</div>
+
+</div>
+
+<div class="section">Your progress</div>
+
+<div class="progress">
+<div class="number" id="completed">0</div>
+<div class="small">milestones completed</div>
+</div>
+
+</div>
+
+<div id="category" class="screen">
+
+<button class="back" onclick="home()">←</button>
+
+<div id="categoryTitle" class="category-title"></div>
+<div id="description" class="description"></div>
+
+<div id="list"></div>
+
+</div>
+
+</div>
+
+<div class="bottom">
+
+<button onclick="home()">Home</button>
+
+<button class="plus" onclick="openAdd()">+</button>
+
+<button>Profile</button>
+
+</div>
+
+<div id="modal" class="modal">
+
+<div class="sheet">
+
+<h2>Add milestone</h2>
+
+<input id="title" placeholder="What do you want to do?">
+
+<select id="type">
+<option>Want</option>
+<option>Go</option>
+<option>Do</option>
+<option>Watch</option>
+</select>
+
+<button class="save" onclick="add()">Add milestone</button>
+
+<button class="cancel" onclick="closeAdd()">Cancel</button>
+
+</div>
+
+</div>
+
+<script>
+
+let data=JSON.parse(localStorage.getItem("milestones"))||[];
+let current="Want";
+
+const descriptions={
+Want:"Things I want to own someday.",
+Go:"Places I want to experience.",
+Do:"Things I want to do.",
+Watch:"Movies and stories I want to see."
+};
+
+function save(){
+localStorage.setItem("milestones",JSON.stringify(data));
+update();
+}
+
+function update(){
+
+["Want","Go","Do","Watch"].forEach(c=>{
+document.getElementById(c+"Count").innerText=
+data.filter(x=>x.type===c).length;
+});
+
+document.getElementById("completed").innerText=
+data.filter(x=>x.done).length;
+
+}
+
+function home(){
+
+document.getElementById("category").classList.remove("active");
+document.getElementById("home").classList.add("active");
+
+update();
+
+}
+
+function openCategory(type){
+
+current=type;
+
+document.getElementById("home").classList.remove("active");
+document.getElementById("category").classList.add("active");
+
+document.getElementById("categoryTitle").innerText=type;
+document.getElementById("description").innerText=descriptions[type];
+
+render();
+
+}
+
+function render(){
+
+const items=data.filter(x=>x.type===current);
+const list=document.getElementById("list");
+
+if(!items.length){
+list.innerHTML='<div class="empty">Nothing here yet.</div>';
+return;
+}
+
+list.innerHTML=items.map(x=>`
+
+<div class="item">
+
+<div
+class="circle ${x.done?'done':''}"
+onclick="toggle(${x.id})">
+${x.done?'✓':''}
+</div>
+
+<div class="${x.done?'doneText':''}">
+${x.title}
+</div>
+
+</div>
+
+`).join("");
+
+}
+
+function toggle(id){
+
+const item=data.find(x=>x.id===id);
+
+item.done=!item.done;
+
+save();
+render();
+
+}
+
+function openAdd(){
+
+document.getElementById("modal").classList.add("active");
+document.getElementById("type").value=current;
+
+}
+
+function closeAdd(){
+
+document.getElementById("modal").classList.remove("active");
+
+}
+
+function add(){
+
+const title=document.getElementById("title").value.trim();
+const type=document.getElementById("type").value;
+
+if(!title)return;
+
+data.unshift({
+id:Date.now(),
+title:title,
+type:type,
+done:false
+});
+
+document.getElementById("title").value="";
+
+save();
+closeAdd();
+
+current=type;
+openCategory(type);
+
+}
+
+update();
+
+</script>
+
+</body>
+</html>
