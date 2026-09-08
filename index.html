@@ -1,75 +1,3 @@
-mi
-
-Burdayım kanzi, noldu?
-
-milestone devam
-
-Tamam kanzi, Milestone’dan devam.
-
-Aklımda kalan son hali:
-
-Fotoğrafsız, minimal kategori kartları: Want / Go / Do / Watch
-Yazılar ortada, kartlar çerçeveli
-Light Mode: beyaz ağırlıklı
-Dark Mode: siyah ağırlıklı
-Light/Dark arasında geçiş olacak
-PWA olarak iPhone ana ekranında çalışıyor
-GitHub Pages üzerinden kullanıyorsun
-Otomatik görsel tarafını da konuşmuştuk.
-
-En son “kodu yaz” aşamasındaydık. İstersen mevcut kodu buraya at, kaldığımız yerden direkt düzenleyeyim; sıfırdan başlamayalım.
-
-Yapıştırılan metin(1).txt
-Belge
-
-Kanzi kodu aldım. Bu Milestone’un mevcut tam sürümü; Light/Dark mode, Want/Go/Do/Watch kategorileri, progress, recent activity, profil, milestone ekleme ve otomatik Wikipedia görsel bulma sistemi dahil.
-
-Buradan devam edebiliriz. Mevcut kodu artık baz alıyorum; yeniden sıfırdan kurmayacağız.
-
-Sıradaki değiştirmek istediğin şeyi söyle, direkt bu kodun üstünden yapalım.
-
-kanka görseller yanlış geliyp prada paradigme parfüö d
-yorum
-alakasıza geliyo 
-
-Aynen kanka, sorun belli. Şu anki sistem Wikipedia aramasının ilk görselli sonucunu alıyor. Kodda gsrsearch=title ile aratıp, çıkan ilk original.source bulunan sayfayı seçiyorsun.
-
-O yüzden mesela “Prada Paradigme” yazınca Wikipedia parfümün ürün fotoğrafını bulamayınca Prada'yla veya kelimelerle ilişkili alakasız bir görsel döndürebiliyor.
-
-Bence Wikipedia sistemini tamamen kaldırmamız lazım. İstediğin şey şu olmalı:
-
-Prada Paradigme → gerçek Prada Paradigme şişesi
-Lake Como → Lake Como fotoğrafı
-Interstellar → Interstellar görseli/posteri
-New Balance 9060 → gerçek ayakkabı
-
-Yani Milestone başlığa göre web'den gerçek ve alakalı görsel bulmalı; sadece Wikipedia'ya bağlı kalmamalı.
-
-Bir de bunu daha sağlam yapabiliriz: kategoriye göre arama terimi ekleriz. Want için "Prada Paradigme product", Go için "Lake Como Italy", Watch için "Interstellar movie poster" gibi. Böylece yanlış eşleşme ciddi azalır.
-
-Tek sıkıntı: bunu sadece GitHub Pages üzerinde çalışan frontend koduyla güvenilir biçimde yapmak için bir image-search API gerekiyor. İstersen ücretsiz/ücretsiz kotası olan en uygun seçeneği seçip mevcut koduna entegre edelim; sana direkt değiştirip yapıştıracağın kodu vereyim.
-
-bide nasıl silicem milestone  o yok 
-
-Aynen kanzi, şu an silme özelliği hiç yok. Kodda sadece toggleItem(id) var; milestone’u tamamlandı/tamamlanmadı yapıyor ama deleteItem() diye bir fonksiyon yok.
-
-Bence her milestone’un satırına küçük bir “⋯” ya da çöp kutusu koyup, basınca Delete milestone çıkartalım. Yanlışlıkla silmemen için de “Are you sure?” onayı verelim. Ayrıca silince hem localStorage güncellenir hem kategori ve Recent Activity anında yenilenir.
-
-İstersen sana şimdi direkt mevcut koda eklenecek silme kodunu vereyim; sonra görsel sistemini de beraber düzeltelim.
-
-tamamdır 
-Analiz duraklatıldı
-bir de want yerine items go yerine places watch yerine movies do yerine activites yazsak ve atıyorum buna dah iyi bir arayüz yapsak 
-Analiz duraklatıldı
-
-Tamam kanzi, yaptım. Kategoriler artık ekranda Items / Places / Activities / Movies olarak görünüyor; ama eski kayıtların bozulmaması için arka planda Want / Go / Do / Watch değerlerini korudum.
-
-Arayüzü de biraz daha premium yaptım: kartlar daha yumuşak ve modern, tipografi/boşluklar düzeltildi, kategori ikonları sadeleşti, Recent Activity kartları ve bottom nav daha temiz görünüyor. Önceki eklediğimiz silme özelliği + daha iyi görsel arama + manuel image URL de bunun içinde duruyor. Mevcut yapının tema ve kategori altyapısı korunarak düzenlendi.
-
-Milestone_redesign.html dosyasını indir
-
-Bence bir sonraki seviyede ana ekranı daha da Pinterest / Letterboxd / Things tarzı, görsel ağırlıklı bir hale getirebiliriz; özellikle Items ve Movies tarafında çok daha güzel durur. 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -196,7 +124,7 @@ button {
   color: var(--muted);
 }
 
-/* LIGHT / DARK */
+/* THEME */
 
 .theme-switch {
   width: 250px;
@@ -206,7 +134,6 @@ button {
   background: var(--soft);
   border: 1px solid var(--line);
   border-radius: 999px;
-
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 4px;
@@ -218,13 +145,6 @@ button {
   border-radius: 999px;
   padding: 10px 12px;
   color: var(--muted);
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-
-  font: 400 14px Georgia, "Times New Roman", serif;
 }
 
 .theme-btn.active {
@@ -232,7 +152,7 @@ button {
   color: var(--inverseText);
 }
 
-/* CATEGORIES */
+/* CATEGORY CARDS */
 
 .grid {
   display: grid;
@@ -242,23 +162,17 @@ button {
 
 .category-card {
   height: 168px;
-
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
-
   background: var(--card);
   color: var(--text);
   box-shadow: var(--shadow);
-
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
   text-align: center;
-
-  transition: transform .14s ease, box-shadow .14s ease;
-  -webkit-tap-highlight-color: transparent;
+  transition: transform .14s ease;
 }
 
 .category-card:active {
@@ -268,22 +182,17 @@ button {
 .category-icon {
   font-size: 27px;
   margin-bottom: 14px;
-  opacity: .9;
 }
 
 .category-title {
   font: 400 28px Georgia, "Times New Roman", serif;
-  letter-spacing: -.5px;
 }
 
 .category-count {
   margin-top: 9px;
-
-  font: 500 10px -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
-
+  font-size: 10px;
   letter-spacing: 1.6px;
   text-transform: uppercase;
-
   color: var(--muted);
 }
 
@@ -292,28 +201,20 @@ button {
 .progress-card {
   margin-top: 18px;
   min-height: 104px;
-
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
-
   background: var(--card);
   box-shadow: var(--shadow);
-
   display: flex;
   align-items: center;
-
   padding: 18px;
 }
 
 .progress-icon {
   width: 80px;
-
   border-right: 1px solid var(--line);
-
   margin-right: 20px;
-
   font-size: 28px;
-
   display: flex;
   justify-content: center;
 }
@@ -328,41 +229,24 @@ button {
 
 .progress-number {
   margin: 4px 0;
-
   font: 400 24px Georgia, "Times New Roman", serif;
 }
 
 .progress-small {
   font: 400 13px Georgia, "Times New Roman", serif;
-
   color: var(--muted);
-}
-
-.progress-arrow {
-  font-size: 28px;
 }
 
 /* RECENT */
 
 .section-head {
   display: flex;
-  align-items: end;
   justify-content: space-between;
-
   margin: 30px 0 12px;
 }
 
 .section-title {
   font: 400 25px Georgia, "Times New Roman", serif;
-}
-
-.see-all {
-  border: 0;
-  background: none;
-
-  color: var(--muted);
-
-  font: 400 14px Georgia, "Times New Roman", serif;
 }
 
 .recent-list {
@@ -372,19 +256,13 @@ button {
 }
 
 .recent-item {
-  min-height: 72px;
-
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
-
   background: var(--card);
   box-shadow: var(--shadow);
-
   display: flex;
   align-items: center;
-
   gap: 12px;
-
   padding: 9px;
 }
 
@@ -392,65 +270,48 @@ button {
 .item-thumb {
   width: 58px;
   height: 58px;
-
   border-radius: 12px;
-
   object-fit: cover;
-
   background: var(--soft);
-
-  flex: none;
 }
 
 .placeholder {
   width: 58px;
   height: 58px;
-
   border: 1px solid var(--line);
-  border-radius: 10px;
-
+  border-radius: 12px;
   display: grid;
   place-items: center;
-
   color: var(--muted);
-
-  flex: none;
 }
 
-.recent-main {
+.recent-main,
+.item-main {
   flex: 1;
   min-width: 0;
 }
 
-.recent-title {
+.recent-title,
+.item-title {
   font: 400 16px Georgia, "Times New Roman", serif;
-
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.recent-meta {
+.recent-meta,
+.item-note {
   margin-top: 4px;
-
-  font-size: 10px;
-
-  letter-spacing: 1px;
-
-  text-transform: uppercase;
-
+  font-size: 11px;
   color: var(--muted);
 }
 
 .check {
   width: 24px;
   height: 24px;
-
   border: 1px solid var(--line);
   border-radius: 50%;
-
   background: transparent;
-
   display: grid;
   place-items: center;
 }
@@ -458,7 +319,6 @@ button {
 .check.done {
   background: var(--inverse);
   color: var(--inverseText);
-
   border-color: var(--inverse);
 }
 
@@ -468,35 +328,19 @@ button {
   border: 0;
   background: transparent;
   color: var(--muted);
-  border-radius: 50%;
   font-size: 20px;
-  line-height: 1;
-  display: grid;
-  place-items: center;
-}
-
-.delete-btn:active {
-  background: var(--soft);
 }
 
 .empty {
   border: 1px solid var(--line);
   border-radius: 14px;
-
   min-height: 100px;
-
   background: var(--card);
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   text-align: center;
-
   color: var(--muted);
-
-  font: 400 14px Georgia, "Times New Roman", serif;
-
   padding: 20px;
 }
 
@@ -504,16 +348,14 @@ button {
 
 .category-top {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-
+  align-items: center;
   margin-bottom: 28px;
 }
 
 .category-top-left {
   display: flex;
   align-items: center;
-
   gap: 12px;
 }
 
@@ -523,67 +365,29 @@ button {
 
 .filters {
   display: grid;
-
-  grid-template-columns: repeat(3, 1fr);
-
+  grid-template-columns: repeat(3,1fr);
   gap: 8px;
-
   margin-bottom: 20px;
 }
 
 .filter {
   border: 1px solid var(--line);
-
   border-radius: 999px;
-
   padding: 10px 6px;
-
   background: transparent;
-
-  color: var(--text);
-
-  font-size: 12px;
 }
 
 .filter.active {
   background: var(--inverse);
   color: var(--inverseText);
-
-  border-color: var(--inverse);
 }
 
 .item {
-  min-height: 68px;
-
   display: flex;
   align-items: center;
-
   gap: 12px;
-
   border-bottom: 1px solid var(--line);
-
-  padding: 7px 0;
-}
-
-.item-main {
-  flex: 1;
-  min-width: 0;
-}
-
-.item-title {
-  font: 400 16px Georgia, "Times New Roman", serif;
-
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.item-note {
-  margin-top: 4px;
-
-  color: var(--muted);
-
-  font-size: 11px;
+  padding: 8px 0;
 }
 
 /* PROFILE */
@@ -591,21 +395,15 @@ button {
 .profile-head {
   display: flex;
   align-items: center;
-
   gap: 15px;
-
   margin: 18px 0 26px;
 }
 
 .avatar {
   width: 68px;
   height: 68px;
-
   border-radius: 50%;
-
   object-fit: cover;
-
-  border: 1px solid var(--line);
 }
 
 .profile-name {
@@ -613,26 +411,17 @@ button {
 }
 
 .profile-sub {
-  margin-top: 5px;
-
   color: var(--muted);
-
-  font: 400 12px Georgia, "Times New Roman", serif;
-
-  line-height: 1.4;
+  margin-top: 5px;
 }
 
 .stats {
   display: grid;
-
-  grid-template-columns: repeat(3, 1fr);
-
-  margin-bottom: 28px;
+  grid-template-columns: repeat(3,1fr);
 }
 
 .stat {
   text-align: center;
-
   border-right: 1px solid var(--line);
 }
 
@@ -645,10 +434,7 @@ button {
 }
 
 .stat-label {
-  margin-top: 4px;
-
   font-size: 10px;
-
   color: var(--muted);
 }
 
@@ -656,82 +442,42 @@ button {
 
 .bottom-nav {
   position: fixed;
-
   left: 50%;
   bottom: 0;
-
   transform: translateX(-50%);
-
-  width: min(540px, 100%);
-
+  width: min(540px,100%);
   min-height: 84px;
-
-  padding:
-    10px
-    34px
-    calc(14px + env(safe-area-inset-bottom));
-
-  background: color-mix(in srgb, var(--bg) 92%, transparent);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-
+  padding: 10px 34px calc(14px + env(safe-area-inset-bottom));
+  background: var(--bg);
   border-top: 1px solid var(--line);
-
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  z-index: 20;
 }
 
 .nav-btn {
-  min-width: 60px;
-
   border: 0;
-
   background: none;
-
-  color: var(--text);
-
-  font: 400 12px Georgia, "Times New Roman", serif;
-}
-
-.nav-symbol {
-  display: block;
-
-  margin-bottom: 5px;
-
-  font-size: 20px;
 }
 
 .add-main {
   width: 58px;
   height: 58px;
-
   border-radius: 50%;
-
   border: 1px solid var(--text);
-
   background: var(--inverse);
-
   color: var(--inverseText);
-
   font-size: 32px;
 }
 
-/* ADD MODAL */
+/* MODAL */
 
 .modal {
   display: none;
-
   position: fixed;
-
   inset: 0;
-
-  z-index: 50;
-
   background: rgba(0,0,0,.42);
-
+  z-index: 50;
   align-items: flex-end;
 }
 
@@ -741,83 +487,18 @@ button {
 
 .sheet {
   width: min(520px,100%);
-
   max-height: 92vh;
-
   overflow: auto;
-
   margin: auto;
-
   background: var(--bg);
-
   border-radius: 26px 26px 0 0;
-
-  padding:
-    22px
-    20px
-    calc(28px + env(safe-area-inset-bottom));
+  padding: 22px 20px calc(28px + env(safe-area-inset-bottom));
 }
 
 .sheet-head {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-
-  margin-bottom: 20px;
-}
-
-.sheet-title {
-  font: 400 23px Georgia, "Times New Roman", serif;
-}
-
-.text-btn {
-  border: 0;
-
-  background: none;
-
-  padding: 5px 0;
-}
-
-.auto-photo {
-  min-height: 88px;
-
-  border: 1px dashed var(--line);
-
-  border-radius: 14px;
-
-  display: flex;
   align-items: center;
-
-  gap: 13px;
-
-  padding: 12px;
-
-  margin-bottom: 16px;
-}
-
-.auto-preview {
-  width: 62px;
-  height: 62px;
-
-  object-fit: cover;
-
-  border-radius: 10px;
-
-  background: var(--soft);
-
-  display: none;
-}
-
-.auto-preview.visible {
-  display: block;
-}
-
-.auto-copy {
-  color: var(--muted);
-
-  font-size: 12px;
-
-  line-height: 1.45;
 }
 
 .field {
@@ -826,9 +507,7 @@ button {
 
 .label {
   font-size: 11px;
-
   color: var(--muted);
-
   margin-bottom: 6px;
 }
 
@@ -836,42 +515,46 @@ input,
 select,
 textarea {
   width: 100%;
-
   border: 1px solid var(--line);
-
   background: var(--card);
-
-  color: var(--text);
-
   border-radius: 11px;
-
   padding: 13px;
-
-  outline: none;
 }
 
 textarea {
   min-height: 85px;
+}
 
-  resize: none;
+.auto-photo {
+  min-height: 88px;
+  border: 1px dashed var(--line);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 12px;
+  margin: 16px 0;
+}
+
+.auto-preview {
+  width: 62px;
+  height: 62px;
+  object-fit: cover;
+  border-radius: 10px;
+  display: none;
+}
+
+.auto-preview.visible {
+  display: block;
 }
 
 .save-btn {
   width: 100%;
-
-  margin-top: 5px;
-
   border: 0;
-
   border-radius: 12px;
-
   background: var(--inverse);
-
   color: var(--inverseText);
-
   padding: 14px;
-
-  font-weight: 600;
 }
 
 </style>
@@ -881,682 +564,229 @@ textarea {
 
 <div class="app">
 
-<!-- HOME -->
-
 <section id="homeScreen" class="screen active">
 
-  <div class="topbar">
-
-    <span></span>
-
-    <button
-      class="icon-btn"
-      onclick="openProfile()"
-    >
-      ⚙︎
-    </button>
-
-  </div>
-
-
-  <div class="header">
-
-    <div
-      id="greeting"
-      class="greeting"
-    >
-      Good morning,
-    </div>
-
-    <div class="name">
-      Batu.
-    </div>
-
-    <div class="tagline">
-      “A more intentional you.”
-    </div>
-
-  </div>
-
-
-  <!-- THEME -->
-
-  <div class="theme-switch">
-
-    <button
-      id="lightBtn"
-      class="theme-btn"
-      onclick="setTheme('light')"
-    >
-      ☀︎ Light
-    </button>
-
-    <button
-      id="darkBtn"
-      class="theme-btn"
-      onclick="setTheme('dark')"
-    >
-      ☾ Dark
-    </button>
-
-  </div>
-
-
-  <!-- CATEGORIES -->
-
-  <div class="grid">
-
-    <button
-      class="category-card"
-      onclick="openCategory('Want')"
-    >
-
-      <div class="category-icon">
-        ◇
-      </div>
-
-      <div class="category-title">
-        Items
-      </div>
-
-      <div class="category-count">
-
-        <span id="WantCount">
-          0
-        </span>
-
-        items
-
-      </div>
-
-    </button>
-
-
-    <button
-      class="category-card"
-      onclick="openCategory('Go')"
-    >
-
-      <div class="category-icon">
-        ⌖
-      </div>
-
-      <div class="category-title">
-        Places
-      </div>
-
-      <div class="category-count">
-
-        <span id="GoCount">
-          0
-        </span>
-
-        items
-
-      </div>
-
-    </button>
-
-
-    <button
-      class="category-card"
-      onclick="openCategory('Do')"
-    >
-
-      <div class="category-icon">
-        ✦
-      </div>
-
-      <div class="category-title">
-        Activities
-      </div>
-
-      <div class="category-count">
-
-        <span id="DoCount">
-          0
-        </span>
-
-        items
-
-      </div>
-
-    </button>
-
-
-    <button
-      class="category-card"
-      onclick="openCategory('Watch')"
-    >
-
-      <div class="category-icon">
-        ◫
-      </div>
-
-      <div class="category-title">
-        Movies
-      </div>
-
-      <div class="category-count">
-
-        <span id="WatchCount">
-          0
-        </span>
-
-        items
-
-      </div>
-
-    </button>
-
-  </div>
-
-
-  <!-- PROGRESS -->
-
-  <div class="progress-card">
-
-    <div class="progress-icon">
-      ▂▅▇
-    </div>
-
-    <div class="progress-copy">
-
-      <div class="progress-label">
-        You've completed
-      </div>
-
-      <div class="progress-number">
-
-        <span id="completedCount">
-          0
-        </span>
-
-        milestones
-
-      </div>
-
-      <div class="progress-small">
-        Keep going.
-      </div>
-
-    </div>
-
-    <div class="progress-arrow">
-      ›
-    </div>
-
-  </div>
-
-
-  <!-- RECENT -->
-
-  <div class="section-head">
-
-    <div class="section-title">
-      Recent Activity
-    </div>
-
-    <button class="see-all">
-      See All
-    </button>
-
-  </div>
-
-  <div
-    id="recentList"
-    class="recent-list"
-  ></div>
+<div class="topbar">
+  <span></span>
+  <button class="icon-btn" onclick="openProfile()">⚙︎</button>
+</div>
+
+<div class="header">
+  <div id="greeting" class="greeting">Good morning,</div>
+  <div class="name">Batu.</div>
+  <div class="tagline">A more intentional you.</div>
+</div>
+
+<div class="theme-switch">
+  <button id="lightBtn" class="theme-btn" onclick="setTheme('light')">☀︎ Light</button>
+  <button id="darkBtn" class="theme-btn" onclick="setTheme('dark')">☾ Dark</button>
+</div>
+
+<div class="grid">
+
+<button class="category-card" onclick="openCategory('Want')">
+  <div class="category-icon">◇</div>
+  <div class="category-title">Items</div>
+  <div class="category-count"><span id="WantCount">0</span> items</div>
+</button>
+
+<button class="category-card" onclick="openCategory('Go')">
+  <div class="category-icon">⌖</div>
+  <div class="category-title">Places</div>
+  <div class="category-count"><span id="GoCount">0</span> places</div>
+</button>
+
+<button class="category-card" onclick="openCategory('Do')">
+  <div class="category-icon">✦</div>
+  <div class="category-title">Activities</div>
+  <div class="category-count"><span id="DoCount">0</span> activities</div>
+</button>
+
+<button class="category-card" onclick="openCategory('Watch')">
+  <div class="category-icon">◫</div>
+  <div class="category-title">Movies</div>
+  <div class="category-count"><span id="WatchCount">0</span> movies</div>
+</button>
+
+</div>
+
+<div class="progress-card">
+
+<div class="progress-icon">▂▅▇</div>
+
+<div class="progress-copy">
+  <div class="progress-label">You've completed</div>
+  <div class="progress-number"><span id="completedCount">0</span> milestones</div>
+  <div class="progress-small">Keep going.</div>
+</div>
+
+</div>
+
+<div class="section-head">
+  <div class="section-title">Recent Activity</div>
+</div>
+
+<div id="recentList" class="recent-list"></div>
 
 </section>
 
+<section id="categoryScreen" class="screen">
 
-<!-- CATEGORY -->
+<div class="category-top">
 
-<section
-  id="categoryScreen"
-  class="screen"
->
+<div class="category-top-left">
+  <button class="icon-btn" onclick="goHome()">←</button>
+  <div id="categoryTitle" class="category-screen-title"></div>
+</div>
 
-  <div class="category-top">
+<button class="icon-btn" onclick="openModal()">＋</button>
 
-    <div class="category-top-left">
+</div>
 
-      <button
-        class="icon-btn"
-        onclick="goHome()"
-      >
-        ←
-      </button>
-
-      <div
-        id="categoryTitle"
-        class="category-screen-title"
-      >
-        Want
-      </div>
-
-    </div>
-
-    <button
-      class="icon-btn"
-      onclick="openModal()"
-    >
-      ＋
-    </button>
-
-  </div>
-
-
-  <div
-    id="filters"
-    class="filters"
-  ></div>
-
-
-  <div id="itemsList"></div>
+<div id="filters" class="filters"></div>
+<div id="itemsList"></div>
 
 </section>
 
+<section id="profileScreen" class="screen">
 
-<!-- PROFILE -->
+<div class="topbar">
+  <button class="icon-btn" onclick="goHome()">←</button>
+</div>
 
-<section
-  id="profileScreen"
-  class="screen"
->
+<div class="profile-head">
 
-  <div class="topbar">
+<img src="icon.png" class="avatar">
 
-    <button
-      class="icon-btn"
-      onclick="goHome()"
-    >
-      ←
-    </button>
-
-    <span></span>
-
+<div>
+  <div class="profile-name">Batu</div>
+  <div class="profile-sub">
+    Ideas today.<br>
+    Experiences tomorrow.
   </div>
+</div>
 
+</div>
 
-  <div class="profile-head">
+<div class="stats">
 
-    <img
-      src="icon.png"
-      class="avatar"
-    >
+<div class="stat">
+  <div id="totalStat" class="stat-num">0</div>
+  <div class="stat-label">Total</div>
+</div>
 
-    <div>
+<div class="stat">
+  <div id="doneStat" class="stat-num">0</div>
+  <div class="stat-label">Completed</div>
+</div>
 
-      <div class="profile-name">
-        Batu
-      </div>
+<div class="stat">
+  <div id="openStat" class="stat-num">0</div>
+  <div class="stat-label">In Progress</div>
+</div>
 
-      <div class="profile-sub">
-        Ideas today.
-        <br>
-        Experiences tomorrow.
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <div class="stats">
-
-    <div class="stat">
-
-      <div
-        id="totalStat"
-        class="stat-num"
-      >
-        0
-      </div>
-
-      <div class="stat-label">
-        Total
-      </div>
-
-    </div>
-
-
-    <div class="stat">
-
-      <div
-        id="doneStat"
-        class="stat-num"
-      >
-        0
-      </div>
-
-      <div class="stat-label">
-        Completed
-      </div>
-
-    </div>
-
-
-    <div class="stat">
-
-      <div
-        id="openStat"
-        class="stat-num"
-      >
-        0
-      </div>
-
-      <div class="stat-label">
-        In Progress
-      </div>
-
-    </div>
-
-  </div>
+</div>
 
 </section>
 
 </div>
-
-
-<!-- BOTTOM NAV -->
 
 <nav class="bottom-nav">
 
-  <button
-    class="nav-btn"
-    onclick="goHome()"
-  >
+<button class="nav-btn" onclick="goHome()">
+  ⌂<br>Home
+</button>
 
-    <span class="nav-symbol">
-      ⌂
-    </span>
+<button class="add-main" onclick="openModal()">+</button>
 
-    Home
-
-  </button>
-
-
-  <button
-    class="add-main"
-    onclick="openModal()"
-  >
-    +
-  </button>
-
-
-  <button
-    class="nav-btn"
-    onclick="openProfile()"
-  >
-
-    <span class="nav-symbol">
-      ♙
-    </span>
-
-    Profile
-
-  </button>
+<button class="nav-btn" onclick="openProfile()">
+  ♙<br>Profile
+</button>
 
 </nav>
 
+<div id="modal" class="modal">
 
-<!-- ADD -->
+<div class="sheet">
 
-<div
-  id="modal"
-  class="modal"
->
+<div class="sheet-head">
+  <button onclick="closeModal()">Cancel</button>
+  <strong>Add milestone</strong>
+  <button onclick="addItem()">Add</button>
+</div>
 
-  <div class="sheet">
+<div class="auto-photo">
 
-    <div class="sheet-head">
+<img id="autoPreview" class="auto-preview">
 
-      <button
-        class="text-btn"
-        onclick="closeModal()"
-      >
-        Cancel
-      </button>
-
-      <div class="sheet-title">
-        Add milestone
-      </div>
-
-      <button
-        class="text-btn"
-        onclick="addItem()"
-      >
-        <b>Add</b>
-      </button>
-
-    </div>
-
-
-    <div class="auto-photo">
-
-      <img
-        id="autoPreview"
-        class="auto-preview"
-      >
-
-      <div
-        id="autoCopy"
-        class="auto-copy"
-      >
-        Add a title and Milestone will try to find a matching image automatically.
-      </div>
-
-    </div>
-
-
-    <div class="field">
-
-      <div class="label">
-        Title
-      </div>
-
-      <input
-        id="itemTitle"
-        placeholder="e.g. Lake Como"
-        oninput="schedulePreview()"
-      >
-
-    </div>
-
-
-    <div class="field">
-
-      <div class="label">
-        Category
-      </div>
-
-      <select id="itemCategory" onchange="schedulePreview()">
-
-        <option value="Want">
-          Want
-        </option>
-
-        <option value="Go">
-          Go
-        </option>
-
-        <option value="Do">
-          Do
-        </option>
-
-        <option value="Watch">
-          Watch
-        </option>
-
-      </select>
-
-    </div>
-
-
-    <div class="field">
-
-      <div class="label">
-        Notes
-      </div>
-
-      <textarea
-        id="itemNotes"
-        placeholder="Add details..."
-      ></textarea>
-
-    </div>
-
-
-    <div class="field">
-
-      <div class="label">
-        Date
-      </div>
-
-      <input
-        id="itemDate"
-        type="date"
-      >
-
-    </div>
-
-
-    <div class="field">
-
-      <div class="label">
-        Image URL (optional)
-      </div>
-
-      <input
-        id="itemImageUrl"
-        type="url"
-        placeholder="Paste an exact image URL if needed"
-        oninput="manualImagePreview()"
-      >
-
-    </div>
-
-
-    <div class="field">
-
-      <div class="label">
-        Link
-      </div>
-
-      <input
-        id="itemLink"
-        type="url"
-        placeholder="https://"
-      >
-
-    </div>
-
-
-    <button
-      class="save-btn"
-      onclick="addItem()"
-    >
-      Add milestone
-    </button>
-
-  </div>
+<div id="autoCopy">
+Add a title and Milestone will try to find a matching image automatically.
+</div>
 
 </div>
 
+<div class="field">
+<div class="label">Title</div>
+<input id="itemTitle" oninput="schedulePreview()" placeholder="e.g. Prada Paradigme">
+</div>
+
+<div class="field">
+<div class="label">Category</div>
+
+<select id="itemCategory" onchange="schedulePreview()">
+<option value="Want">Items</option>
+<option value="Go">Places</option>
+<option value="Do">Activities</option>
+<option value="Watch">Movies</option>
+</select>
+
+</div>
+
+<div class="field">
+<div class="label">Notes</div>
+<textarea id="itemNotes"></textarea>
+</div>
+
+<div class="field">
+<div class="label">Date</div>
+<input id="itemDate" type="date">
+</div>
+
+<div class="field">
+<div class="label">Image URL</div>
+<input id="itemImageUrl" type="url" oninput="manualImagePreview()">
+</div>
+
+<div class="field">
+<div class="label">Link</div>
+<input id="itemLink" type="url">
+</div>
+
+<button class="save-btn" onclick="addItem()">Add milestone</button>
+
+</div>
+</div>
 
 <script>
 
-/* =========================
-   DATA
-========================= */
-
 let items =
-JSON.parse(
-  localStorage.getItem("milestones")
-) || [];
+JSON.parse(localStorage.getItem("milestones")) || [];
 
+items = items.map((i,n)=>({
+  id: i.id || Date.now()+n,
+  title: i.title || "Untitled",
+  type: i.type || i.category || "Want",
+  done: Boolean(i.done || i.completed),
+  notes: i.notes || "",
+  date: i.date || "",
+  link: i.link || "",
+  image: i.image || ""
+}));
 
-items =
-items.map(
-  (i,n)=>({
-
-    id:
-      i.id ||
-      Date.now()+n,
-
-    title:
-      i.title ||
-      "Untitled",
-
-    type:
-      i.type ||
-      i.category ||
-      "Want",
-
-    done:
-      Boolean(
-        i.done ||
-        i.completed
-      ),
-
-    notes:
-      i.notes || "",
-
-    date:
-      i.date || "",
-
-    link:
-      i.link || "",
-
-    image:
-      i.image || ""
-
-  })
-);
-
-
-let currentCategory =
-"Want";
-
-
-let currentFilter =
-"all";
-
-
-let previewTimer =
-null;
-
-
-let previewImage =
-"";
-
-
-const labels = {
-
-  Want:{
-    open:"To Buy",
-    done:"Bought"
-  },
-
-  Go:{
-    open:"To Go",
-    done:"Visited"
-  },
-
-  Do:{
-    open:"To Do",
-    done:"Done"
-  },
-
-  Watch:{
-    open:"To Watch",
-    done:"Watched"
-  }
-
-};
-
+let currentCategory = "Want";
+let currentFilter = "all";
+let previewTimer = null;
+let previewImage = "";
 
 const categoryNames = {
   Want:"Items",
@@ -1565,146 +795,80 @@ const categoryNames = {
   Watch:"Movies"
 };
 
-
-/* =========================
-   SAVE
-========================= */
+const labels = {
+  Want:{open:"To Buy",done:"Bought"},
+  Go:{open:"To Go",done:"Visited"},
+  Do:{open:"To Do",done:"Done"},
+  Watch:{open:"To Watch",done:"Watched"}
+};
 
 function saveItems(){
-
   localStorage.setItem(
     "milestones",
     JSON.stringify(items)
   );
-
 }
-
-
-/* =========================
-   SAFE TEXT
-========================= */
 
 function escapeHtml(text){
 
-  return String(text)
-  .replace(
+  return String(text).replace(
     /[&<>"']/g,
     m=>({
-
       "&":"&amp;",
       "<":"&lt;",
       ">":"&gt;",
       '"':"&quot;",
       "'":"&#039;"
-
     }[m])
   );
 
 }
 
+function setTheme(theme,save=true){
 
-/* =========================
-   THEME
-========================= */
+  document.documentElement.setAttribute(
+    "data-theme",
+    theme
+  );
+
+  lightBtn.classList.toggle(
+    "active",
+    theme==="light"
+  );
+
+  darkBtn.classList.toggle(
+    "active",
+    theme==="dark"
+  );
+
+  if(save){
+    localStorage.setItem(
+      "milestoneTheme",
+      theme
+    );
+  }
+
+}
 
 function applySavedTheme(){
 
   const saved =
-  localStorage.getItem(
-    "milestoneTheme"
-  );
-
-
-  const theme =
-  saved === "dark"
-  ? "dark"
-  : "light";
-
+  localStorage.getItem("milestoneTheme");
 
   setTheme(
-    theme,
+    saved==="dark" ? "dark" : "light",
     false
   );
 
 }
 
+async function findImage(title,category="Want"){
 
-function setTheme(
-  theme,
-  save=true
-){
-
-  document
-  .documentElement
-  .setAttribute(
-    "data-theme",
-    theme
-  );
-
-
-  document
-  .getElementById(
-    "lightBtn"
-  )
-  .classList
-  .toggle(
-    "active",
-    theme==="light"
-  );
-
-
-  document
-  .getElementById(
-    "darkBtn"
-  )
-  .classList
-  .toggle(
-    "active",
-    theme==="dark"
-  );
-
-
-  const meta =
-  document.querySelector(
-    'meta[name="theme-color"]'
-  );
-
-
-  meta.setAttribute(
-    "content",
-    theme==="dark"
-    ? "#050505"
-    : "#F7F5F0"
-  );
-
-
-  if(save){
-
-    localStorage.setItem(
-      "milestoneTheme",
-      theme
-    );
-
-  }
-
-}
-
-
-/* =========================
-   AUTOMATIC IMAGE
-========================= */
-
-async function findImage(title, category="Want"){
-
-  if(
-    !title ||
-    title.trim().length < 2
-  ){
+  if(!title || title.trim().length < 2){
     return "";
   }
 
-  const cleanTitle =
-    title.trim();
+  const cleanTitle = title.trim();
 
   const suffix = {
     Want:"product",
@@ -1714,372 +878,181 @@ async function findImage(title, category="Want"){
   }[category] || "";
 
   const searchQuery =
-    `${cleanTitle} ${suffix}`.trim();
+  `${cleanTitle} ${suffix}`;
 
   const tokens =
-    cleanTitle
-    .toLowerCase()
-    .split(/\s+/)
-    .filter(t=>t.length > 2);
+  cleanTitle
+  .toLowerCase()
+  .split(/\s+/)
+  .filter(t=>t.length>2);
 
   try{
 
-    /* OPENVERSE FIRST:
-       usually better for concrete objects / places / posters */
-    const ovUrl =
-      "https://api.openverse.org/v1/images/?" +
-      "page_size=20" +
-      "&q=" +
-      encodeURIComponent(searchQuery);
+    const url =
+    "https://api.openverse.org/v1/images/?" +
+    "page_size=20&q=" +
+    encodeURIComponent(searchQuery);
 
-    const ovResponse =
-      await fetch(ovUrl);
+    const response =
+    await fetch(url);
 
-    if(ovResponse.ok){
+    if(response.ok){
 
-      const ovData =
-        await ovResponse.json();
+      const data =
+      await response.json();
 
       const results =
-        Array.isArray(ovData.results)
-        ? ovData.results
-        : [];
+      Array.isArray(data.results)
+      ? data.results
+      : [];
 
       const scored =
-        results
-        .map(r=>{
+      results
+      .map(r=>{
 
-          const haystack =
-            [
-              r.title,
-              r.tags?.map?.(t=>t.name).join(" "),
-              r.creator,
-              r.source
-            ]
-            .filter(Boolean)
-            .join(" ")
-            .toLowerCase();
+        const info =
+        [
+          r.title,
+          r.creator,
+          r.source,
+          r.tags?.map?.(t=>t.name).join(" ")
+        ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
 
-          const score =
-            tokens.reduce(
-              (sum,t)=>
-                sum +
-                (haystack.includes(t) ? 3 : 0),
-              0
-            ) +
-            (r.thumbnail ? 1 : 0);
+        const score =
+        tokens.reduce(
+          (sum,t)=>
+          sum + (info.includes(t) ? 3 : 0),
+          0
+        );
 
-          return {
-            url:
-              r.url ||
-              r.thumbnail ||
-              "",
-            score
-          };
+        return {
+          url:r.url || r.thumbnail || "",
+          score
+        };
 
-        })
-        .filter(r=>r.url)
-        .sort((a,b)=>b.score-a.score);
+      })
+      .filter(r=>r.url)
+      .sort((a,b)=>b.score-a.score);
 
       if(
         scored.length &&
-        scored[0].score >=
-        Math.max(2, tokens.length * 2)
+        scored[0].score >= 2
       ){
         return scored[0].url;
       }
 
     }
 
-  }
-  catch(error){
-    /* continue to fallback */
-  }
+  }catch(e){}
 
-  try{
-
-    /* WIKIMEDIA FALLBACK */
-    const wikiQuery =
-      category === "Go"
-      ? cleanTitle
-      : searchQuery;
-
-    const url =
-      "https://en.wikipedia.org/w/api.php" +
-      "?action=query" +
-      "&generator=search" +
-      "&gsrsearch=" +
-      encodeURIComponent(wikiQuery) +
-      "&gsrlimit=8" +
-      "&prop=pageimages" +
-      "&piprop=original" +
-      "&format=json" +
-      "&origin=*";
-
-    const response =
-      await fetch(url);
-
-    const data =
-      await response.json();
-
-    if(
-      !data.query ||
-      !data.query.pages
-    ){
-      return "";
-    }
-
-    const pages =
-      Object.values(
-        data.query.pages
-      );
-
-    const ranked =
-      pages
-      .filter(
-        p=>
-          p.original &&
-          p.original.source
-      )
-      .map(p=>{
-
-        const pageTitle =
-          String(p.title || "")
-          .toLowerCase();
-
-        const score =
-          tokens.reduce(
-            (sum,t)=>
-              sum +
-              (pageTitle.includes(t) ? 3 : 0),
-            0
-          );
-
-        return {
-          url:p.original.source,
-          score
-        };
-
-      })
-      .sort((a,b)=>b.score-a.score);
-
-    return (
-      ranked[0]?.url ||
-      ""
-    );
-
-  }
-  catch(error){
-
-    return "";
-
-  }
+  return "";
 
 }
 
-
-async function ensureImage(item){
+function ensureImage(item){
 
   if(item.image){
-
-    return item.image;
-
+    return;
   }
 
-
-  const found =
-  await findImage(
+  findImage(
     item.title,
     item.type
-  );
+  )
+  .then(found=>{
 
+    if(found){
 
-  if(found){
+      item.image = found;
 
-    item.image =
-    found;
+      saveItems();
+      updateCounts();
 
-
-    saveItems();
-
-
-    renderRecent();
-
-
-    if(
-      document
-      .getElementById(
-        "categoryScreen"
-      )
-      .classList
-      .contains(
-        "active"
-      )
-    ){
-
-      renderItems();
+      if(
+        categoryScreen.classList.contains("active")
+      ){
+        renderItems();
+      }
 
     }
 
-  }
-
-
-  return found;
+  });
 
 }
-
-
-/* PREVIEW WHILE TYPING */
 
 function schedulePreview(){
 
-  clearTimeout(
-    previewTimer
-  );
-
+  clearTimeout(previewTimer);
 
   const title =
-  document
-  .getElementById(
-    "itemTitle"
-  )
-  .value
-  .trim();
+  itemTitle.value.trim();
 
+  if(title.length < 3){
 
-  if(
-    title.length < 3
-  ){
-
-    previewImage =
-    "";
-
-
-    showPreview(
-      ""
-    );
-
+    previewImage = "";
+    showPreview("");
 
     return;
 
   }
 
-
   previewTimer =
-  setTimeout(
-    async()=>{
+  setTimeout(async()=>{
 
-      document
-      .getElementById(
-        "autoCopy"
-      )
-      .textContent =
-      "Finding a matching image...";
+    autoCopy.textContent =
+    "Finding a matching image...";
 
+    const found =
+    await findImage(
+      title,
+      itemCategory.value
+    );
 
-      const category =
-      document
-      .getElementById(
-        "itemCategory"
-      )
-      .value;
+    previewImage = found;
 
-      const found =
-      await findImage(
-        title,
-        category
-      );
+    showPreview(found);
 
-
-      previewImage =
-      found;
-
-
-      showPreview(
-        found
-      );
-
-    },
-    650
-  );
+  },650);
 
 }
 
-
 function showPreview(url){
-
-  const img =
-  document
-  .getElementById(
-    "autoPreview"
-  );
-
-
-  const copy =
-  document
-  .getElementById(
-    "autoCopy"
-  );
-
 
   if(url){
 
-    img.src =
-    url;
+    autoPreview.src = url;
+    autoPreview.classList.add("visible");
 
-
-    img.classList.add(
-      "visible"
-    );
-
-
-    copy.textContent =
+    autoCopy.textContent =
     "Image found automatically.";
 
-  }
+  }else{
 
-  else{
+    autoPreview.removeAttribute("src");
 
-    img.removeAttribute(
-      "src"
-    );
+    autoPreview.classList.remove("visible");
 
-
-    img.classList.remove(
-      "visible"
-    );
-
-
-    copy.textContent =
+    autoCopy.textContent =
     "Add a title and Milestone will try to find a matching image automatically.";
 
   }
 
 }
 
-
 function manualImagePreview(){
 
-  const value =
-  document
-  .getElementById(
-    "itemImageUrl"
-  )
-  .value
-  .trim();
+  const url =
+  itemImageUrl.value.trim();
 
-  if(value){
+  if(url){
 
-    previewImage =
-    value;
+    previewImage = url;
+    showPreview(url);
 
-    showPreview(
-      value
-    );
-
-  }
-
-  else{
+  }else{
 
     schedulePreview();
 
@@ -2087,432 +1060,179 @@ function manualImagePreview(){
 
 }
 
-
-/* =========================
-   GREETING
-========================= */
-
 function updateGreeting(){
 
   const hour =
   new Date().getHours();
 
+  let text = "Good evening,";
 
-  let text =
-  "Good evening,";
-
-
-  if(
-    hour < 12
-  ){
-
-    text =
-    "Good morning,";
-
+  if(hour < 12){
+    text = "Good morning,";
+  }
+  else if(hour < 18){
+    text = "Good afternoon,";
   }
 
-  else if(
-    hour < 18
-  ){
-
-    text =
-    "Good afternoon,";
-
-  }
-
-
-  document
-  .getElementById(
-    "greeting"
-  )
-  .textContent =
-  text;
+  greeting.textContent = text;
 
 }
-
-
-/* =========================
-   SCREEN
-========================= */
 
 function switchScreen(id){
 
   document
-  .querySelectorAll(
-    ".screen"
-  )
+  .querySelectorAll(".screen")
   .forEach(
-    screen=>
-    screen.classList.remove(
-      "active"
-    )
+    screen=>screen.classList.remove("active")
   );
-
 
   document
   .getElementById(id)
-  .classList.add(
-    "active"
-  );
+  .classList.add("active");
 
-
-  window.scrollTo(
-    0,
-    0
-  );
+  window.scrollTo(0,0);
 
 }
 
-
-/* =========================
-   COUNTS
-========================= */
-
 function updateCounts(){
 
-  [
-    "Want",
-    "Go",
-    "Do",
-    "Watch"
-  ]
-  .forEach(
-    category=>{
+  ["Want","Go","Do","Watch"]
+  .forEach(category=>{
 
-      const count =
-      items.filter(
-        i=>
-        i.type===category
-      ).length;
+    document
+    .getElementById(category+"Count")
+    .textContent =
+    items.filter(
+      i=>i.type===category
+    ).length;
 
-
-      document
-      .getElementById(
-        category+"Count"
-      )
-      .textContent =
-      count;
-
-    }
-  );
-
+  });
 
   const completed =
-  items.filter(
-    i=>i.done
-  ).length;
+  items.filter(i=>i.done).length;
 
-
-  document
-  .getElementById(
-    "completedCount"
-  )
-  .textContent =
-  completed;
-
-
-  document
-  .getElementById(
-    "totalStat"
-  )
-  .textContent =
-  items.length;
-
-
-  document
-  .getElementById(
-    "doneStat"
-  )
-  .textContent =
-  completed;
-
-
-  document
-  .getElementById(
-    "openStat"
-  )
-  .textContent =
-  items.length -
-  completed;
-
+  completedCount.textContent = completed;
+  totalStat.textContent = items.length;
+  doneStat.textContent = completed;
+  openStat.textContent =
+  items.length-completed;
 
   renderRecent();
 
 }
 
-
-/* =========================
-   RECENT
-========================= */
-
 function renderRecent(){
 
-  const box =
-  document
-  .getElementById(
-    "recentList"
-  );
-
-
   const recent =
-  items.slice(
-    0,
-    4
-  );
+  items.slice(0,4);
 
+  if(!recent.length){
 
-  if(
-    !recent.length
-  ){
-
-    box.innerHTML = `
-
+    recentList.innerHTML = `
       <div class="empty">
-
         Nothing saved yet.
-        <br>
-        Add something you want to remember.
+      </div>
+    `;
+
+    return;
+  }
+
+  recentList.innerHTML =
+  recent.map(item=>`
+
+    <div class="recent-item">
+
+      ${
+        item.image
+        ? `<img class="recent-thumb" src="${escapeHtml(item.image)}">`
+        : `<div class="placeholder">◌</div>`
+      }
+
+      <div class="recent-main">
+
+        <div class="recent-title">
+          ${escapeHtml(item.title)}
+        </div>
+
+        <div class="recent-meta">
+          ${categoryNames[item.type]}
+        </div>
 
       </div>
 
-    `;
+      <button
+        class="check ${item.done ? "done" : ""}"
+        onclick="toggleItem(${item.id})">
+        ${item.done ? "✓" : ""}
+      </button>
 
+      <button
+        class="delete-btn"
+        onclick="deleteItem(${item.id})">
+        ⋯
+      </button>
 
-    return;
+    </div>
 
-  }
-
-
-  box.innerHTML =
-  recent.map(
-    item=>{
-
-      const imagePart =
-      item.image
-
-      ? `
-
-        <img
-          class="recent-thumb"
-          src="${escapeHtml(item.image)}"
-        >
-
-      `
-
-      : `
-
-        <div class="placeholder">
-          ◌
-        </div>
-
-      `;
-
-
-      return `
-
-        <div class="recent-item">
-
-          ${imagePart}
-
-          <div class="recent-main">
-
-            <div class="recent-title">
-
-              ${escapeHtml(item.title)}
-
-            </div>
-
-            <div class="recent-meta">
-
-              ${escapeHtml(categoryNames[item.type] || item.type)}
-
-              ${
-                item.date
-                ? " · " +
-                escapeHtml(item.date)
-                : ""
-              }
-
-            </div>
-
-          </div>
-
-
-          <button
-            class="check ${
-              item.done
-              ? "done"
-              : ""
-            }"
-            onclick="toggleItem(${item.id})"
-          >
-
-            ${
-              item.done
-              ? "✓"
-              : ""
-            }
-
-          </button>
-
-          <button
-            class="delete-btn"
-            aria-label="Delete milestone"
-            title="Delete milestone"
-            onclick="deleteItem(${item.id})"
-          >
-            ⋯
-          </button>
-
-          <button
-            class="delete-btn"
-            aria-label="Delete milestone"
-            title="Delete milestone"
-            onclick="deleteItem(${item.id})"
-          >
-            ⋯
-          </button>
-
-        </div>
-
-      `;
-
-    }
-  ).join("");
-
+  `).join("");
 
   recent
-  .filter(
-    i=>!i.image
-  )
-  .slice(
-    0,
-    4
-  )
-  .forEach(
-    ensureImage
-  );
+  .filter(i=>!i.image)
+  .forEach(ensureImage);
 
 }
-
-
-/* =========================
-   HOME
-========================= */
 
 function goHome(){
 
-  switchScreen(
-    "homeScreen"
-  );
-
-
+  switchScreen("homeScreen");
   updateCounts();
 
 }
-
-
-/* =========================
-   PROFILE
-========================= */
 
 function openProfile(){
 
   updateCounts();
-
-
-  switchScreen(
-    "profileScreen"
-  );
+  switchScreen("profileScreen");
 
 }
 
+function openCategory(category){
 
-/* =========================
-   CATEGORY
-========================= */
+  currentCategory = category;
+  currentFilter = "all";
 
-function openCategory(
-  category
-){
-
-  currentCategory =
-  category;
-
-
-  currentFilter =
-  "all";
-
-
-  document
-  .getElementById(
-    "categoryTitle"
-  )
-  .textContent =
-  categoryNames[category] || category;
-
+  categoryTitle.textContent =
+  categoryNames[category];
 
   renderFilters();
-
-
   renderItems();
 
-
-  switchScreen(
-    "categoryScreen"
-  );
+  switchScreen("categoryScreen");
 
 }
-
-
-/* FILTERS */
 
 function renderFilters(){
 
   const l =
-  labels[
-    currentCategory
-  ];
+  labels[currentCategory];
 
-
-  document
-  .getElementById(
-    "filters"
-  )
-  .innerHTML = `
+  filters.innerHTML = `
 
     <button
-      class="filter ${
-        currentFilter==="all"
-        ? "active"
-        : ""
-      }"
-      onclick="setFilter('all')"
-    >
+      class="filter ${currentFilter==="all" ? "active" : ""}"
+      onclick="setFilter('all')">
       All
     </button>
 
-
     <button
-      class="filter ${
-        currentFilter==="open"
-        ? "active"
-        : ""
-      }"
-      onclick="setFilter('open')"
-    >
+      class="filter ${currentFilter==="open" ? "active" : ""}"
+      onclick="setFilter('open')">
       ${l.open}
     </button>
 
-
     <button
-      class="filter ${
-        currentFilter==="done"
-        ? "active"
-        : ""
-      }"
-      onclick="setFilter('done')"
-    >
+      class="filter ${currentFilter==="done" ? "active" : ""}"
+      onclick="setFilter('done')">
       ${l.done}
     </button>
 
@@ -2520,505 +1240,218 @@ function renderFilters(){
 
 }
 
+function setFilter(filter){
 
-function setFilter(
-  filter
-){
-
-  currentFilter =
-  filter;
-
+  currentFilter = filter;
 
   renderFilters();
-
-
   renderItems();
 
 }
-
-
-/* ITEMS */
 
 function renderItems(){
 
   let filtered =
   items.filter(
-    i=>
-    i.type===
-    currentCategory
+    i=>i.type===currentCategory
   );
 
-
-  if(
-    currentFilter===
-    "open"
-  ){
-
+  if(currentFilter==="open"){
     filtered =
-    filtered.filter(
-      i=>!i.done
-    );
-
+    filtered.filter(i=>!i.done);
   }
 
-
-  if(
-    currentFilter===
-    "done"
-  ){
-
+  if(currentFilter==="done"){
     filtered =
-    filtered.filter(
-      i=>i.done
-    );
-
+    filtered.filter(i=>i.done);
   }
 
+  if(!filtered.length){
 
-  const list =
-  document
-  .getElementById(
-    "itemsList"
-  );
-
-
-  if(
-    !filtered.length
-  ){
-
-    list.innerHTML = `
-
+    itemsList.innerHTML = `
       <div class="empty">
-
         Nothing here yet.
+      </div>
+    `;
+
+    return;
+  }
+
+  itemsList.innerHTML =
+  filtered.map(item=>`
+
+    <div class="item">
+
+      ${
+        item.image
+        ? `<img class="item-thumb" src="${escapeHtml(item.image)}">`
+        : `<div class="placeholder">◌</div>`
+      }
+
+      <div class="item-main">
+
+        <div class="item-title">
+          ${escapeHtml(item.title)}
+        </div>
+
+        ${
+          item.notes
+          ? `<div class="item-note">${escapeHtml(item.notes)}</div>`
+          : ""
+        }
 
       </div>
 
-    `;
+      <button
+        class="check ${item.done ? "done" : ""}"
+        onclick="toggleItem(${item.id})">
+        ${item.done ? "✓" : ""}
+      </button>
 
+      <button
+        class="delete-btn"
+        onclick="deleteItem(${item.id})">
+        ⋯
+      </button>
 
-    return;
+    </div>
 
-  }
-
-
-  list.innerHTML =
-  filtered.map(
-    item=>{
-
-      const imagePart =
-      item.image
-
-      ? `
-
-        <img
-          class="item-thumb"
-          src="${escapeHtml(item.image)}"
-        >
-
-      `
-
-      : `
-
-        <div class="placeholder">
-          ◌
-        </div>
-
-      `;
-
-
-      return `
-
-        <div class="item">
-
-          ${imagePart}
-
-
-          <div class="item-main">
-
-            <div class="item-title">
-
-              ${escapeHtml(item.title)}
-
-            </div>
-
-
-            ${
-              item.notes
-
-              ? `
-
-                <div class="item-note">
-
-                  ${escapeHtml(item.notes)}
-
-                </div>
-
-              `
-
-              : ""
-            }
-
-          </div>
-
-
-          <button
-            class="check ${
-              item.done
-              ? "done"
-              : ""
-            }"
-            onclick="toggleItem(${item.id})"
-          >
-
-            ${
-              item.done
-              ? "✓"
-              : ""
-            }
-
-          </button>
-
-        </div>
-
-      `;
-
-    }
-  ).join("");
-
+  `).join("");
 
   filtered
-  .filter(
-    i=>!i.image
-  )
-  .slice(
-    0,
-    5
-  )
-  .forEach(
-    ensureImage
-  );
+  .filter(i=>!i.image)
+  .forEach(ensureImage);
 
 }
-
-
-/* =========================
-   COMPLETE
-========================= */
 
 function toggleItem(id){
 
   const item =
-  items.find(
-    i=>i.id===id
-  );
-
+  items.find(i=>i.id===id);
 
   if(!item){
     return;
   }
 
-
-  item.done =
-  !item.done;
-
+  item.done = !item.done;
 
   saveItems();
-
-
   updateCounts();
-
-
-  if(
-    document
-    .getElementById(
-      "categoryScreen"
-    )
-    .classList
-    .contains(
-      "active"
-    )
-  ){
-
-    renderItems();
-
-  }
+  renderItems();
 
 }
-
 
 function deleteItem(id){
 
   const item =
-  items.find(
-    i=>i.id===id
-  );
+  items.find(i=>i.id===id);
 
   if(!item){
     return;
   }
 
   const confirmed =
-  window.confirm(
-    `Delete "${item.title}"?`
-  );
+  confirm(`Delete "${item.title}"?`);
 
   if(!confirmed){
     return;
   }
 
   items =
-  items.filter(
-    i=>i.id!==id
-  );
+  items.filter(i=>i.id!==id);
 
   saveItems();
-
   updateCounts();
 
   if(
-    document
-    .getElementById(
-      "categoryScreen"
-    )
-    .classList
-    .contains(
-      "active"
-    )
+    categoryScreen.classList.contains("active")
   ){
     renderItems();
   }
 
 }
 
-
-/* =========================
-   MODAL
-========================= */
-
 function openModal(){
 
-  previewImage =
-  "";
+  previewImage = "";
 
+  itemTitle.value = "";
+  itemNotes.value = "";
+  itemDate.value = "";
+  itemImageUrl.value = "";
+  itemLink.value = "";
 
-  document
-  .getElementById(
-    "itemTitle"
-  )
-  .value =
-  "";
-
-
-  document
-  .getElementById(
-    "itemNotes"
-  )
-  .value =
-  "";
-
-
-  document
-  .getElementById(
-    "itemDate"
-  )
-  .value =
-  "";
-
-
-  document
-  .getElementById(
-    "itemImageUrl"
-  )
-  .value =
-  "";
-
-
-  document
-  .getElementById(
-    "itemLink"
-  )
-  .value =
-  "";
-
-
-  document
-  .getElementById(
-    "itemCategory"
-  )
-  .value =
+  itemCategory.value =
   currentCategory;
 
+  showPreview("");
 
-  showPreview(
-    ""
-  );
-
-
-  document
-  .getElementById(
-    "modal"
-  )
-  .classList.add(
-    "active"
-  );
+  modal.classList.add("active");
 
 }
-
 
 function closeModal(){
 
-  document
-  .getElementById(
-    "modal"
-  )
-  .classList.remove(
-    "active"
-  );
+  modal.classList.remove("active");
 
 }
-
-
-/* =========================
-   ADD
-========================= */
 
 async function addItem(){
 
   const title =
-  document
-  .getElementById(
-    "itemTitle"
-  )
-  .value
-  .trim();
-
+  itemTitle.value.trim();
 
   if(!title){
     return;
   }
 
-
-  const type =
-  document
-  .getElementById(
-    "itemCategory"
-  )
-  .value;
-
-
-  const notes =
-  document
-  .getElementById(
-    "itemNotes"
-  )
-  .value
-  .trim();
-
-
-  const date =
-  document
-  .getElementById(
-    "itemDate"
-  )
-  .value;
-
-
-  const manualImage =
-  document
-  .getElementById(
-    "itemImageUrl"
-  )
-  .value
-  .trim();
-
-
-  const link =
-  document
-  .getElementById(
-    "itemLink"
-  )
-  .value
-  .trim();
-
-
   const item = {
 
-    id:
-    Date.now(),
+    id:Date.now(),
 
     title,
 
-    type,
+    type:itemCategory.value,
 
-    done:
-    false,
+    done:false,
 
-    notes,
+    notes:itemNotes.value.trim(),
 
-    date,
+    date:itemDate.value,
 
-    link,
+    link:itemLink.value.trim(),
 
     image:
-    manualImage ||
-    previewImage ||
-    ""
+      itemImageUrl.value.trim() ||
+      previewImage ||
+      ""
 
   };
 
-
-  items.unshift(
-    item
-  );
-
+  items.unshift(item);
 
   saveItems();
 
-
   closeModal();
 
-
   currentCategory =
-  type;
-
+  item.type;
 
   updateCounts();
+  openCategory(item.type);
 
-
-  openCategory(
-    type
-  );
-
-
-  if(
-    !item.image
-  ){
-
-    await ensureImage(
-      item
-    );
-
+  if(!item.image){
+    ensureImage(item);
   }
 
 }
 
-
-/* =========================
-   START
-========================= */
-
 saveItems();
-
 applySavedTheme();
-
 updateGreeting();
-
 updateCounts();
 
 </script>
 
 </body>
 </html>
-Milestone_redesign.html
-HTML
