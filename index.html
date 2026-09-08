@@ -20,25 +20,25 @@
 }
 
 :root {
-  --bg: #f7f5f0;
-  --card: #fbfaf7;
-  --soft: #eeeae4;
+  --bg: #F7F5F0;
+  --card: #FBFAF7;
+  --soft: #EEEAE4;
   --text: #111111;
-  --muted: #77736d;
-  --line: #d1ccc5;
+  --muted: #77736D;
+  --line: #D1CCC5;
   --inverse: #111111;
-  --inverseText: #ffffff;
+  --inverseText: #FFFFFF;
   --shadow: 0 12px 30px rgba(0,0,0,.06);
 }
 
 html[data-theme="dark"] {
   --bg: #050505;
-  --card: #0b0b0b;
+  --card: #0B0B0B;
   --soft: #141414;
-  --text: #f4f1ec;
-  --muted: #9f9991;
+  --text: #F4F1EC;
+  --muted: #9F9991;
   --line: #393633;
-  --inverse: #f4f1ec;
+  --inverse: #F4F1EC;
   --inverseText: #111111;
   --shadow: 0 12px 30px rgba(0,0,0,.35);
 }
@@ -67,7 +67,8 @@ button {
 .app {
   width: min(100%, 540px);
   min-height: 100vh;
-  margin: 0 auto;
+  margin: auto;
+
   padding:
     calc(env(safe-area-inset-top) + 24px)
     20px
@@ -81,6 +82,8 @@ button {
 .screen.active {
   display: block;
 }
+
+/* HEADER */
 
 .topbar {
   display: flex;
@@ -101,13 +104,13 @@ button {
 }
 
 .greeting {
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: Georgia, serif;
   font-size: 22px;
 }
 
 .name {
   margin-top: 2px;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: Georgia, serif;
   font-size: 52px;
   line-height: .96;
   letter-spacing: -2px;
@@ -121,13 +124,18 @@ button {
   text-transform: uppercase;
 }
 
+/* THEME */
+
 .theme-switch {
   width: 250px;
   margin: 28px 0 24px;
   padding: 4px;
+
   border: 1px solid var(--line);
   border-radius: 999px;
+
   background: var(--soft);
+
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 4px;
@@ -137,6 +145,7 @@ button {
   border: 0;
   border-radius: 999px;
   padding: 10px;
+
   background: transparent;
   color: var(--muted);
 }
@@ -146,6 +155,8 @@ button {
   color: var(--inverseText);
 }
 
+/* CATEGORIES */
+
 .grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -154,16 +165,21 @@ button {
 
 .category-card {
   height: 168px;
+
   border: 1px solid var(--line);
   border-radius: 24px;
+
   background: var(--card);
   color: var(--text);
+
   box-shadow: var(--shadow);
+
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  transition: .15s ease;
+
+  transition: transform .15s ease;
 }
 
 .category-card:active {
@@ -176,34 +192,45 @@ button {
 }
 
 .category-title {
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: Georgia, serif;
   font-size: 28px;
 }
 
 .category-count {
   margin-top: 9px;
+
   color: var(--muted);
+
   font-size: 10px;
   letter-spacing: 1.5px;
   text-transform: uppercase;
 }
 
+/* PROGRESS */
+
 .progress-card {
   margin-top: 18px;
   min-height: 104px;
+
   border: 1px solid var(--line);
   border-radius: 24px;
+
   background: var(--card);
+
   box-shadow: var(--shadow);
+
   display: flex;
   align-items: center;
+
   padding: 18px;
 }
 
 .progress-icon {
   width: 76px;
+
   margin-right: 20px;
   border-right: 1px solid var(--line);
+
   font-size: 26px;
   text-align: center;
 }
@@ -215,6 +242,7 @@ button {
 
 .progress-number {
   margin: 4px 0;
+
   font-family: Georgia, serif;
   font-size: 24px;
 }
@@ -224,6 +252,8 @@ button {
   font-size: 12px;
 }
 
+/* SECTION */
+
 .section-head {
   margin: 30px 0 12px;
 }
@@ -232,6 +262,8 @@ button {
   font-family: Georgia, serif;
   font-size: 25px;
 }
+
+/* LIST */
 
 .recent-list {
   display: flex;
@@ -243,10 +275,14 @@ button {
   display: flex;
   align-items: center;
   gap: 12px;
+
   padding: 9px;
+
   border: 1px solid var(--line);
   border-radius: 16px;
+
   background: var(--card);
+
   box-shadow: var(--shadow);
 }
 
@@ -254,21 +290,30 @@ button {
 .item-thumb {
   width: 58px;
   height: 58px;
+
   border-radius: 12px;
+
   object-fit: cover;
+
   background: var(--soft);
+
   flex: none;
 }
 
 .placeholder {
   width: 58px;
   height: 58px;
+
   border: 1px solid var(--line);
   border-radius: 12px;
+
   background: var(--soft);
+
   display: grid;
   place-items: center;
+
   color: var(--muted);
+
   flex: none;
 }
 
@@ -282,6 +327,7 @@ button {
 .item-title {
   font-family: Georgia, serif;
   font-size: 16px;
+
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -290,6 +336,7 @@ button {
 .recent-meta,
 .item-note {
   margin-top: 4px;
+
   color: var(--muted);
   font-size: 11px;
 }
@@ -303,16 +350,21 @@ button {
 .check {
   width: 26px;
   height: 26px;
+
   border: 1px solid var(--line);
   border-radius: 50%;
+
   background: transparent;
+
   display: grid;
   place-items: center;
+
   flex: none;
 }
 
 .check.done {
   border-color: var(--inverse);
+
   background: var(--inverse);
   color: var(--inverseText);
 }
@@ -320,28 +372,41 @@ button {
 .delete-btn {
   width: 32px;
   height: 32px;
+
   border: 0;
+
   background: transparent;
+
   color: var(--muted);
+
   font-size: 20px;
 }
 
 .empty {
   min-height: 110px;
+
   padding: 20px;
+
   border: 1px solid var(--line);
   border-radius: 16px;
+
   background: var(--card);
+
   color: var(--muted);
+
   display: grid;
   place-items: center;
+
   text-align: center;
 }
+
+/* CATEGORY */
 
 .category-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   margin-bottom: 28px;
 }
 
@@ -359,19 +424,24 @@ button {
 .filters {
   display: grid;
   grid-template-columns: repeat(3,1fr);
+
   gap: 8px;
+
   margin-bottom: 20px;
 }
 
 .filter {
   border: 1px solid var(--line);
   border-radius: 999px;
+
   padding: 10px 6px;
+
   background: transparent;
 }
 
 .filter.active {
   border-color: var(--inverse);
+
   background: var(--inverse);
   color: var(--inverseText);
 }
@@ -379,23 +449,32 @@ button {
 .item {
   display: flex;
   align-items: center;
+
   gap: 12px;
+
   padding: 9px 0;
+
   border-bottom: 1px solid var(--line);
 }
+
+/* PROFILE */
 
 .profile-head {
   display: flex;
   align-items: center;
+
   gap: 15px;
+
   margin: 18px 0 26px;
 }
 
 .avatar {
   width: 68px;
   height: 68px;
+
   border: 1px solid var(--line);
   border-radius: 50%;
+
   object-fit: cover;
 }
 
@@ -406,7 +485,9 @@ button {
 
 .profile-sub {
   margin-top: 5px;
+
   color: var(--muted);
+
   font-size: 12px;
   line-height: 1.5;
 }
@@ -432,57 +513,92 @@ button {
 
 .stat-label {
   margin-top: 4px;
+
   color: var(--muted);
   font-size: 10px;
 }
 
+/* NAV */
+
 .bottom-nav {
   position: fixed;
+
   left: 50%;
   bottom: 0;
+
   transform: translateX(-50%);
-  width: min(540px, 100%);
+
+  width: min(540px,100%);
+
   min-height: 84px;
+
   padding:
-    10px 34px
+    10px
+    34px
     calc(14px + env(safe-area-inset-bottom));
+
   border-top: 1px solid var(--line);
-  background: var(--bg);
+
+  background: rgba(247,245,240,.92);
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   z-index: 20;
+}
+
+html[data-theme="dark"] .bottom-nav {
+  background: rgba(5,5,5,.92);
 }
 
 .nav-btn {
   min-width: 60px;
+
   border: 0;
+
   background: transparent;
+
   font-size: 12px;
 }
 
 .nav-symbol {
   display: block;
+
   margin-bottom: 5px;
+
   font-size: 20px;
 }
 
 .add-main {
   width: 58px;
   height: 58px;
+
   border: 1px solid var(--text);
   border-radius: 50%;
+
   background: var(--inverse);
   color: var(--inverseText);
+
   font-size: 32px;
 }
 
+/* MODAL */
+
 .modal {
   display: none;
+
   position: fixed;
+
   inset: 0;
+
   z-index: 50;
+
   background: rgba(0,0,0,.45);
+
   align-items: flex-end;
 }
 
@@ -492,13 +608,20 @@ button {
 
 .sheet {
   width: min(540px,100%);
+
   max-height: 92vh;
+
   overflow: auto;
+
   margin: 0 auto;
+
   padding:
-    22px 20px
+    22px
+    20px
     calc(28px + env(safe-area-inset-bottom));
+
   border-radius: 26px 26px 0 0;
+
   background: var(--bg);
 }
 
@@ -506,6 +629,7 @@ button {
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   margin-bottom: 20px;
 }
 
@@ -516,26 +640,36 @@ button {
 
 .text-btn {
   border: 0;
+
   background: transparent;
+
   padding: 5px 0;
 }
 
 .auto-photo {
   min-height: 88px;
+
   margin-bottom: 16px;
+
   padding: 12px;
+
   border: 1px dashed var(--line);
   border-radius: 14px;
+
   display: flex;
   align-items: center;
+
   gap: 13px;
 }
 
 .auto-preview {
   display: none;
+
   width: 62px;
   height: 62px;
+
   border-radius: 10px;
+
   object-fit: cover;
 }
 
@@ -545,6 +679,7 @@ button {
 
 .auto-copy {
   color: var(--muted);
+
   font-size: 12px;
   line-height: 1.45;
 }
@@ -555,7 +690,9 @@ button {
 
 .label {
   margin-bottom: 6px;
+
   color: var(--muted);
+
   font-size: 11px;
 }
 
@@ -563,27 +700,37 @@ input,
 select,
 textarea {
   width: 100%;
+
   padding: 13px;
+
   border: 1px solid var(--line);
   border-radius: 11px;
+
   outline: none;
+
   background: var(--card);
   color: var(--text);
 }
 
 textarea {
   min-height: 85px;
+
   resize: none;
 }
 
 .save-btn {
   width: 100%;
+
   margin-top: 5px;
+
   padding: 14px;
+
   border: 0;
   border-radius: 12px;
+
   background: var(--inverse);
   color: var(--inverseText);
+
   font-weight: 600;
 }
 </style>
@@ -595,135 +742,281 @@ textarea {
 
 <section id="homeScreen" class="screen active">
 
-  <div class="topbar">
-    <span></span>
-    <button class="icon-btn" id="profileTopBtn">⚙︎</button>
-  </div>
+<div class="topbar">
 
-  <div class="header">
-    <div id="greeting" class="greeting">Good morning,</div>
-    <div class="name">Batu.</div>
-    <div class="tagline">A more intentional you.</div>
-  </div>
+<span></span>
 
-  <div class="theme-switch">
-    <button id="lightBtn" class="theme-btn">☀︎ Light</button>
-    <button id="darkBtn" class="theme-btn">☾ Dark</button>
-  </div>
+<button
+  class="icon-btn"
+  onclick="openProfile()">
+⚙︎
+</button>
 
-  <div class="grid">
+</div>
 
-    <button class="category-card" data-category="Want">
-      <div class="category-icon">◇</div>
-      <div class="category-title">Items</div>
-      <div class="category-count">
-        <span id="WantCount">0</span> items
-      </div>
-    </button>
+<div class="header">
 
-    <button class="category-card" data-category="Go">
-      <div class="category-icon">⌖</div>
-      <div class="category-title">Places</div>
-      <div class="category-count">
-        <span id="GoCount">0</span> places
-      </div>
-    </button>
+<div
+  id="greeting"
+  class="greeting">
+Good morning,
+</div>
 
-    <button class="category-card" data-category="Do">
-      <div class="category-icon">✦</div>
-      <div class="category-title">Activities</div>
-      <div class="category-count">
-        <span id="DoCount">0</span> activities
-      </div>
-    </button>
+<div class="name">
+Batu.
+</div>
 
-    <button class="category-card" data-category="Watch">
-      <div class="category-icon">◫</div>
-      <div class="category-title">Movies</div>
-      <div class="category-count">
-        <span id="WatchCount">0</span> movies
-      </div>
-    </button>
+<div class="tagline">
+A more intentional you.
+</div>
 
-  </div>
+</div>
 
-  <div class="progress-card">
-    <div class="progress-icon">▂▅▇</div>
-    <div>
-      <div class="progress-label">You've completed</div>
-      <div class="progress-number">
-        <span id="completedCount">0</span> milestones
-      </div>
-      <div class="progress-small">Keep going.</div>
-    </div>
-  </div>
+<div class="theme-switch">
 
-  <div class="section-head">
-    <div class="section-title">Recent Activity</div>
-  </div>
+<button
+  id="lightBtn"
+  class="theme-btn"
+  onclick="setTheme('light')">
+☀︎ Light
+</button>
 
-  <div id="recentList" class="recent-list"></div>
+<button
+  id="darkBtn"
+  class="theme-btn"
+  onclick="setTheme('dark')">
+☾ Dark
+</button>
+
+</div>
+
+<div class="grid">
+
+<button
+  class="category-card"
+  onclick="openCategory('Want')">
+
+<div class="category-icon">◇</div>
+
+<div class="category-title">
+Items
+</div>
+
+<div class="category-count">
+<span id="WantCount">0</span> items
+</div>
+
+</button>
+
+<button
+  class="category-card"
+  onclick="openCategory('Go')">
+
+<div class="category-icon">⌖</div>
+
+<div class="category-title">
+Places
+</div>
+
+<div class="category-count">
+<span id="GoCount">0</span> places
+</div>
+
+</button>
+
+<button
+  class="category-card"
+  onclick="openCategory('Do')">
+
+<div class="category-icon">✦</div>
+
+<div class="category-title">
+Activities
+</div>
+
+<div class="category-count">
+<span id="DoCount">0</span> activities
+</div>
+
+</button>
+
+<button
+  class="category-card"
+  onclick="openCategory('Watch')">
+
+<div class="category-icon">◫</div>
+
+<div class="category-title">
+Movies
+</div>
+
+<div class="category-count">
+<span id="WatchCount">0</span> movies
+</div>
+
+</button>
+
+</div>
+
+<div class="progress-card">
+
+<div class="progress-icon">
+▂▅▇
+</div>
+
+<div>
+
+<div class="progress-label">
+You've completed
+</div>
+
+<div class="progress-number">
+<span id="completedCount">0</span> milestones
+</div>
+
+<div class="progress-small">
+Keep going.
+</div>
+
+</div>
+
+</div>
+
+<div class="section-head">
+
+<div class="section-title">
+Recent Activity
+</div>
+
+</div>
+
+<div
+  id="recentList"
+  class="recent-list">
+</div>
 
 </section>
 
-<section id="categoryScreen" class="screen">
+<section
+  id="categoryScreen"
+  class="screen">
 
-  <div class="category-top">
+<div class="category-top">
 
-    <div class="category-top-left">
-      <button class="icon-btn" id="categoryBackBtn">←</button>
-      <div id="categoryTitle" class="category-screen-title"></div>
-    </div>
+<div class="category-top-left">
 
-    <button class="icon-btn" id="categoryAddBtn">＋</button>
+<button
+  class="icon-btn"
+  onclick="goHome()">
+←
+</button>
 
-  </div>
+<div
+  id="categoryTitle"
+  class="category-screen-title">
+</div>
 
-  <div id="filters" class="filters"></div>
+</div>
 
-  <div id="itemsList"></div>
+<button
+  class="icon-btn"
+  onclick="openModal()">
+＋
+</button>
+
+</div>
+
+<div
+  id="filters"
+  class="filters">
+</div>
+
+<div id="itemsList"></div>
 
 </section>
 
-<section id="profileScreen" class="screen">
+<section
+  id="profileScreen"
+  class="screen">
 
-  <div class="topbar">
-    <button class="icon-btn" id="profileBackBtn">←</button>
-    <span></span>
-  </div>
+<div class="topbar">
 
-  <div class="profile-head">
+<button
+  class="icon-btn"
+  onclick="goHome()">
+←
+</button>
 
-    <img src="icon.png" class="avatar" alt="Milestone">
+<span></span>
 
-    <div>
-      <div class="profile-name">Batu</div>
-      <div class="profile-sub">
-        Ideas today.<br>
-        Experiences tomorrow.
-      </div>
-    </div>
+</div>
 
-  </div>
+<div class="profile-head">
 
-  <div class="stats">
+<img
+  src="icon.png"
+  class="avatar">
 
-    <div class="stat">
-      <div id="totalStat" class="stat-num">0</div>
-      <div class="stat-label">Total</div>
-    </div>
+<div>
 
-    <div class="stat">
-      <div id="doneStat" class="stat-num">0</div>
-      <div class="stat-label">Completed</div>
-    </div>
+<div class="profile-name">
+Batu
+</div>
 
-    <div class="stat">
-      <div id="openStat" class="stat-num">0</div>
-      <div class="stat-label">In Progress</div>
-    </div>
+<div class="profile-sub">
+Ideas today.<br>
+Experiences tomorrow.
+</div>
 
-  </div>
+</div>
+
+</div>
+
+<div class="stats">
+
+<div class="stat">
+
+<div
+  id="totalStat"
+  class="stat-num">
+0
+</div>
+
+<div class="stat-label">
+Total
+</div>
+
+</div>
+
+<div class="stat">
+
+<div
+  id="doneStat"
+  class="stat-num">
+0
+</div>
+
+<div class="stat-label">
+Completed
+</div>
+
+</div>
+
+<div class="stat">
+
+<div
+  id="openStat"
+  class="stat-num">
+0
+</div>
+
+<div class="stat-label">
+In Progress
+</div>
+
+</div>
+
+</div>
 
 </section>
 
@@ -731,653 +1024,510 @@ textarea {
 
 <nav class="bottom-nav">
 
-  <button class="nav-btn" id="homeNavBtn">
-    <span class="nav-symbol">⌂</span>
-    Home
-  </button>
+<button
+  class="nav-btn"
+  onclick="goHome()">
 
-  <button class="add-main" id="mainAddBtn">+</button>
+<span class="nav-symbol">
+⌂
+</span>
 
-  <button class="nav-btn" id="profileNavBtn">
-    <span class="nav-symbol">♙</span>
-    Profile
-  </button>
+Home
+
+</button>
+
+<button
+  class="add-main"
+  onclick="openModal()">
++
+</button>
+
+<button
+  class="nav-btn"
+  onclick="openProfile()">
+
+<span class="nav-symbol">
+♙
+</span>
+
+Profile
+
+</button>
 
 </nav>
 
-<div id="modal" class="modal">
+<div
+  id="modal"
+  class="modal">
 
-  <div class="sheet">
+<div class="sheet">
 
-    <div class="sheet-head">
+<div class="sheet-head">
 
-      <button class="text-btn" id="cancelModalBtn">Cancel</button>
+<button
+  class="text-btn"
+  onclick="closeModal()">
+Cancel
+</button>
 
-      <div class="sheet-title">Add milestone</div>
+<div class="sheet-title">
+Add milestone
+</div>
 
-      <button class="text-btn" id="topAddBtn"><b>Add</b></button>
+<button
+  class="text-btn"
+  onclick="addItem()">
+<b>Add</b>
+</button>
 
-    </div>
+</div>
 
-    <div class="auto-photo">
+<div class="auto-photo">
 
-      <img id="autoPreview" class="auto-preview" alt="Preview">
+<img
+  id="autoPreview"
+  class="auto-preview">
 
-      <div id="autoCopy" class="auto-copy">
-        Add a title and Milestone will try to find a matching image automatically.
-      </div>
+<div
+  id="autoCopy"
+  class="auto-copy">
+Type a title and Milestone will search for an image.
+</div>
 
-    </div>
+</div>
 
-    <div class="field">
-      <div class="label">Title</div>
-      <input id="itemTitle" placeholder="e.g. Prada Paradigme">
-    </div>
+<div class="field">
 
-    <div class="field">
-      <div class="label">Category</div>
+<div class="label">
+Title
+</div>
 
-      <select id="itemCategory">
-        <option value="Want">Items</option>
-        <option value="Go">Places</option>
-        <option value="Do">Activities</option>
-        <option value="Watch">Movies</option>
-      </select>
-    </div>
+<input
+  id="itemTitle"
+  placeholder="e.g. Prada Paradigme"
+  oninput="schedulePreview()">
 
-    <div class="field">
-      <div class="label">Notes</div>
-      <textarea id="itemNotes" placeholder="Add details..."></textarea>
-    </div>
+</div>
 
-    <div class="field">
-      <div class="label">Date</div>
-      <input id="itemDate" type="date">
-    </div>
+<div class="field">
 
-    <div class="field">
-      <div class="label">Image URL</div>
-      <input
-        id="itemImageUrl"
-        type="url"
-        placeholder="Optional exact image URL">
-    </div>
+<div class="label">
+Category
+</div>
 
-    <div class="field">
-      <div class="label">Link</div>
-      <input id="itemLink" type="url" placeholder="https://">
-    </div>
+<select
+  id="itemCategory"
+  onchange="schedulePreview()">
 
-    <button class="save-btn" id="saveItemBtn">Add milestone</button>
+<option value="Want">
+Items
+</option>
 
-  </div>
+<option value="Go">
+Places
+</option>
+
+<option value="Do">
+Activities
+</option>
+
+<option value="Watch">
+Movies
+</option>
+
+</select>
+
+</div>
+
+<div class="field">
+
+<div class="label">
+Notes
+</div>
+
+<textarea
+  id="itemNotes"
+  placeholder="Add details...">
+</textarea>
+
+</div>
+
+<div class="field">
+
+<div class="label">
+Date
+</div>
+
+<input
+  id="itemDate"
+  type="date">
+
+</div>
+
+<div class="field">
+
+<div class="label">
+Image URL
+</div>
+
+<input
+  id="itemImageUrl"
+  type="url"
+  placeholder="Optional exact image URL"
+  oninput="manualImagePreview()">
+
+</div>
+
+<div class="field">
+
+<div class="label">
+Link
+</div>
+
+<input
+  id="itemLink"
+  type="url"
+  placeholder="https://">
+
+</div>
+
+<button
+  class="save-btn"
+  onclick="addItem()">
+Add milestone
+</button>
+
+</div>
 
 </div>
 
 <script>
-const STORAGE_KEY = "milestones";
-const THEME_KEY = "milestoneTheme";
+
+/* ==============================
+   DATA
+============================== */
+
+let items =
+JSON.parse(
+  localStorage.getItem("milestones")
+) || [];
+
+items =
+items.map(
+  (item,index)=>({
+
+    id:
+      item.id ||
+      Date.now()+index,
+
+    title:
+      item.title ||
+      "Untitled",
+
+    type:
+      item.type ||
+      item.category ||
+      "Want",
+
+    done:
+      Boolean(
+        item.done ||
+        item.completed
+      ),
+
+    notes:
+      item.notes || "",
+
+    date:
+      item.date || "",
+
+    link:
+      item.link || "",
+
+    image:
+      item.image || ""
+
+  })
+);
+
+let currentCategory = "Want";
+let currentFilter = "all";
+
+let previewTimer = null;
+let previewImage = "";
+
+const searchingImages = new Set();
 
 const categoryNames = {
+
   Want: "Items",
   Go: "Places",
   Do: "Activities",
   Watch: "Movies"
+
 };
 
-const categoryLabels = {
-  Want: {
-    open: "To Buy",
-    done: "Bought"
+const labels = {
+
+  Want:{
+    open:"To Buy",
+    done:"Bought"
   },
-  Go: {
-    open: "To Go",
-    done: "Visited"
+
+  Go:{
+    open:"To Go",
+    done:"Visited"
   },
-  Do: {
-    open: "To Do",
-    done: "Done"
+
+  Do:{
+    open:"To Do",
+    done:"Done"
   },
-  Watch: {
-    open: "To Watch",
-    done: "Watched"
+
+  Watch:{
+    open:"To Watch",
+    done:"Watched"
   }
+
 };
 
-let items = loadItems();
-let currentCategory = "Want";
-let currentFilter = "all";
-let previewTimer = null;
-let previewImage = "";
+/* ==============================
+   SAVE
+============================== */
 
-const homeScreen = document.getElementById("homeScreen");
-const categoryScreen = document.getElementById("categoryScreen");
-const profileScreen = document.getElementById("profileScreen");
+function saveItems(){
 
-const greeting = document.getElementById("greeting");
+  localStorage.setItem(
+    "milestones",
+    JSON.stringify(items)
+  );
 
-const lightBtn = document.getElementById("lightBtn");
-const darkBtn = document.getElementById("darkBtn");
-
-const categoryTitle = document.getElementById("categoryTitle");
-const filters = document.getElementById("filters");
-const itemsList = document.getElementById("itemsList");
-const recentList = document.getElementById("recentList");
-
-const modal = document.getElementById("modal");
-const itemTitle = document.getElementById("itemTitle");
-const itemCategory = document.getElementById("itemCategory");
-const itemNotes = document.getElementById("itemNotes");
-const itemDate = document.getElementById("itemDate");
-const itemImageUrl = document.getElementById("itemImageUrl");
-const itemLink = document.getElementById("itemLink");
-
-const autoPreview = document.getElementById("autoPreview");
-const autoCopy = document.getElementById("autoCopy");
-
-function loadItems() {
-  try {
-    const raw = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-
-    return raw.map((item, index) => ({
-      id: item.id || Date.now() + index,
-      title: item.title || "Untitled",
-      type: item.type || item.category || "Want",
-      done: Boolean(item.done || item.completed),
-      notes: item.notes || "",
-      date: item.date || "",
-      link: item.link || "",
-      image: item.image || ""
-    }));
-  } catch (error) {
-    return [];
-  }
 }
 
-function saveItems() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+/* ==============================
+   SAFE HTML
+============================== */
+
+function escapeHtml(text){
+
+  return String(text)
+  .replace(
+    /[&<>"']/g,
+    character=>({
+
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#039;"
+
+    }[character])
+  );
+
 }
 
-function escapeHtml(value) {
-  return String(value).replace(/[&<>"']/g, character => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#039;"
-  })[character]);
+/* ==============================
+   THEME
+============================== */
+
+function applySavedTheme(){
+
+  const saved =
+  localStorage.getItem(
+    "milestoneTheme"
+  );
+
+  setTheme(
+    saved === "dark"
+    ? "dark"
+    : "light",
+    false
+  );
+
 }
 
-function setTheme(theme, shouldSave = true) {
-  document.documentElement.setAttribute("data-theme", theme);
+function setTheme(
+  theme,
+  save=true
+){
 
-  lightBtn.classList.toggle("active", theme === "light");
-  darkBtn.classList.toggle("active", theme === "dark");
+  document
+  .documentElement
+  .setAttribute(
+    "data-theme",
+    theme
+  );
 
-  const themeMeta = document.querySelector('meta[name="theme-color"]');
+  document
+  .getElementById(
+    "lightBtn"
+  )
+  .classList
+  .toggle(
+    "active",
+    theme === "light"
+  );
 
-  if (themeMeta) {
-    themeMeta.setAttribute(
+  document
+  .getElementById(
+    "darkBtn"
+  )
+  .classList
+  .toggle(
+    "active",
+    theme === "dark"
+  );
+
+  const meta =
+  document.querySelector(
+    'meta[name="theme-color"]'
+  );
+
+  if(meta){
+
+    meta.setAttribute(
       "content",
-      theme === "dark" ? "#050505" : "#F7F5F0"
+      theme === "dark"
+      ? "#050505"
+      : "#F7F5F0"
     );
+
   }
 
-  if (shouldSave) {
-    localStorage.setItem(THEME_KEY, theme);
-  }
-}
+  if(save){
 
-function applySavedTheme() {
-  const saved = localStorage.getItem(THEME_KEY);
-  setTheme(saved === "dark" ? "dark" : "light", false);
-}
+    localStorage.setItem(
+      "milestoneTheme",
+      theme
+    );
 
-function updateGreeting() {
-  const hour = new Date().getHours();
-
-  if (hour < 12) {
-    greeting.textContent = "Good morning,";
-  } else if (hour < 18) {
-    greeting.textContent = "Good afternoon,";
-  } else {
-    greeting.textContent = "Good evening,";
-  }
-}
-
-function switchScreen(screen) {
-  [homeScreen, categoryScreen, profileScreen].forEach(element => {
-    element.classList.remove("active");
-  });
-
-  screen.classList.add("active");
-  window.scrollTo(0, 0);
-}
-
-function goHome() {
-  switchScreen(homeScreen);
-  renderAll();
-}
-
-function openProfile() {
-  renderStats();
-  switchScreen(profileScreen);
-}
-
-function openCategory(category) {
-  currentCategory = category;
-  currentFilter = "all";
-
-  categoryTitle.textContent = categoryNames[category];
-  renderFilters();
-  renderItems();
-
-  switchScreen(categoryScreen);
-}
-
-function renderCounts() {
-  ["Want", "Go", "Do", "Watch"].forEach(category => {
-    const count = items.filter(item => item.type === category).length;
-    document.getElementById(category + "Count").textContent = count;
-  });
-
-  document.getElementById("completedCount").textContent =
-    items.filter(item => item.done).length;
-}
-
-function renderStats() {
-  const completed = items.filter(item => item.done).length;
-
-  document.getElementById("totalStat").textContent = items.length;
-  document.getElementById("doneStat").textContent = completed;
-  document.getElementById("openStat").textContent =
-    items.length - completed;
-}
-
-function renderRecent() {
-  const recent = items.slice(0, 4);
-
-  if (!recent.length) {
-    recentList.innerHTML = `
-      <div class="empty">
-        Nothing saved yet.<br><br>
-        Add something you want to remember.
-      </div>
-    `;
-    return;
   }
 
-  recentList.innerHTML = recent.map(item => `
-    <div class="recent-item">
+}
 
-      ${
-        item.image
-          ? `
-            <img
-              class="recent-thumb"
-              src="${escapeHtml(item.image)}"
-              alt=""
-              onerror="this.style.display='none';this.nextElementSibling.style.display='grid';">
-            <div class="placeholder" style="display:none;">◌</div>
-          `
-          : `
-            <div class="placeholder">◌</div>
-          `
+/* ==============================
+   IMAGE QUERY
+============================== */
+
+function imageQuery(
+  title,
+  category
+){
+
+  if(category === "Want"){
+
+    return `${title} product`;
+
+  }
+
+  if(category === "Go"){
+
+    return `${title} travel destination`;
+
+  }
+
+  if(category === "Do"){
+
+    return `${title} activity`;
+
+  }
+
+  if(category === "Watch"){
+
+    return `${title} movie film poster`;
+
+  }
+
+  return title;
+
+}
+
+/* ==============================
+   DUCKDUCKGO
+============================== */
+
+async function searchDuckDuckGo(
+  title,
+  category
+){
+
+  try{
+
+    const query =
+    imageQuery(
+      title,
+      category
+    );
+
+    const url =
+      "https://api.duckduckgo.com/?" +
+      "q=" +
+      encodeURIComponent(query) +
+      "&format=json" +
+      "&no_html=1" +
+      "&skip_disambig=1";
+
+    const response =
+    await fetch(url);
+
+    if(!response.ok){
+
+      return "";
+
+    }
+
+    const data =
+    await response.json();
+
+    if(data.Image){
+
+      if(
+        data.Image.startsWith("//")
+      ){
+
+        return "https:" + data.Image;
+
       }
 
-      <div class="recent-main">
-        <div class="recent-title">
-          ${escapeHtml(item.title)}
-        </div>
+      return data.Image;
 
-        <div class="recent-meta">
-          ${escapeHtml(categoryNames[item.type] || item.type)}
-          ${item.date ? " · " + escapeHtml(item.date) : ""}
-        </div>
-      </div>
+    }
 
-      <button
-        class="check ${item.done ? "done" : ""}"
-        data-action="toggle"
-        data-id="${item.id}">
-        ${item.done ? "✓" : ""}
-      </button>
+    return "";
 
-      <button
-        class="delete-btn"
-        data-action="delete"
-        data-id="${item.id}">
-        ⋯
-      </button>
-
-    </div>
-  `).join("");
-
-  recent
-    .filter(item => !item.image)
-    .slice(0, 4)
-    .forEach(item => ensureImage(item));
-}
-
-function renderFilters() {
-  const labels = categoryLabels[currentCategory];
-
-  filters.innerHTML = `
-    <button
-      class="filter ${currentFilter === "all" ? "active" : ""}"
-      data-filter="all">
-      All
-    </button>
-
-    <button
-      class="filter ${currentFilter === "open" ? "active" : ""}"
-      data-filter="open">
-      ${labels.open}
-    </button>
-
-    <button
-      class="filter ${currentFilter === "done" ? "active" : ""}"
-      data-filter="done">
-      ${labels.done}
-    </button>
-  `;
-}
-
-function renderItems() {
-  let filtered = items.filter(item => item.type === currentCategory);
-
-  if (currentFilter === "open") {
-    filtered = filtered.filter(item => !item.done);
   }
 
-  if (currentFilter === "done") {
-    filtered = filtered.filter(item => item.done);
+  catch(error){
+
+    return "";
+
   }
 
-  if (!filtered.length) {
-    itemsList.innerHTML = `
-      <div class="empty">
-        Nothing here yet.
-      </div>
-    `;
-    return;
-  }
-
-  itemsList.innerHTML = filtered.map(item => `
-    <div class="item">
-
-      ${
-        item.image
-          ? `
-            <img
-              class="item-thumb"
-              src="${escapeHtml(item.image)}"
-              alt=""
-              onerror="this.style.display='none';this.nextElementSibling.style.display='grid';">
-            <div class="placeholder" style="display:none;">◌</div>
-          `
-          : `
-            <div class="placeholder">◌</div>
-          `
-      }
-
-      <div class="item-main">
-        <div class="item-title">
-          ${escapeHtml(item.title)}
-        </div>
-
-        ${
-          item.notes
-            ? `
-              <div class="item-note">
-                ${escapeHtml(item.notes)}
-              </div>
-            `
-            : ""
-        }
-      </div>
-
-      <button
-        class="check ${item.done ? "done" : ""}"
-        data-action="toggle"
-        data-id="${item.id}">
-        ${item.done ? "✓" : ""}
-      </button>
-
-      <button
-        class="delete-btn"
-        data-action="delete"
-        data-id="${item.id}">
-        ⋯
-      </button>
-
-    </div>
-  `).join("");
-
-  filtered
-    .filter(item => !item.image)
-    .slice(0, 5)
-    .forEach(item => ensureImage(item));
 }
 
-function renderAll() {
-  renderCounts();
-  renderStats();
-  renderRecent();
+/* ==============================
+   WIKIPEDIA
+============================== */
 
-  if (categoryScreen.classList.contains("active")) {
-    renderFilters();
-    renderItems();
-  }
-}
+async function searchWikipedia(
+  title,
+  category
+){
 
-function toggleItem(id) {
-  const item = items.find(item => item.id === id);
+  try{
 
-  if (!item) return;
-
-  item.done = !item.done;
-
-  saveItems();
-  renderAll();
-}
-
-function deleteItem(id) {
-  const item = items.find(item => item.id === id);
-
-  if (!item) return;
-
-  const confirmed = confirm(`Delete "${item.title}"?`);
-
-  if (!confirmed) return;
-
-  items = items.filter(item => item.id !== id);
-
-  saveItems();
-  renderAll();
-}
-
-function openModal() {
-  itemTitle.value = "";
-  itemNotes.value = "";
-  itemDate.value = "";
-  itemImageUrl.value = "";
-  itemLink.value = "";
-  itemCategory.value = currentCategory;
-
-  previewImage = "";
-  showPreview("");
-
-  modal.classList.add("active");
-
-  setTimeout(() => {
-    itemTitle.focus();
-  }, 150);
-}
-
-function closeModal() {
-  modal.classList.remove("active");
-}
-
-function showPreview(url) {
-  if (url) {
-    autoPreview.src = url;
-    autoPreview.classList.add("visible");
-    autoCopy.textContent = "Image found.";
-  } else {
-    autoPreview.removeAttribute("src");
-    autoPreview.classList.remove("visible");
-    autoCopy.textContent =
-      "Add a title and Milestone will try to find a matching image automatically.";
-  }
-}
-
-function manualImagePreview() {
-  const url = itemImageUrl.value.trim();
-
-  if (url) {
-    previewImage = url;
-    showPreview(url);
-  } else {
-    schedulePreview();
-  }
-}
-
-function schedulePreview() {
-  clearTimeout(previewTimer);
-
-  const title = itemTitle.value.trim();
-
-  if (title.length < 3) {
-    previewImage = "";
-    showPreview("");
-    return;
-  }
-
-  previewTimer = setTimeout(async () => {
-    autoCopy.textContent = "Finding a matching image...";
-
-    const found = await findImage(
+    const query =
+    imageQuery(
       title,
-      itemCategory.value
+      category
     );
 
-    previewImage = found;
-
-    if (found) {
-      showPreview(found);
-    } else {
-      showPreview("");
-      autoCopy.textContent =
-        "No reliable image found. You can paste an image URL below.";
-    }
-  }, 700);
-}
-
-async function addItem() {
-  const title = itemTitle.value.trim();
-
-  if (!title) return;
-
-  const manualImage = itemImageUrl.value.trim();
-
-  const newItem = {
-    id: Date.now(),
-    title,
-    type: itemCategory.value,
-    done: false,
-    notes: itemNotes.value.trim(),
-    date: itemDate.value,
-    link: itemLink.value.trim(),
-    image: manualImage || previewImage || ""
-  };
-
-  items.unshift(newItem);
-
-  saveItems();
-  closeModal();
-
-  currentCategory = newItem.type;
-
-  renderAll();
-  openCategory(newItem.type);
-
-  if (!newItem.image) {
-    await ensureImage(newItem);
-  }
-}
-
-async function ensureImage(item) {
-  if (item.image) return item.image;
-
-  const image = await findImage(item.title, item.type);
-
-  if (image) {
-    item.image = image;
-    saveItems();
-    renderAll();
-  }
-
-  return image;
-}
-
-async function findImage(title, category = "Want") {
-  const cleanTitle = String(title || "").trim();
-
-  if (cleanTitle.length < 2) return "";
-
-  const queries = buildImageQueries(cleanTitle, category);
-
-  for (const query of queries) {
-    const wikiResult = await searchWikipediaImage(
-      query,
-      cleanTitle
-    );
-
-    if (wikiResult) {
-      return wikiResult;
-    }
-  }
-
-  return "";
-}
-
-function buildImageQueries(title, category) {
-  if (category === "Watch") {
-    return [
-      `${title} film`,
-      title
-    ];
-  }
-
-  if (category === "Go") {
-    return [
-      title,
-      `${title} landmark`,
-      `${title} city`
-    ];
-  }
-
-  if (category === "Do") {
-    return [
-      title,
-      `${title} activity`
-    ];
-  }
-
-  return [
-    title,
-    `${title} product`
-  ];
-}
-
-async function searchWikipediaImage(query, originalTitle) {
-  try {
     const api =
       "https://en.wikipedia.org/w/api.php" +
       "?action=query" +
       "&generator=search" +
-      "&gsrsearch=" + encodeURIComponent(query) +
+      "&gsrsearch=" +
+      encodeURIComponent(query) +
       "&gsrlimit=10" +
       "&prop=pageimages" +
       "&piprop=original|thumbnail" +
@@ -1385,161 +1535,1513 @@ async function searchWikipediaImage(query, originalTitle) {
       "&format=json" +
       "&origin=*";
 
-    const response = await fetch(api);
+    const response =
+    await fetch(api);
 
-    if (!response.ok) return "";
+    if(!response.ok){
 
-    const data = await response.json();
+      return "";
 
-    const pages = Object.values(data?.query?.pages || {});
+    }
 
-    if (!pages.length) return "";
+    const data =
+    await response.json();
 
-    const tokens = originalTitle
-      .toLowerCase()
-      .split(/\s+/)
-      .map(token => token.replace(/[^\p{L}\p{N}]/gu, ""))
-      .filter(token => token.length >= 3);
+    const pages =
+    Object.values(
+      data?.query?.pages || {}
+    );
 
-    const ranked = pages
-      .map(page => {
-        const pageTitle = String(page.title || "").toLowerCase();
+    if(!pages.length){
+
+      return "";
+
+    }
+
+    const words =
+    title
+    .toLowerCase()
+    .split(/\s+/)
+    .filter(
+      word=>word.length > 2
+    );
+
+    const scored =
+    pages
+    .map(
+      page=>{
+
+        const pageTitle =
+        String(
+          page.title || ""
+        )
+        .toLowerCase();
 
         let score = 0;
 
-        for (const token of tokens) {
-          if (pageTitle.includes(token)) {
-            score += 6;
+        words.forEach(
+          word=>{
+
+            if(
+              pageTitle.includes(word)
+            ){
+
+              score += 5;
+
+            }
+
           }
-        }
+        );
 
-        if (pageTitle === originalTitle.toLowerCase()) {
-          score += 30;
-        }
+        if(
+          pageTitle.includes(
+            title.toLowerCase()
+          )
+        ){
 
-        if (pageTitle.includes(originalTitle.toLowerCase())) {
-          score += 20;
+          score += 15;
+
         }
 
         return {
+
           score,
-          image:
-            page.original?.source ||
+
+          url:
             page.thumbnail?.source ||
+            page.original?.source ||
             ""
+
         };
-      })
-      .filter(result => result.image)
-      .sort((a, b) => b.score - a.score);
 
-    if (!ranked.length) return "";
+      }
+    )
+    .filter(
+      result=>result.url
+    )
+    .sort(
+      (a,b)=>
+      b.score-a.score
+    );
 
-    if (ranked[0].score < 6) return "";
+    if(
+      scored.length &&
+      scored[0].score >= 5
+    ){
 
-    return ranked[0].image;
+      return scored[0].url;
 
-  } catch (error) {
-    console.error("Wikipedia image search error:", error);
+    }
+
     return "";
+
   }
+
+  catch(error){
+
+    return "";
+
+  }
+
 }
 
-lightBtn.addEventListener("click", () => setTheme("light"));
-darkBtn.addEventListener("click", () => setTheme("dark"));
+/* ==============================
+   OPENVERSE
+============================== */
 
-document.getElementById("profileTopBtn")
-  .addEventListener("click", openProfile);
+async function searchOpenverse(
+  title,
+  category
+){
 
-document.getElementById("homeNavBtn")
-  .addEventListener("click", goHome);
+  try{
 
-document.getElementById("profileNavBtn")
-  .addEventListener("click", openProfile);
+    const query =
+    imageQuery(
+      title,
+      category
+    );
 
-document.getElementById("mainAddBtn")
-  .addEventListener("click", openModal);
+    const api =
+      "https://api.openverse.org/v1/images/?" +
+      "page_size=20&q=" +
+      encodeURIComponent(query);
 
-document.getElementById("categoryAddBtn")
-  .addEventListener("click", openModal);
+    const response =
+    await fetch(api);
 
-document.getElementById("categoryBackBtn")
-  .addEventListener("click", goHome);
+    if(!response.ok){
 
-document.getElementById("profileBackBtn")
-  .addEventListener("click", goHome);
+      return "";
 
-document.getElementById("cancelModalBtn")
-  .addEventListener("click", closeModal);
+    }
 
-document.getElementById("topAddBtn")
-  .addEventListener("click", addItem);
+    const data =
+    await response.json();
 
-document.getElementById("saveItemBtn")
-  .addEventListener("click", addItem);
+    const results =
+    Array.isArray(
+      data.results
+    )
+    ? data.results
+    : [];
 
-itemTitle.addEventListener("input", schedulePreview);
-itemCategory.addEventListener("change", schedulePreview);
-itemImageUrl.addEventListener("input", manualImagePreview);
+    const words =
+    title
+    .toLowerCase()
+    .split(/\s+/)
+    .filter(
+      word=>word.length > 2
+    );
 
-document.querySelectorAll(".category-card").forEach(button => {
-  button.addEventListener("click", () => {
-    openCategory(button.dataset.category);
-  });
-});
+    const ranked =
+    results
+    .map(
+      result=>{
 
-filters.addEventListener("click", event => {
-  const button = event.target.closest("[data-filter]");
+        const information =
+        [
+          result.title,
+          result.creator,
+          result.source,
+          result.tags
+          ?.map?.(
+            tag=>tag.name
+          )
+          .join(" ")
+        ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
 
-  if (!button) return;
+        let score = 0;
 
-  currentFilter = button.dataset.filter;
+        words.forEach(
+          word=>{
+
+            if(
+              information.includes(word)
+            ){
+
+              score += 4;
+
+            }
+
+          }
+        );
+
+        return {
+
+          score,
+
+          url:
+            result.thumbnail ||
+            result.url ||
+            ""
+
+        };
+
+      }
+    )
+    .filter(
+      result=>result.url
+    )
+    .sort(
+      (a,b)=>
+      b.score-a.score
+    );
+
+    if(
+      ranked.length &&
+      ranked[0].score >= 4
+    ){
+
+      return ranked[0].url;
+
+    }
+
+    return "";
+
+  }
+
+  catch(error){
+
+    return "";
+
+  }
+
+}
+
+/* ==============================
+   FLICKR FALLBACK
+============================== */
+
+function flickrFallback(
+  title,
+  category
+){
+
+  let query = title;
+
+  if(category === "Want"){
+
+    query =
+    `${title},product`;
+
+  }
+
+  if(category === "Go"){
+
+    query =
+    `${title},travel`;
+
+  }
+
+  if(category === "Do"){
+
+    query =
+    `${title},activity`;
+
+  }
+
+  if(category === "Watch"){
+
+    query =
+    `${title},movie`;
+
+  }
+
+  const clean =
+  query
+  .replace(
+    /[^a-zA-Z0-9\s,-]/g,
+    ""
+  )
+  .trim()
+  .replace(
+    /\s+/g,
+    ","
+  );
+
+  const lock =
+  Math.abs(
+    hashString(
+      title + category
+    )
+  );
+
+  return (
+    "https://loremflickr.com/900/900/" +
+    encodeURIComponent(clean) +
+    "?lock=" +
+    lock
+  );
+
+}
+
+function hashString(text){
+
+  let hash = 0;
+
+  for(
+    let i=0;
+    i<text.length;
+    i++
+  ){
+
+    hash =
+    (
+      (
+        hash << 5
+      )
+      -
+      hash
+    )
+    +
+    text.charCodeAt(i);
+
+    hash =
+    hash | 0;
+
+  }
+
+  return hash;
+
+}
+
+/* ==============================
+   MAIN IMAGE SEARCH
+============================== */
+
+async function findImage(
+  title,
+  category="Want"
+){
+
+  const cleanTitle =
+  String(
+    title || ""
+  )
+  .trim();
+
+  if(
+    cleanTitle.length < 2
+  ){
+
+    return "";
+
+  }
+
+  let result = "";
+
+  /*
+    1 — DuckDuckGo
+  */
+
+  result =
+  await searchDuckDuckGo(
+    cleanTitle,
+    category
+  );
+
+  if(result){
+
+    return result;
+
+  }
+
+  /*
+    2 — Wikipedia
+  */
+
+  result =
+  await searchWikipedia(
+    cleanTitle,
+    category
+  );
+
+  if(result){
+
+    return result;
+
+  }
+
+  /*
+    3 — Openverse
+  */
+
+  result =
+  await searchOpenverse(
+    cleanTitle,
+    category
+  );
+
+  if(result){
+
+    return result;
+
+  }
+
+  /*
+    4 — Flickr fallback
+       This means the card
+       will not stay empty.
+  */
+
+  return flickrFallback(
+    cleanTitle,
+    category
+  );
+
+}
+
+/* ==============================
+   ENSURE IMAGE
+============================== */
+
+async function ensureImage(item){
+
+  if(item.image){
+
+    return item.image;
+
+  }
+
+  if(
+    searchingImages.has(
+      item.id
+    )
+  ){
+
+    return "";
+
+  }
+
+  searchingImages.add(
+    item.id
+  );
+
+  const found =
+  await findImage(
+    item.title,
+    item.type
+  );
+
+  searchingImages.delete(
+    item.id
+  );
+
+  if(found){
+
+    item.image =
+    found;
+
+    saveItems();
+
+    renderRecent();
+
+    if(
+      document
+      .getElementById(
+        "categoryScreen"
+      )
+      .classList
+      .contains(
+        "active"
+      )
+    ){
+
+      renderItems();
+
+    }
+
+  }
+
+  return found;
+
+}
+
+/* ==============================
+   PREVIEW
+============================== */
+
+function schedulePreview(){
+
+  clearTimeout(
+    previewTimer
+  );
+
+  const title =
+  document
+  .getElementById(
+    "itemTitle"
+  )
+  .value
+  .trim();
+
+  if(
+    title.length < 3
+  ){
+
+    previewImage = "";
+
+    showPreview("");
+
+    return;
+
+  }
+
+  previewTimer =
+  setTimeout(
+    async()=>{
+
+      const copy =
+      document.getElementById(
+        "autoCopy"
+      );
+
+      copy.textContent =
+      "Searching for an image...";
+
+      const category =
+      document
+      .getElementById(
+        "itemCategory"
+      )
+      .value;
+
+      const found =
+      await findImage(
+        title,
+        category
+      );
+
+      previewImage =
+      found;
+
+      showPreview(
+        found
+      );
+
+    },
+    700
+  );
+
+}
+
+function showPreview(url){
+
+  const image =
+  document.getElementById(
+    "autoPreview"
+  );
+
+  const copy =
+  document.getElementById(
+    "autoCopy"
+  );
+
+  if(url){
+
+    image.src =
+    url;
+
+    image
+    .classList
+    .add(
+      "visible"
+    );
+
+    copy.textContent =
+    "Image found.";
+
+  }
+
+  else{
+
+    image.removeAttribute(
+      "src"
+    );
+
+    image
+    .classList
+    .remove(
+      "visible"
+    );
+
+    copy.textContent =
+    "Type a title and Milestone will search for an image.";
+
+  }
+
+}
+
+function manualImagePreview(){
+
+  const value =
+  document
+  .getElementById(
+    "itemImageUrl"
+  )
+  .value
+  .trim();
+
+  if(value){
+
+    previewImage =
+    value;
+
+    showPreview(
+      value
+    );
+
+  }
+
+  else{
+
+    schedulePreview();
+
+  }
+
+}
+
+/* ==============================
+   GREETING
+============================== */
+
+function updateGreeting(){
+
+  const hour =
+  new Date()
+  .getHours();
+
+  let text =
+  "Good evening,";
+
+  if(
+    hour < 12
+  ){
+
+    text =
+    "Good morning,";
+
+  }
+
+  else if(
+    hour < 18
+  ){
+
+    text =
+    "Good afternoon,";
+
+  }
+
+  document
+  .getElementById(
+    "greeting"
+  )
+  .textContent =
+  text;
+
+}
+
+/* ==============================
+   SCREEN
+============================== */
+
+function switchScreen(id){
+
+  document
+  .querySelectorAll(
+    ".screen"
+  )
+  .forEach(
+    screen=>
+    screen
+    .classList
+    .remove(
+      "active"
+    )
+  );
+
+  document
+  .getElementById(
+    id
+  )
+  .classList
+  .add(
+    "active"
+  );
+
+  window.scrollTo(
+    0,
+    0
+  );
+
+}
+
+/* ==============================
+   COUNTS
+============================== */
+
+function updateCounts(){
+
+  [
+    "Want",
+    "Go",
+    "Do",
+    "Watch"
+  ]
+  .forEach(
+    category=>{
+
+      const count =
+      items.filter(
+        item=>
+        item.type === category
+      )
+      .length;
+
+      document
+      .getElementById(
+        category+"Count"
+      )
+      .textContent =
+      count;
+
+    }
+  );
+
+  const completed =
+  items.filter(
+    item=>item.done
+  )
+  .length;
+
+  document
+  .getElementById(
+    "completedCount"
+  )
+  .textContent =
+  completed;
+
+  document
+  .getElementById(
+    "totalStat"
+  )
+  .textContent =
+  items.length;
+
+  document
+  .getElementById(
+    "doneStat"
+  )
+  .textContent =
+  completed;
+
+  document
+  .getElementById(
+    "openStat"
+  )
+  .textContent =
+  items.length -
+  completed;
+
+  renderRecent();
+
+}
+
+/* ==============================
+   RECENT
+============================== */
+
+function renderRecent(){
+
+  const box =
+  document
+  .getElementById(
+    "recentList"
+  );
+
+  const recent =
+  items.slice(
+    0,
+    4
+  );
+
+  if(
+    !recent.length
+  ){
+
+    box.innerHTML = `
+
+      <div class="empty">
+
+        Nothing saved yet.
+        <br><br>
+        Add something you want to remember.
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+  box.innerHTML =
+  recent
+  .map(
+    item=>{
+
+      const image =
+      item.image
+
+      ? `
+
+        <img
+          class="recent-thumb"
+          src="${escapeHtml(item.image)}"
+          alt="${escapeHtml(item.title)}"
+          onerror="
+            this.style.display='none';
+            this.nextElementSibling.style.display='grid';
+          ">
+
+        <div
+          class="placeholder"
+          style="display:none;">
+          ◌
+        </div>
+
+      `
+
+      : `
+
+        <div class="placeholder">
+        ◌
+        </div>
+
+      `;
+
+      return `
+
+        <div class="recent-item">
+
+          ${image}
+
+          <div class="recent-main">
+
+            <div class="recent-title">
+              ${escapeHtml(item.title)}
+            </div>
+
+            <div class="recent-meta">
+
+              ${
+                escapeHtml(
+                  categoryNames[item.type] ||
+                  item.type
+                )
+              }
+
+              ${
+                item.date
+                ? " · " +
+                escapeHtml(
+                  item.date
+                )
+                : ""
+              }
+
+            </div>
+
+          </div>
+
+          <button
+            class="check ${
+              item.done
+              ? "done"
+              : ""
+            }"
+            onclick="toggleItem(${item.id})">
+
+            ${
+              item.done
+              ? "✓"
+              : ""
+            }
+
+          </button>
+
+          <button
+            class="delete-btn"
+            onclick="deleteItem(${item.id})">
+
+            ⋯
+
+          </button>
+
+        </div>
+
+      `;
+
+    }
+  )
+  .join("");
+
+  recent
+  .filter(
+    item=>!item.image
+  )
+  .forEach(
+    item=>ensureImage(item)
+  );
+
+}
+
+/* ==============================
+   HOME
+============================== */
+
+function goHome(){
+
+  switchScreen(
+    "homeScreen"
+  );
+
+  updateCounts();
+
+}
+
+/* ==============================
+   PROFILE
+============================== */
+
+function openProfile(){
+
+  updateCounts();
+
+  switchScreen(
+    "profileScreen"
+  );
+
+}
+
+/* ==============================
+   CATEGORY
+============================== */
+
+function openCategory(
+  category
+){
+
+  currentCategory =
+  category;
+
+  currentFilter =
+  "all";
+
+  document
+  .getElementById(
+    "categoryTitle"
+  )
+  .textContent =
+  categoryNames[category];
 
   renderFilters();
+
   renderItems();
-});
 
-recentList.addEventListener("click", event => {
-  const button = event.target.closest("[data-action]");
+  switchScreen(
+    "categoryScreen"
+  );
 
-  if (!button) return;
+}
 
-  const id = Number(button.dataset.id);
+/* ==============================
+   FILTERS
+============================== */
 
-  if (button.dataset.action === "toggle") {
-    toggleItem(id);
+function renderFilters(){
+
+  const current =
+  labels[
+    currentCategory
+  ];
+
+  document
+  .getElementById(
+    "filters"
+  )
+  .innerHTML = `
+
+    <button
+      class="filter ${
+        currentFilter === "all"
+        ? "active"
+        : ""
+      }"
+      onclick="setFilter('all')">
+
+      All
+
+    </button>
+
+    <button
+      class="filter ${
+        currentFilter === "open"
+        ? "active"
+        : ""
+      }"
+      onclick="setFilter('open')">
+
+      ${current.open}
+
+    </button>
+
+    <button
+      class="filter ${
+        currentFilter === "done"
+        ? "active"
+        : ""
+      }"
+      onclick="setFilter('done')">
+
+      ${current.done}
+
+    </button>
+
+  `;
+
+}
+
+function setFilter(
+  filter
+){
+
+  currentFilter =
+  filter;
+
+  renderFilters();
+
+  renderItems();
+
+}
+
+/* ==============================
+   ITEMS
+============================== */
+
+function renderItems(){
+
+  let filtered =
+  items.filter(
+    item=>
+    item.type ===
+    currentCategory
+  );
+
+  if(
+    currentFilter ===
+    "open"
+  ){
+
+    filtered =
+    filtered.filter(
+      item=>!item.done
+    );
+
   }
 
-  if (button.dataset.action === "delete") {
-    deleteItem(id);
-  }
-});
+  if(
+    currentFilter ===
+    "done"
+  ){
 
-itemsList.addEventListener("click", event => {
-  const button = event.target.closest("[data-action]");
+    filtered =
+    filtered.filter(
+      item=>item.done
+    );
 
-  if (!button) return;
-
-  const id = Number(button.dataset.id);
-
-  if (button.dataset.action === "toggle") {
-    toggleItem(id);
   }
 
-  if (button.dataset.action === "delete") {
-    deleteItem(id);
-  }
-});
+  const list =
+  document
+  .getElementById(
+    "itemsList"
+  );
 
-modal.addEventListener("click", event => {
-  if (event.target === modal) {
-    closeModal();
+  if(
+    !filtered.length
+  ){
+
+    list.innerHTML = `
+
+      <div class="empty">
+        Nothing here yet.
+      </div>
+
+    `;
+
+    return;
+
   }
-});
+
+  list.innerHTML =
+  filtered
+  .map(
+    item=>{
+
+      const image =
+      item.image
+
+      ? `
+
+        <img
+          class="item-thumb"
+          src="${escapeHtml(item.image)}"
+          alt="${escapeHtml(item.title)}"
+          onerror="
+            this.style.display='none';
+            this.nextElementSibling.style.display='grid';
+          ">
+
+        <div
+          class="placeholder"
+          style="display:none;">
+          ◌
+        </div>
+
+      `
+
+      : `
+
+        <div class="placeholder">
+        ◌
+        </div>
+
+      `;
+
+      return `
+
+        <div class="item">
+
+          ${image}
+
+          <div class="item-main">
+
+            <div class="item-title">
+              ${escapeHtml(item.title)}
+            </div>
+
+            ${
+              item.notes
+
+              ? `
+
+                <div class="item-note">
+                  ${escapeHtml(item.notes)}
+                </div>
+
+              `
+
+              : ""
+            }
+
+          </div>
+
+          <button
+            class="check ${
+              item.done
+              ? "done"
+              : ""
+            }"
+            onclick="toggleItem(${item.id})">
+
+            ${
+              item.done
+              ? "✓"
+              : ""
+            }
+
+          </button>
+
+          <button
+            class="delete-btn"
+            onclick="deleteItem(${item.id})">
+
+            ⋯
+
+          </button>
+
+        </div>
+
+      `;
+
+    }
+  )
+  .join("");
+
+  filtered
+  .filter(
+    item=>!item.image
+  )
+  .forEach(
+    item=>ensureImage(item)
+  );
+
+}
+
+/* ==============================
+   COMPLETE
+============================== */
+
+function toggleItem(id){
+
+  const item =
+  items.find(
+    item=>item.id === id
+  );
+
+  if(!item){
+
+    return;
+
+  }
+
+  item.done =
+  !item.done;
+
+  saveItems();
+
+  updateCounts();
+
+  if(
+    document
+    .getElementById(
+      "categoryScreen"
+    )
+    .classList
+    .contains(
+      "active"
+    )
+  ){
+
+    renderItems();
+
+  }
+
+}
+
+/* ==============================
+   DELETE
+============================== */
+
+function deleteItem(id){
+
+  const item =
+  items.find(
+    item=>item.id === id
+  );
+
+  if(!item){
+
+    return;
+
+  }
+
+  const confirmed =
+  confirm(
+    `Delete "${item.title}"?`
+  );
+
+  if(!confirmed){
+
+    return;
+
+  }
+
+  items =
+  items.filter(
+    item=>item.id !== id
+  );
+
+  saveItems();
+
+  updateCounts();
+
+  if(
+    document
+    .getElementById(
+      "categoryScreen"
+    )
+    .classList
+    .contains(
+      "active"
+    )
+  ){
+
+    renderItems();
+
+  }
+
+}
+
+/* ==============================
+   MODAL
+============================== */
+
+function openModal(){
+
+  previewImage =
+  "";
+
+  document
+  .getElementById(
+    "itemTitle"
+  )
+  .value =
+  "";
+
+  document
+  .getElementById(
+    "itemNotes"
+  )
+  .value =
+  "";
+
+  document
+  .getElementById(
+    "itemDate"
+  )
+  .value =
+  "";
+
+  document
+  .getElementById(
+    "itemImageUrl"
+  )
+  .value =
+  "";
+
+  document
+  .getElementById(
+    "itemLink"
+  )
+  .value =
+  "";
+
+  document
+  .getElementById(
+    "itemCategory"
+  )
+  .value =
+  currentCategory;
+
+  showPreview("");
+
+  document
+  .getElementById(
+    "modal"
+  )
+  .classList
+  .add(
+    "active"
+  );
+
+}
+
+function closeModal(){
+
+  document
+  .getElementById(
+    "modal"
+  )
+  .classList
+  .remove(
+    "active"
+  );
+
+}
+
+/* ==============================
+   ADD
+============================== */
+
+async function addItem(){
+
+  const title =
+  document
+  .getElementById(
+    "itemTitle"
+  )
+  .value
+  .trim();
+
+  if(!title){
+
+    return;
+
+  }
+
+  const type =
+  document
+  .getElementById(
+    "itemCategory"
+  )
+  .value;
+
+  const item = {
+
+    id:
+      Date.now(),
+
+    title,
+
+    type,
+
+    done:
+      false,
+
+    notes:
+      document
+      .getElementById(
+        "itemNotes"
+      )
+      .value
+      .trim(),
+
+    date:
+      document
+      .getElementById(
+        "itemDate"
+      )
+      .value,
+
+    link:
+      document
+      .getElementById(
+        "itemLink"
+      )
+      .value
+      .trim(),
+
+    image:
+      document
+      .getElementById(
+        "itemImageUrl"
+      )
+      .value
+      .trim()
+      ||
+      previewImage
+      ||
+      ""
+
+  };
+
+  items.unshift(
+    item
+  );
+
+  saveItems();
+
+  closeModal();
+
+  currentCategory =
+  type;
+
+  updateCounts();
+
+  openCategory(
+    type
+  );
+
+  if(
+    !item.image
+  ){
+
+    await ensureImage(
+      item
+    );
+
+  }
+
+}
+
+/* ==============================
+   START
+============================== */
+
+saveItems();
 
 applySavedTheme();
+
 updateGreeting();
-saveItems();
-renderAll();
+
+updateCounts();
+
 </script>
 
 </body>
